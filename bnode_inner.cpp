@@ -8,7 +8,7 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
     assert(rhs->num_values > 0); //given
 	assert(num_values + rhs->getNumValues() < BTREE_FANOUT); //may not be correct
 	assert(num_children + rhs->getNumChildren() <= BTREE_FANOUT); //may not be correct
-	//VALUETYPE retVal = rhs->get[0]; //????
+	VALUETYPE retVal = rhs->get[0]; //????
 
 	//move values
 	for (int i = 0; i < rhs->getNumValues(); ++i)
