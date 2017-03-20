@@ -18,6 +18,9 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     assert(parent_idx < parent->getNumValues());
 
     // TODO: Implement this
+    
+    //make a vector or all values and a vector of all children
+    
 
     return -1;
 }
