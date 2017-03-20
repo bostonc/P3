@@ -8,7 +8,7 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
     assert(rhs->num_values > 0); //given
 	assert(num_values + rhs->getNumValues() < BTREE_FANOUT); //may not be correct
 	assert(num_children + rhs->getNumChildren() <= BTREE_FANOUT); //may not be correct
-	VALUETYPE retVal = rhs->get[0]; //????
+	//VALUETYPE retVal = rhs->get[0]; //????
 
 	//move values
 	for (int i = 0; i < rhs->getNumValues(); ++i)
@@ -55,7 +55,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     int total_vals = all_values.size();
     int total_children = all_children.size();
     
-    //populate this vector with first half of values
+    //populate this with first half of values
     for (int i = 0; i < total_vals / 2; i++) {
         insert(all_values[i]);
     }
