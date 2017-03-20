@@ -19,12 +19,48 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 
     // TODO: Implement this
     
-    //make a vector or all values and a vector of all children
+    //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all children(children, children + num_children);
     
+    //add the values and children of rhs to the vector
+    int num_vals = rhs->getNumValues();
+    int num_child = rhs->getNumChildren();
+    
+    for (int i = 0; i < num_vals; i++) {
+        all_values.push_back(rhs->get(i));
+        all children.push_back(rhs->getChild(i));
+    }
+    
+    int total_vals = all_values.size();
+    int total_children = all_children.size();
+    
+    //populate this vector with first half of values
+    for (int i = 0, i < total_vals / 2; i++) {
+        insert(all_values[i]);
+    }
+    for (int i = 0, idx = 0; i < total_vals / 2 + 1; i++, idx++) {
+        insert(all_children[i], idx);
+        all_children[i]->parent = this;
+    }
+    
+    //middle value should be returned as what's going to be the value of the parent
+    VALUETYPE new_parent_val = all_values[total_vals / 2];
+    
+    //populate rhs with second half of values
+    for (int i = total_vals / 2; i < total_vals; i++) {
+        rhs->insert(all_values[i]);
+    }
+    for (int i = total_vals / 2, idx = 0; i < total_children; i++, idk++) {
+        rhs->insert(all_children[i], idx);
+        all_children[i]->parent = rhs;
+    }
+    
+    //add asserts
+    
+    
 
-    return -1;
+    return new_parent_val;
 }
 
 
