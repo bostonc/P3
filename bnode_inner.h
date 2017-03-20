@@ -41,7 +41,7 @@ public:
     // Input:   The other node that this object should be merged with
     //          The index in the parent node that contains the value that this merge operation should
     //          happen through
-    // Output: The value that was (or should be) removed to the parent node
+    // Output: The value that was (or should be) moved to the parent node
     VALUETYPE merge(Bnode_inner* rhs, int parent_idx); //TODO: Write this
 
     // Redistributes this object with rhs

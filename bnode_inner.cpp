@@ -8,28 +8,31 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
     assert(rhs->num_values > 0); //given
 	assert(num_values + rhs->getNumValues() < BTREE_FANOUT); //may not be correct
 	assert(num_children + rhs->getNumChildren() <= BTREE_FANOUT); //may not be correct
-	VALUETYPE retVal = rhs->get[0]; //????
-
-	//move values
+	
+	//move all values to lhs, including appropriate parent value
 	for (int i = 0; i < rhs->getNumValues(); ++i)
 	{
 		insert(rhs->get(i));
 	}
+	insert(parent->get(parent_idx));
 
-	//move children
+	//move all children to lhs
 	for (int i = 0; i < rhs->getNumChildren(); ++i)
 	{
 		insert(rhs->getChild(i), num_children + i);
 	}
 
-	//housekeeping
+	//clear rhs, replace parent value
 	rhs->clear();
-	parent->replace_value(retVal, parent_idx); //no idea if this is correct
+	VALUETYPE highest_val = NULL;
+	for (int i = 0; i < num_values; ++i)
+	{
+		if (values[i] > highest_val) highest_val = values[i];
+	}
+	parent->insert(highest_val);
 
-	
-	//SHOULD THIS HANDLE REDISTRIBUTION TOO?????????????????????????????????????????????????
-
-    return retVal;
+	//returns value which was written to parent
+	return highest_val;
 }
 
 VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
