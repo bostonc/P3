@@ -20,6 +20,8 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     // TODO: Implement this
     
     //make a vector or all values and a vector of all children
+    vector<VALUETYPE> all_values(values, values + num_values);
+    vector<Bnode*> all children(children, children + num_children);
     
 
     return -1;
