@@ -29,7 +29,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     for (int i = 0; i < num_vals; i++) {
         all_values.push_back(rhs->get(i));
-        all children.push_back(rhs->getChild(i));
+        all_children.push_back(rhs->getChild(i));
     }
     
     int total_vals = all_values.size();
