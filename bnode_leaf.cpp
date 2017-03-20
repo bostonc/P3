@@ -37,7 +37,7 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	//add rhs values to the vector
 	int num_vals = rhs->getNumValues();
 	for (int i = 0; i < num_vals; i++) {
-		all_values.pushback(rhs->get(i));
+		all_values.push_back(rhs->get(i));
 	}
 	
 	int total_vals = all_values.size();
