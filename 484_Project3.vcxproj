@@ -110,6 +110,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bnode.cpp" />
+    <ClCompile Include="bnode_inner.cpp" />
+    <ClCompile Include="bnode_leaf.cpp" />
+    <ClCompile Include="btree.cpp" />
+    <ClCompile Include="impl.cpp" />
+    <ClCompile Include="mainfile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bnode.h" />
+    <ClInclude Include="bnode_inner.h" />
+    <ClInclude Include="bnode_leaf.h" />
+    <ClInclude Include="btree.h" />
+    <ClInclude Include="constants.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
