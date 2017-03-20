@@ -21,7 +21,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
-    vector<Bnode*> all children(children, children + num_children);
+    vector<Bnode*> all_children(children, children + num_children);
     
     //add the values and children of rhs to the vector
     int num_vals = rhs->getNumValues();
@@ -36,7 +36,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     int total_children = all_children.size();
     
     //populate this vector with first half of values
-    for (int i = 0, i < total_vals / 2; i++) {
+    for (int i = 0; i < total_vals / 2; i++) {
         insert(all_values[i]);
     }
     for (int i = 0, idx = 0; i < total_vals / 2 + 1; i++, idx++) {
@@ -51,7 +51,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     for (int i = total_vals / 2; i < total_vals; i++) {
         rhs->insert(all_values[i]);
     }
-    for (int i = total_vals / 2, idx = 0; i < total_children; i++, idk++) {
+    for (int i = total_vals / 2, idx = 0; i < total_children; i++, idx++) {
         rhs->insert(all_children[i], idx);
         all_children[i]->parent = rhs;
     }
