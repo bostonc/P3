@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
+#include <string> //added so first line of main() compiles.
 
 using namespace std;
 
