@@ -4,12 +4,32 @@
 using namespace std;
 
 VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
-    assert(rhs->parent == parent); // can only merge siblings
-    assert(rhs->num_values > 0);
+    assert(rhs->parent == parent); // can only merge siblings (given)
+    assert(rhs->num_values > 0); //given
+	assert(num_values + rhs->getNumValues() < BTREE_FANOUT); //may not be correct
+	assert(num_children + rhs->getNumChildren() <= BTREE_FANOUT); //may not be correct
+	VALUETYPE retVal = rhs->get[0]; //????
 
-    // TODO: Implement this
+	//move values
+	for (int i = 0; i < rhs->getNumValues(); ++i)
+	{
+		insert(rhs->get(i));
+	}
 
-    return -1;
+	//move children
+	for (int i = 0; i < rhs->getNumChildren(); ++i)
+	{
+		insert(rhs->getChild(i), num_children + i);
+	}
+
+	//housekeeping
+	rhs->clear();
+	parent->replace_value(retVal, parent_idx); //no idea if this is correct
+
+	
+	//SHOULD THIS HANDLE REDISTRIBUTION TOO?????????????????????????????????????????????????
+
+    return retVal;
 }
 
 VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
