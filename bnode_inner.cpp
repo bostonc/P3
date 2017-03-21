@@ -24,7 +24,7 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
 
 	//clear rhs, replace parent value
 	rhs->clear();
-	VALUETYPE highest_val = NULL;
+	VALUETYPE highest_val = values[0];
 	for (int i = 0; i < num_values; ++i)
 	{
 		if (values[i] > highest_val) highest_val = values[i];

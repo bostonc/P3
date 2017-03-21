@@ -9,7 +9,7 @@ Bnode_leaf::~Bnode_leaf() {
 	{
 		delete values[i];
 	}	
-	delete[] values;
+	//delete[] values;
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
