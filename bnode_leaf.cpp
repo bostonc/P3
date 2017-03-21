@@ -31,34 +31,35 @@ VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
 VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
     // TODO: Implement this
 	
-	//make vector of all values
-	vector<VALUETYPE> all_values(values, values + num_values);
+// 	//make vector of all values
+// 	vector<VALUETYPE> all_values(values, values + num_values);
 	
-	//add rhs values to the vector
-	int num_vals = rhs->getNumValues();
-	for (int i = 0; i < num_vals; i++) {
-		all_values.push_back(rhs->get(i));
-	}
+// 	//add rhs values to the vector
+// 	int num_vals = rhs->getNumValues();
+// 	for (int i = 0; i < num_vals; i++) {
+// 		all_values.push_back(rhs->get(i));
+// 	}
 	
-	int total_vals = all_values.size();
+// 	int total_vals = all_values.size();
 	
-	//populate this with first half of values
-	for (int i = 0; i < total_vals / 2; i++) {
-		insert(all_values[i]);
-	}
+// 	//populate this with first half of values
+// 	for (int i = 0; i < total_vals / 2; i++) {
+// 		insert(all_values[i]);
+// 	}
 	
-	//populate rhs with second half of values
-	for (int i = total_vals / 2; i < total_vals; i++) {
-		rhs->insert(all_values[i]);
-	}
+// 	//populate rhs with second half of values
+// 	for (int i = total_vals / 2; i < total_vals; i++) {
+// 		rhs->insert(all_values[i]);
+// 	}
 	
-	//smallest value in rhs should be returned as what's going to be the new value of the parent
-	VALUETYPE new_parent_val = all_values[total_vals / 2];
+// 	//smallest value in rhs should be returned as what's going to be the new value of the parent
+// 	VALUETYPE new_parent_val = all_values[total_vals / 2];
 	
-	//add asserts?
+// 	//add asserts?
 	
 	
-    return new_parent_val;
+//     return new_parent_val;
+	return -1;
 
 }
 
