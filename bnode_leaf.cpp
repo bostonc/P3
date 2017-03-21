@@ -4,63 +4,61 @@
 using namespace std;
 
 Bnode_leaf::~Bnode_leaf() {
-//     // Remember to deallocate memory!!
-// 	for (int i = 0; i < num_values; ++i)
-// 	{
-// 		delete values[i];
-// 	}	
-// 	//delete[] values;
+    // Remember to deallocate memory!!
+	for (int i = 0; i < num_values; ++i)
+	{
+		delete values[i];
+	}	
+	//delete[] values;
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
-//     assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
-//     assert(rhs->num_values > 0);
-//     VALUETYPE retVal = rhs->get(0);
+    assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
+    assert(rhs->num_values > 0);
+    VALUETYPE retVal = rhs->get(0);
 
-//     Bnode_leaf* save = next;
-//     next = next->next;
-//     if (next) next->prev = this;
+    Bnode_leaf* save = next;
+    next = next->next;
+    if (next) next->prev = this;
 
-//     for (int i = 0; i < rhs->getNumValues(); ++i)
-//         insert(rhs->getData(i));
+    for (int i = 0; i < rhs->getNumValues(); ++i)
+        insert(rhs->getData(i));
 
-//     rhs->clear();
-//     return retVal;
-	return -1;
+    rhs->clear();
+    return retVal;
 }
 
 VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
     // TODO: Implement this
 	
-// 	//make vector of all values
-// 	vector<VALUETYPE> all_values(values, values + num_values);
+	//make vector of all values
+	vector<VALUETYPE> all_values(values, values + num_values);
 	
-// 	//add rhs values to the vector
-// 	int num_vals = rhs->getNumValues();
-// 	for (int i = 0; i < num_vals; i++) {
-// 		all_values.push_back(rhs->get(i));
-// 	}
+	//add rhs values to the vector
+	int num_vals = rhs->getNumValues();
+	for (int i = 0; i < num_vals; i++) {
+		all_values.push_back(rhs->get(i));
+	}
 	
-// 	int total_vals = all_values.size();
+	int total_vals = all_values.size();
 	
-// 	//populate this with first half of values
-// 	for (int i = 0; i < total_vals / 2; i++) {
-// 		insert(all_values[i]);
-// 	}
+	//populate this with first half of values
+	for (int i = 0; i < total_vals / 2; i++) {
+		insert(all_values[i]);
+	}
 	
-// 	//populate rhs with second half of values
-// 	for (int i = total_vals / 2; i < total_vals; i++) {
-// 		rhs->insert(all_values[i]);
-// 	}
+	//populate rhs with second half of values
+	for (int i = total_vals / 2; i < total_vals; i++) {
+		rhs->insert(all_values[i]);
+	}
 	
-// 	//smallest value in rhs should be returned as what's going to be the new value of the parent
-// 	VALUETYPE new_parent_val = all_values[total_vals / 2];
+	//smallest value in rhs should be returned as what's going to be the new value of the parent
+	VALUETYPE new_parent_val = all_values[total_vals / 2];
 	
-// 	//add asserts?
+	//add asserts?
 	
 	
-//     return new_parent_val;
-	return -1;
+    return new_parent_val;
 
 }
 
