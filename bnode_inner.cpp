@@ -29,7 +29,7 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
 	{
 		if (values[i] > highest_val) highest_val = values[i];
 	}
-	parent->insert(highest_val);
+	//parent->insert(highest_val);
 
 	//returns value which was written to parent
 	return highest_val;
