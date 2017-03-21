@@ -4,12 +4,12 @@
 using namespace std;
 
 Bnode_leaf::~Bnode_leaf() {
-//     // Remember to deallocate memory!!
-// 	for (int i = 0; i < num_values; ++i)
-// 	{
-// 		delete values[i];
-// 	}	
-// 	//delete[] values;
+    // Remember to deallocate memory!!
+	for (int i = 0; i < num_values; ++i)
+	{
+		delete values[i];
+	}	
+	//delete[] values;
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
