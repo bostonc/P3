@@ -32,12 +32,15 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
     // TODO: Implement this
 	
 	//make vector of all values
-	vector<VALUETYPE> all_values(values, values + num_values);
-	
+	vector<Data*> all_values(values, values + num_values);
+
 	//add rhs values to the vector
 	int num_vals = rhs->getNumValues();
 	for (int i = 0; i < num_vals; i++) {
-		all_values.push_back(rhs->get(i));
+		//all_values.push_back(rhs->get(i));
+		Data* temp = new Data(rhs->get(i));
+		all_values.push_back(temp);
+		delete temp;
 	}
 	
 	int total_vals = all_values.size();
@@ -53,20 +56,20 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	}
 	
 	//smallest value in rhs should be returned as what's going to be the new value of the parent
-	VALUETYPE new_parent_val = all_values[total_vals / 2];
+	Data* new_parent_val = all_values[total_vals / 2];
 	
 	//add asserts?
 	
 	
-    return new_parent_val;
-
+    return new_parent_val->value;
+	//return -1;
 }
 
 Bnode_leaf* Bnode_leaf::split(VALUETYPE insert_value) {
     assert(num_values == BTREE_LEAF_SIZE); //only split when full
 
 	//populate temp array with all values before splitting
-	vector<VALUETYPE> all_values(values, values + num_values);
+	vector<Data*> all_values(values, values + num_values);
 
 	//create new node
 	Bnode_leaf* split_node = new Bnode_leaf;
@@ -86,15 +89,15 @@ Bnode_leaf* Bnode_leaf::split(VALUETYPE insert_value) {
 
 	//insert new value
 		//if both nodes are valid, put in left
-	if (insert_value > all_values[BTREE_LEAF_SIZE / 2 - 1] &&
-		insert_value < all_values[BTREE_LEAF_SIZE / 2])
+	if (insert_value > all_values[BTREE_LEAF_SIZE / 2 - 1]->value &&
+		insert_value < all_values[BTREE_LEAF_SIZE / 2]->value)
 	{
 		insert(insert_value);
 		assert(num_values == BTREE_LEAF_SIZE / 2 + 1);
 		assert(split_node->num_values == BTREE_LEAF_SIZE / 2);
 	}
 		//if right is only valid
-	else if (insert_value > all_values[BTREE_LEAF_SIZE / 2])
+	else if (insert_value > all_values[BTREE_LEAF_SIZE / 2]->value)
 	{
 		split_node->insert(insert_value);
 		assert(num_values == BTREE_LEAF_SIZE / 2);
@@ -119,6 +122,7 @@ Bnode_leaf* Bnode_leaf::split(VALUETYPE insert_value) {
 	
 	//use first value of split node as new parent data
     return split_node;
+	//return nullptr;
 }
 
 
