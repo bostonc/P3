@@ -13,19 +13,20 @@ Bnode_leaf::~Bnode_leaf() {
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
-    assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
-    assert(rhs->num_values > 0);
-    VALUETYPE retVal = rhs->get(0);
+//     assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
+//     assert(rhs->num_values > 0);
+//     VALUETYPE retVal = rhs->get(0);
 
-    Bnode_leaf* save = next;
-    next = next->next;
-    if (next) next->prev = this;
+//     Bnode_leaf* save = next;
+//     next = next->next;
+//     if (next) next->prev = this;
 
-    for (int i = 0; i < rhs->getNumValues(); ++i)
-        insert(rhs->getData(i));
+//     for (int i = 0; i < rhs->getNumValues(); ++i)
+//         insert(rhs->getData(i));
 
-    rhs->clear();
-    return retVal;
+//     rhs->clear();
+//     return retVal;
+	return -1;
 }
 
 VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
