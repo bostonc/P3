@@ -57,6 +57,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
+	
     
     //populate this with first half of values
     for (int i = 0; i < total_vals / 2; i++) {
