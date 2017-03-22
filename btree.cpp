@@ -22,6 +22,11 @@ bool Btree::insert(VALUETYPE value)
 {
     // TODO: Implement this
 	assert(root);
+
+	//SEARCH FOR EXISTING VALUE
+	if (search(value) == nullptr) return false;
+
+	//INSERT
 	size++;
 
 	//find node where new value should go
@@ -35,7 +40,7 @@ bool Btree::insert(VALUETYPE value)
 		inner = dynamic_cast<Bnode_inner*>(current);
 
 	}
-	//found the leaf node where the new value belongs :)
+	//found the leaf node in which the new value belongs :)
 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
 	assert(leaf);
 
@@ -57,22 +62,24 @@ bool Btree::insert(VALUETYPE value)
 		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1?
 		//return;
 	}
-	else //old parent is full.
+	else //old parent is full. SPLIT them, too.
 	{
 
+		//LOOOOOP?????
+		//repeat as necessary
+		VALUETYPE out = -1;
+		Bnode_inner* new_parent = new_leaf->parent->split(out, new_leaf->get(0), new_leaf);
+
+		//if we split the root, make a new root and return.
+
+
 	}
-
-
-	// Try to FIX SOMEHOW WITH A HTING........................................
 
 
 	//did we break the tree?
 	if (isValid()) return;
 
 	//...we broke the tree :(
-
-
-
 
 
 
