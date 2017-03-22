@@ -62,7 +62,7 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	Data* new_parent_val = all_values[total_vals / 2];
 	
 	assert(total_vals == num_values + rhs->getNumValues());
-	assert(num_values == rhs->getNumValues() || rhs->getNumValues() = num_values + 1);
+	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
 	assert(num_values <= BTREE_LEAF_SIZE && num_values >= BTREE_LEAF_SIZE / 2);
 	assert(rhs->getNumValues() <= BTREE_LEAF_SIZE && rhs->getNumValues() >= BTREE_LEAF_SIZE / 2);
 	
