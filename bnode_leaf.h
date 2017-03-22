@@ -48,6 +48,14 @@ public:
     // Output:  A new heap-allocated leaf node that was created due to this split (ownership should be transferred)
     Bnode_leaf* split(VALUETYPE insert_value); // TODO: Implement this
 
+	//CUSTOM PROTOTYPE.
+	//Inputs: None
+	//Output: Bool, true if this leaf node is full, false otherwise
+	bool is_full()
+	{
+		return (num_values == BTREE_LEAF_SIZE);
+	}
+
 
     //
     // ====================== Given implementations ========================

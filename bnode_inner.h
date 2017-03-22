@@ -58,6 +58,14 @@ public:
     //          output_val should be the value that needs to be inserted in the parent node
     Bnode_inner* split(VALUETYPE& output_val, VALUETYPE insert_value, Bnode* insert_node);
 
+	//CUSTOM PROTOTYPE.
+	//Inputs: None
+	//Output: Bool, true if this leaf node is full, false otherwise
+	bool is_full()
+	{
+		return (num_values == BTREE_FANOUT - 1);
+	}
+
     //
     // ====================== Given implementations ========================
     //                           (do not change)

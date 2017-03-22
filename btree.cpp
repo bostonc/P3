@@ -18,8 +18,66 @@ Btree::~Btree() {
     // Don't forget to deallocate memory
 }
 
-bool Btree::insert(VALUETYPE value) {
+bool Btree::insert(VALUETYPE value) 
+{
     // TODO: Implement this
+	assert(root);
+	size++;
+
+	//find node where new value should go
+	Bnode* current = root;
+	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+	while (inner)		//while current isn't a leaf...
+	{
+		//which child should have this new value?
+		int child_idx = inner->find_value_gt(value);
+		current = inner->getChild(child_idx);
+		inner = dynamic_cast<Bnode_inner*>(current);
+
+	}
+	//found the leaf node where the new value belongs :)
+	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
+	assert(leaf);
+
+	//if node is not full, insert and return
+	if (!leaf->is_full()) return;
+
+	//DO-WHILE LOOP????????????????????????????????????????????????????????????????
+
+	//from here, node must be full. SPLIT.
+		//do split
+	Bnode_leaf* new_leaf = leaf->split(value); 
+		//reassign parent value
+	int reassignment_idx = new_leaf->parent->find_value_gt(value);
+	new_leaf->parent->replace_value(value, reassignment_idx); //has potential to break things
+
+	//now we need to give this new_leaf a parent. Does the old one have room?
+	if (!leaf->parent->is_full())
+	{
+		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1?
+		//return;
+	}
+	else //old parent is full.
+	{
+
+	}
+
+
+	// Try to FIX SOMEHOW WITH A HTING........................................
+
+
+	//did we break the tree?
+	if (isValid()) return;
+
+	//...we broke the tree :(
+
+
+
+
+
+
+
+
     return true;
 }
 
