@@ -84,13 +84,13 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     }
     
 	assert(total_vals == num_values + rhs->getNumValues());
-	assert(num_values == rhs->getNumValues() || rhs->getNumValues == num_values + 1);
+	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
 	assert(num_values < BTREE_FANOUT && num_values >= BTREE_FANOUT / 2);
 	assert(rhs->getNumValues() < BTREE_FANOUT && rhs->getNumValues() >= BTREE_FANOUT / 2);
 	assert(total_children == num_children + rhs->getNumChildren());
 	assert(num_children == rhs->getNumChildren() || rhs->getNumChildren() == num_children + 1);
 	assert(num_children <= BTREE_FANOUT && num_children >= BTREE_FANOUT / 2);
-	assert(rhs->getNumCHildren() <= BTREE_FANOUT && rhs->getNumChildren() >= BTREE_FANOUT / 2);
+	assert(rhs->getNumChildren() <= BTREE_FANOUT && rhs->getNumChildren() >= BTREE_FANOUT / 2);
 	
     
     
