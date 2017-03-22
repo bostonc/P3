@@ -57,7 +57,10 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
-	
+	assert(total_vals == num_values + rhs.getNumValues());
+	assert (total_vals < BTREE_FANOUT * 2 - 1);
+	assert(total_children == num_children + rhs.getNumChildren());
+	assert(total_children <= BTREE_FANOUT * 2);
     
     //populate this with first half of values
     for (int i = 0; i < total_vals / 2; i++) {
