@@ -90,7 +90,44 @@ bool Btree::insert(VALUETYPE value)
 
 bool Btree::remove(VALUETYPE value) {
     // TODO: Implement this
-    return true;
+	
+	assert(root);
+    Bnode* current = root;
+
+    // Have not reached a leaf node yet
+    Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+    
+    while (inner) {
+        int find_index = inner->find_value_gt(value);
+        current = inner->getChild(find_index);
+        inner = dynamic_cast<Bnode_inner*>(current);
+    }
+
+    // Found a leaf node
+    Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
+    assert(leaf);
+    for (int i = 0; i < leaf->getNumValues(); ++i) {
+        if (leaf->get(i) > value)    return false; // passed the possible location
+        
+	//we found the value to remove
+	if (leaf->get(i) == value) {
+		//remove data entry
+		
+		//check if the leaf node is less than half full
+		if (leaf->getNumValues() < BTREE_LEAF_SIZE) {
+			//check if there's a node we can redistribute with
+			
+			//if not, merge with a node
+			
+			//fix tree
+		}
+		else {
+			return true; //once the node has been removed we're done if the leaf node is full enough
+		}
+		
+	}
+    }
+    return false;
 }
 
 vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end) {
