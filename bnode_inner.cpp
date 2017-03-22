@@ -57,9 +57,9 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
-	assert(total_vals == num_values + rhs.getNumValues());
+	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals < BTREE_FANOUT * 2 - 1);
-	assert(total_children == num_children + rhs.getNumChildren());
+	assert(total_children == num_children + rhs->getNumChildren());
 	assert(total_children <= BTREE_FANOUT * 2);
     
     //populate this with first half of values
@@ -75,15 +75,23 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     VALUETYPE new_parent_val = all_values[total_vals / 2];
     
     //populate rhs with second half of values
-    for (int i = total_vals / 2; i < total_vals; i++) {
+    for (int i = total_vals / 2 + 1; i < total_vals; i++) {
         rhs->insert(all_values[i]);
     }
-    for (int i = total_vals / 2, idx = 0; i < total_children; i++, idx++) {
+    for (int i = total_vals / 2 + 1, idx = 0; i < total_children; i++, idx++) {
         rhs->insert(all_children[i], idx);
         all_children[i]->parent = rhs;
     }
     
-    //add asserts
+	assert(total_vals == num_values + rhs->getNumValues());
+	assert(num_values == rhs->getNumValues() || rhs->getNumValues == num_values + 1);
+	assert(num_values < BTREE_FANOUT && num_values >= BTREE_FANOUT / 2);
+	assert(rhs->getNumValues() < BTREE_FANOUT && rhs->getNumValues() >= BTREE_FANOUT / 2);
+	assert(total_children == num_children + rhs->getNumChildren());
+	assert(num_children == rhs->getNumChildren() || rhs->getNumChildren() == num_children + 1);
+	assert(num_children <= BTREE_FANOUT && num_children >= BTREE_FANOUT / 2);
+	assert(rhs->getNumCHildren() <= BTREE_FANOUT && rhs->getNumChildren() >= BTREE_FANOUT / 2);
+	
     
     
 
