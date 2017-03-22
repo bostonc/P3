@@ -45,7 +45,7 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	
 	int total_vals = all_values.size();
 	
-	assert(total_vals == num_values + rhs.getNumValues());
+	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals <= BTREE_LEAF_SIZE * 2);
 	
 	//populate this with first half of values
@@ -61,10 +61,10 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	//smallest value in rhs should be returned as what's going to be the new value of the parent
 	Data* new_parent_val = all_values[total_vals / 2];
 	
-	assert(total_vals == num_values + rhs.getNumValues());
-	assert(num_values == rhs.getNumValues || rhs.getNumValues = num_values + 1);
-	assert(num_values <= BTREE_LEAF_SIZE);
-	assert(rhs.getNumValues <= BTREE_LEAF_SIZE);
+	assert(total_vals == num_values + rhs->getNumValues());
+	assert(num_values == rhs->getNumValues() || rhs->getNumValues() = num_values + 1);
+	assert(num_values <= BTREE_LEAF_SIZE && num_values >= BTREE_LEAF_SIZE / 2);
+	assert(rhs->getNumValues() <= BTREE_LEAF_SIZE && rhs->getNumValues() >= BTREE_LEAF_SIZE / 2);
 	
 	
 	
