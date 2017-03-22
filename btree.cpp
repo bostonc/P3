@@ -120,6 +120,7 @@ bool Btree::remove(VALUETYPE value) {
 			//if not, merge with a node
 			
 			//fix tree
+			//return true when it's all done
 		}
 		else {
 			return true; //once the node has been removed we're done if the leaf node is full enough
