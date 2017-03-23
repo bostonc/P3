@@ -49,7 +49,7 @@ bool Btree::insert(VALUETYPE value)
 	if (!leaf->is_full())
 	{
 		leaf->insert(new_data);
-		assert(isValid);
+		assert(isValid());
 		return true;
 	}	
 
@@ -63,12 +63,16 @@ bool Btree::insert(VALUETYPE value)
 		//make new root, return
 		Bnode_inner* new_root = new Bnode_inner();
 			//values
-		new_root->insert(new_leaf->get[0]);
+		new_root->insert(new_leaf->get(0));
 			//children
 		new_root->insert(leaf, 0);
-		new_root->insert(new_leaf, 1);
+		new_root->insert(new_leaf, 1);		
+			//parents
+		leaf->parent = new_root;
+		new_leaf->parent = new_root;
+
 		root = new_root;
-		assert(isValid);
+		assert(isValid());
 		return true;
 	}		
 
@@ -78,10 +82,11 @@ bool Btree::insert(VALUETYPE value)
 	{
 		//add parent value
 		reassignment_idx = new_leaf->parent->find_value_gt(value);
-		new_leaf->parent->replace_value(new_leaf->get[0], reassignment_idx);
+		//new_leaf->parent->replace_value(new_leaf->get(0), reassignment_idx);
+		new_leaf->parent->insert(new_leaf->get(0));
 		
-		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1?
-		assert(isValid);
+		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1? +1 maybe
+		assert(isValid());
 		return true;
 	}
 
@@ -100,12 +105,12 @@ bool Btree::insert(VALUETYPE value)
 			//make new root, return
 			Bnode_inner* new_root = new Bnode_inner();
 				//values
-			new_root->insert(new_parent->get[0]);
+			new_root->insert(new_parent->get(0));
 				//children
 			new_root->insert(child_waiting->parent, 0);
 			new_root->insert(new_parent, 1);
 			root = new_root;
-			assert(isValid);
+			assert(isValid());
 			return true;
 		}
 
@@ -117,7 +122,7 @@ bool Btree::insert(VALUETYPE value)
 			new_parent->parent->replace_value(out, reassignment_idx);
 
 			new_parent->parent->insert(new_parent, reassignment_idx + 1);
-			assert(isValid);
+			assert(isValid());
 			return true;
 		}
 
@@ -127,7 +132,7 @@ bool Btree::insert(VALUETYPE value)
 
 	}//end while
 
-	assert(isValid);
+	assert(isValid());
 	assert(false);
 	return false;
 }

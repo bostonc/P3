@@ -193,19 +193,48 @@ void stress_insert_delete(int itr) {
     }
 }
 
+void chris_testing()
+{
+	Btree t;
+	t.insert(6);
+	cout << "after inserting 6" << endl;
+	cout << t << endl;
+
+	t.insert(5);
+	cout << "after inserting 5" << endl;
+	cout << t << endl;
+
+	t.insert(3);
+	cout << "after inserting 3" << endl;
+	cout << t << endl;
+
+	t.insert(7);
+	cout << "after inserting 7" << endl;
+	cout << t << endl;
+
+	t.insert(8);
+	cout << "after inserting 8" << endl;
+	cout << t << endl;
+
+}
+
 int main() {
     std::string filename = std::string("expected_") + std::to_string(BTREE_FANOUT) + "_" + std::to_string(BTREE_LEAF_SIZE)
     + ".out";
     //freopen(filename.c_str(),"w",stdout); //Comment out if you want to write to a file. You should to set the
                                             //values in constants.h to create the corresponding output
     
-    small_test();
-    splitTestFromSpec();
-    testForRedistribution();
-    large_test1();
-    large_test2();
-    stress_insert(500);
-    stress_insert_delete(500);
+    //small_test();
+    //splitTestFromSpec();
+    //testForRedistribution();
+    //large_test1();
+    //large_test2();
+    //stress_insert(500);
+    //stress_insert_delete(500);
+	
+	chris_testing();
+
+
     
     return 0;
 }

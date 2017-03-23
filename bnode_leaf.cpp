@@ -118,9 +118,11 @@ Bnode_leaf* Bnode_leaf::split(VALUETYPE insert_value) {
 	}	
 
 	//assign parent & siblings
-	next->prev = split_node;
-	split_node->next = next;
-
+	if (next)
+	{
+		next->prev = split_node;
+		split_node->next = next;
+	}
 	next = split_node;
 	split_node->prev = this;	
 

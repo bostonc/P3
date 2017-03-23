@@ -97,7 +97,7 @@ bool Btree::isValid() {
     inorder_traverse(root, values);
     if (values.empty()) return true;
     VALUETYPE prev_value = values[0];
-    for (int i = 1; i < values.size(); ++i) {
+    for (int i = 1; i < (int)values.size(); ++i) {
         if (prev_value > values[i]) return false;
         prev_value = values[i];
     }

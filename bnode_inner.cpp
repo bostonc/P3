@@ -130,9 +130,9 @@ Bnode_inner* Bnode_inner::split(VALUETYPE& output_val, VALUETYPE insert_value, B
     output_val = all_values[BTREE_FANOUT/2];
 
     // Give the last BTREE/2 values to the new bnode
-    for (int i = (BTREE_FANOUT/2) + 1; i < all_values.size(); ++i)
+    for (int i = (BTREE_FANOUT/2) + 1; i < (int)all_values.size(); ++i)
         split_node->insert(all_values[i]);
-    for (int i = (BTREE_FANOUT/2) + 1, idx = 0; i < all_children.size(); ++i, ++idx) {
+    for (int i = (BTREE_FANOUT/2) + 1, idx = 0; i < (int)all_children.size(); ++i, ++idx) {
         split_node->insert(all_children[i], idx);
         all_children[i] -> parent = split_node;
     }
