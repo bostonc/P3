@@ -105,7 +105,7 @@ bool Btree::insert(VALUETYPE value)
 			//make new root, return
 			Bnode_inner* new_root = new Bnode_inner();
 				//values
-			new_root->insert(new_parent->get(0));
+			new_root->insert(out);
 				//children
 			new_root->insert(child_waiting->parent, 0);
 			new_root->insert(new_parent, 1);

@@ -216,6 +216,10 @@ void chris_testing()
 	cout << "after inserting 8" << endl;
 	cout << t << endl;
 
+	t.insert(2);
+	cout << "after inserting 2" << endl;
+	cout << t << endl;
+
 }
 
 int main() {
