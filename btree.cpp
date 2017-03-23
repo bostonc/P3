@@ -95,12 +95,16 @@ bool Btree::insert(VALUETYPE value)
 	VALUETYPE insert_value = new_leaf->get(0);
 	VALUETYPE out = -1;
 	Bnode_inner* new_parent = nullptr;
+	bool rootSplit = false;
 	while (/*???????????????????????????*/ true)
 	{	
+		//NEED TO CHECK FOR ROOT SPLIT BEFORE WE ACTUALLY SPLIT...
+		if (root == child_waiting->parent) rootSplit = true;
+
 		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);
 
 		//if we split the root, make a new root and return.
-		if (root == child_waiting->parent)
+		if (rootSplit)
 		{
 			//make new root, return
 			Bnode_inner* new_root = new Bnode_inner();
@@ -109,6 +113,10 @@ bool Btree::insert(VALUETYPE value)
 				//children
 			new_root->insert(child_waiting->parent, 0);
 			new_root->insert(new_parent, 1);
+				//parents
+			root->parent = new_root;
+			new_parent->parent = new_root;
+				//move root up
 			root = new_root;
 			assert(isValid());
 			return true;
@@ -118,20 +126,23 @@ bool Btree::insert(VALUETYPE value)
 		if (!new_parent->parent->is_full())
 		{
 			//add and return
-			reassignment_idx = new_parent->parent->find_value_gt(out);
-			new_parent->parent->replace_value(out, reassignment_idx);
+			//reassignment_idx = new_parent->parent->find_value_gt(out);
+			//new_parent->parent->replace_value(out, reassignment_idx);
+			new_parent->parent->insert(out); //value
 
-			new_parent->parent->insert(new_parent, reassignment_idx + 1);
+			reassignment_idx = new_parent->parent->find_value_gt(out);
+			new_parent->parent->insert(new_parent, reassignment_idx); //child
 			assert(isValid());
 			return true;
 		}
 
-		//else, prep and continue
+		//else, prep and continue upwards split
 		child_waiting = new_parent;
 		insert_value = out;
 
 	}//end while
 
+	//SHOULD NEVER REACH THIS CODE
 	assert(isValid());
 	assert(false);
 	return false;
