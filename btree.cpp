@@ -28,6 +28,7 @@ bool Btree::insert(VALUETYPE value)
 
 	//INSERT
 	size++;
+	Data* new_data = new Data(value);
 
 	//find node where new value should go
 	Bnode* current = root;
@@ -45,8 +46,12 @@ bool Btree::insert(VALUETYPE value)
 	assert(leaf);
 
 	//if node is not full, insert and return
-	if (!leaf->is_full()) return true;
-
+	if (!leaf->is_full())
+	{
+		leaf->insert(new_data);
+		assert(isValid);
+		return true;
+	}	
 
 	//from here, node must be full. SPLIT.
 		//do split
@@ -56,63 +61,75 @@ bool Btree::insert(VALUETYPE value)
 	if (root == leaf)
 	{
 		//make new root, return
-		Bnode_inner* new__root = new Bnode_inner();
-		new__root->insert(new_leaf->get[0]);
-		root = new__root;
+		Bnode_inner* new_root = new Bnode_inner();
+			//values
+		new_root->insert(new_leaf->get[0]);
+			//children
+		new_root->insert(leaf, 0);
+		new_root->insert(new_leaf, 1);
+		root = new_root;
+		assert(isValid);
 		return true;
-	}
-	
-		//reassign parent value
-	int reassignment_idx = new_leaf->parent->find_value_gt(value);
-	new_leaf->parent->replace_value(new_leaf->get[0], reassignment_idx);
+	}		
 
+	int reassignment_idx = -1;
 	//now we need to give this new_leaf a parent. Does the old one have room?
 	if (!leaf->parent->is_full())
 	{
+		//add parent value
+		reassignment_idx = new_leaf->parent->find_value_gt(value);
+		new_leaf->parent->replace_value(new_leaf->get[0], reassignment_idx);
+		
 		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1?
-		//return;
+		assert(isValid);
+		return true;
 	}
-	else //old parent is full. SPLIT them, too.
-	{
 
-		//LOOOOOP?????
-		//repeat as necessary
-		VALUETYPE out = -1;
-		Bnode_inner* new_parent = new_leaf->parent->split(out, new_leaf->get(0), new_leaf);
+	//else parent is full. SPLIT them, too.
+	Bnode* child_waiting = new_leaf;
+	VALUETYPE insert_value = new_leaf->get(0);
+	VALUETYPE out = -1;
+	Bnode_inner* new_parent = nullptr;
+	while (/*???????????????????????????*/ true)
+	{	
+		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);
 
 		//if we split the root, make a new root and return.
-		if (root == new_leaf->parent)
+		if (root == child_waiting->parent)
 		{
-
+			//make new root, return
+			Bnode_inner* new_root = new Bnode_inner();
+				//values
+			new_root->insert(new_parent->get[0]);
+				//children
+			new_root->insert(child_waiting->parent, 0);
+			new_root->insert(new_parent, 1);
+			root = new_root;
+			assert(isValid);
+			return true;
 		}
 
 		//else, check next level up and see if they have room for new node ptr
-
-
-
-		//if room, add and return
-
-
-		//else, REPEAT SPLIT (do-while)
+		if (!new_parent->parent->is_full())
 		{
+			//add and return
+			reassignment_idx = new_parent->parent->find_value_gt(out);
+			new_parent->parent->replace_value(out, reassignment_idx);
 
-
+			new_parent->parent->insert(new_parent, reassignment_idx + 1);
+			assert(isValid);
+			return true;
 		}
 
+		//else, prep and continue
+		child_waiting = new_parent;
+		insert_value = out;
 
-	}
+	}//end while
 
-
-	//did we break the tree?
-	if (isValid()) return true; //ADDED TRUE TO MAKE IT COMPILE
-
-	//...we broke the tree :(
-
-
-
-
-
-    return true;
+	assert(isValid);
+	assert(false);
+	return false;
 }
 
 bool Btree::remove(VALUETYPE value) {
