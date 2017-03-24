@@ -172,15 +172,51 @@ bool Btree::remove(VALUETYPE value) {
 	//we found the value to remove
 	if (leaf->get(i) == value) {
 		//remove data entry
+		if (!remove(leaf->get(i))) {
+			//not removed successfully
+			return false; //?
+		}
 		
 		//check if the leaf node is less than half full
-		if (leaf->getNumValues() < BTREE_LEAF_SIZE) {
+		if (leaf->getNumValues() < BTREE_LEAF_SIZE / 2) {
 			//check if there's a node we can redistribute with
-			
+			if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE / 2) {
+				//redistribute with right node (next)
+				VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
+				leaf->parent->insert(new_parent_val);
+				
+			}
+			else if (leaf->prev && leaf->getNumValues() > BTREE_LEAF_SIZE / 2) {
+				//redistribute with left node (prev)
+				VALUETYPE new_parent_val = leaf->prev->redistribute(leaf);
+				leaf->parent->insert(new_parent_val);
+				
+			}
 			//if not, merge with a node
+			else if (leaf->next) {
+				//merge with right node (next)
+				VALUETYPE new_parent_val = leaf->merge(leaf->next);
+				leaf->parent->insert(new_parent_val);
+				//fix tree
+				
+			}
+			else if (leaf->prev) {
+				//merge with left node (prev)
+				VALUETYPE new_parent_val = leaf->prev->merge(leaf);
+				leaf->parent->insert(new_parent_val);
+				//fix tree
+			}
+			else {
+				//it's a root node?
+				if (leaf->getNumValues() == 0) {
+					delete leaf;
+				}
+				
+			}
 			
 			//fix tree
 			//return true when it's all done
+			assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
 		}
 		else {
 			return true; //once the node has been removed we're done if the leaf node is full enough
