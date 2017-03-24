@@ -211,6 +211,7 @@ bool Btree::remove(VALUETYPE value) {
 			//not removed successfully
 			return false; //?
 		}
+		size--;
 		
 		//check if the leaf node is less than half full
 		if (leaf->getNumValues() < BTREE_LEAF_SIZE / 2) {
