@@ -2,7 +2,7 @@
 #include "bnode.h"
 #include "bnode_inner.h"
 #include "bnode_leaf.h"
-
+#include <vector>
 #include <cassert>
 
 using namespace std;
@@ -96,7 +96,7 @@ bool Btree::insert(VALUETYPE value)
 	VALUETYPE out = -1;
 	Bnode_inner* new_parent = nullptr;
 	bool rootSplit = false;
-	while (/*???????????????????????????*/ true)
+	while (true)
 	{	
 		//NEED TO CHECK FOR ROOT SPLIT BEFORE WE ACTUALLY SPLIT...
 		if (root == child_waiting->parent) rootSplit = true;
@@ -191,11 +191,53 @@ bool Btree::remove(VALUETYPE value) {
     return false;
 }
 
-vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end) {
-    std::vector<Data*> returnValues;
+vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end) 
+{
     // TODO: Implement this
+	assert(root);
+	vector<Data*> v;
 
-    return returnValues;
+	//find node where first value would appear
+	Bnode* current = root;
+	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+	while (inner)		//while current isn't a leaf...
+	{
+		//which child should have this new value?
+		int child_idx = inner->find_value_gt(begin);
+		current = inner->getChild(child_idx);
+		inner = dynamic_cast<Bnode_inner*>(current);
+	}
+	Bnode_leaf* first_leaf = dynamic_cast<Bnode_leaf*>(current);
+	assert(first_leaf);
+
+	//find node where last value would appear
+	current = root;
+	inner = dynamic_cast<Bnode_inner*>(current);
+	while (inner)		//while current isn't a leaf...
+	{
+		//which child should have this new value?
+		int child_idx = inner->find_value_gt(begin);
+		current = inner->getChild(child_idx);
+		inner = dynamic_cast<Bnode_inner*>(current);
+	}
+	Bnode_leaf* last_leaf = dynamic_cast<Bnode_leaf*>(current);
+	assert(last_leaf);
+
+	Bnode_leaf* focus = first_leaf;
+	while (focus)
+	{
+		for (int i = 0; i < focus->getNumValues(); ++i)
+		{
+			if (focus->get(i) < begin) continue;
+			if (focus->get(i) > end) break;
+			v.push_back(focus->getData(i));
+		}
+		
+		if (focus == last_leaf) break;
+		focus = focus->next;
+	}
+
+    return v;
 }
 
 //
