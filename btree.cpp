@@ -302,7 +302,7 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				//fix tree
-				if (leaf->parent->num_children > BTREE_FANOUT / 2) {
+				if (leaf->parent->getNumChildren() > BTREE_FANOUT / 2) {
 					//we're done
 					assert(isValid());
 					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
@@ -324,7 +324,7 @@ bool Btree::remove(VALUETYPE value) {
 							//they're siblings, merge
 							VALUETYPE parent_val = temp1->merge(temp2);
 							temp1->parent->insert(parent_val); //not sure about this for merge
-							if (temp1->parent->num_childen > BTREE_FANOUT / 2) {
+							if (temp1->parent->getNumChildren() > BTREE_FANOUT / 2) {
 								fixed = true;
 							}
 							else {
@@ -338,7 +338,7 @@ bool Btree::remove(VALUETYPE value) {
 							//they're siblings, merge
 							VALUETYPE parent_val = temp3->merge(temp1);
 							temp3->parent->insert(parent_val); //not sure about this for merge
-							if (temp3->parent->num_children > BTREE_FANOUT / 2) {
+							if (temp3->parent->getNumChildren() > BTREE_FANOUT / 2) {
 								fixed = true;
 							}
 							else {
@@ -384,7 +384,7 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				//fix tree
-				if (leaf->parent->num_children > BTREE_FANOUT / 2) {
+				if (leaf->parent->getNumChildren() > BTREE_FANOUT / 2) {
 					//we're done
 					assert(isValid());
 					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
@@ -406,7 +406,7 @@ bool Btree::remove(VALUETYPE value) {
 							//they're siblings, merge
 							VALUETYPE parent_val = temp1->merge(temp2);
 							temp1->parent->insert(parent_val); //not sure about this for merge
-							if (temp1->parent->num_childen > BTREE_FANOUT / 2) {
+							if (temp1->parent->getNumChildren() > BTREE_FANOUT / 2) {
 								fixed = true;
 							}
 							else {
@@ -420,7 +420,7 @@ bool Btree::remove(VALUETYPE value) {
 							//they're siblings, merge
 							VALUETYPE parent_val = temp3->merge(temp1);
 							temp3->parent->insert(parent_val); //not sure about this for merge
-							if (temp3->parent->num_children > BTREE_FANOUT / 2) {
+							if (temp3->parent->getNumChildren() > BTREE_FANOUT / 2) {
 								fixed = true;
 							}
 							else {
@@ -453,6 +453,7 @@ bool Btree::remove(VALUETYPE value) {
 			//return true when it's all done
 			assert(isValid();
 			assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+			       return true;
 		}
 		else {
 			assert(isValid());
