@@ -182,10 +182,13 @@ bool Btree::remove(VALUETYPE value) {
 			//check if there's a node we can redistribute with
 			if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE / 2) {
 				//redistribute with right node (next)
-				
+				VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
+				//fix tree
 			}
 			else if (leaf->prev && leaf->getNumValues() > BTREE_LEAF_SIZE / 2) {
 				//redistribute with left node (prev)
+				VALUETYPE new_parent_val = leaf->prev->redistribute(leaf);
+				//fix tree
 			}
 			//if not, merge with a node
 			else if (leaf->next) {
