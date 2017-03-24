@@ -111,7 +111,7 @@ bool Btree::insert(VALUETYPE value)
 				//values
 			new_root->insert(out);
 				//children
-			new_root->insert(child_waiting->parent, 0);
+			new_root->insert(root, 0);
 			new_root->insert(new_parent, 1);
 				//parents
 			root->parent = new_root;
