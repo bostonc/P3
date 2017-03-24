@@ -217,7 +217,7 @@ bool Btree::remove(VALUETYPE value) {
 					Bnode_inner* temp_leaf1 = dynamic_cast<Bnode_inner*>(current);
 					Bnode_inner* temp_leaf2 = dynamic_cast<Bnode_inner*>(current);
 					temp_leaf1 = leaf->parent;
-					temp_leaf2 = leaf->prev_parent;
+					temp_leaf2 = leaf->prev->parent;
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == temp_leaf2->parent) {
