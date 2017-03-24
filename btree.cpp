@@ -252,7 +252,7 @@ vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end)
 	while (inner)		//while current isn't a leaf...
 	{
 		//which child should have this new value?
-		int child_idx = inner->find_value_gt(begin);
+		int child_idx = inner->find_value_gt(end);
 		current = inner->getChild(child_idx);
 		inner = dynamic_cast<Bnode_inner*>(current);
 	}

@@ -197,52 +197,60 @@ void chris_testing()
 {
 	Btree t;
 	t.insert(6);
-	cout << "after inserting 6" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 6" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(5);
-	cout << "after inserting 5" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 5" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(3);
-	cout << "after inserting 3" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 3" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(7);
-	cout << "after inserting 7" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 7" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(8);
-	cout << "after inserting 8" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 8" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(2);
-	cout << "after inserting 2" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 2" << endl;
+	//cout << t << endl << endl;
 
-	cout << "----------------------------------------------" << endl;
+	//cout << "----------------------------------------------" << endl;
 
 	t.insert(4);
-	cout << "after inserting 4" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 4" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(1);
-	cout << "after inserting 1" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 1" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(11);
-	cout << "after inserting 11" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 11" << endl;
+	//cout << t << endl << endl;
 
 	t.insert(0);
-	cout << "after inserting 0" << endl;
-	cout << t << endl << endl;
+	//cout << "after inserting 0" << endl;
+	//cout << t << endl << endl;
 
-	cout << "----------------------------------------------" << endl;
+	//cout << "----------------------------------------------" << endl;
 
 	t.insert(13);
 	cout << "after inserting 13" << endl;
 	cout << t << endl << endl;
+	cout << "----------------------------------------------" << endl;
+
+	vector<Data*> v = t.search_range(-3, 16);
+	for (int i = 0; i < v.size(); ++i)
+	{
+		cout << v[i]->value << ", ";
+	}
+	cout << endl;
 
 }
 
