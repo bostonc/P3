@@ -94,6 +94,7 @@ private:
     bnode_inner get_common_ancestor(left, right)
 
     */
+	void dtor_traverse(Bnode* current, std::vector<VALUETYPE>& values, std::vector<Bnode*>& ptrs);
 };
 
 

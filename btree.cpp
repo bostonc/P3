@@ -14,8 +14,43 @@ Btree::Btree() : root(new Bnode_leaf), size(0) {
     // Fill in here if needed
 }
 
-Btree::~Btree() {
-    // Don't forget to deallocate memory
+Btree::~Btree() 
+{
+    //Don't forget to deallocate memory
+	//Uses modified in-order traversal to find all nodes, then delete them all
+	vector<VALUETYPE> vals;
+	vector<Bnode*> ptrs;
+	dtor_traverse(root, vals, ptrs);
+
+	for (int i = 0; i < ptrs.size(); ++i)
+	{
+		delete ptrs[i];
+		ptrs[i] = nullptr;
+	}
+}
+
+void Btree::dtor_traverse(Bnode* current, vector<VALUETYPE>& values, vector<Bnode*>& ptrs)
+{
+	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+	if (inner) {
+		ptrs.push_back(current);
+		assert(inner->getNumChildren() != 0);
+		assert(inner->getNumValues() == inner->getNumChildren() - 1);
+		dtor_traverse(inner->getChild(0), values, ptrs);
+		for (int i = 0; i < inner->getNumValues(); ++i) {
+			values.push_back(inner->get(i));
+			dtor_traverse(inner->getChild(i + 1), values, ptrs);
+		}
+	}
+	else {
+		ptrs.push_back(current);
+		// not a inner? must be a leaf
+		Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
+		assert(leaf);
+		for (int i = 0; i < leaf->getNumValues(); ++i) {
+			values.push_back(leaf->get(i));
+		}
+	}
 }
 
 bool Btree::insert(VALUETYPE value) 
@@ -142,7 +177,7 @@ bool Btree::insert(VALUETYPE value)
 
 	}//end while
 
-	//SHOULD NEVER REACH THIS CODE
+	//If ever this code is reached, I will eat my cat
 	assert(isValid());
 	assert(false);
 	return false;

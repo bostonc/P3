@@ -265,7 +265,7 @@ int main() {
     //testForRedistribution();
     //large_test1();
     //large_test2();
-    //stress_insert(500);
+    stress_insert(500);
     //stress_insert_delete(500);
 	
 	chris_testing();
