@@ -450,7 +450,7 @@ bool Btree::remove(VALUETYPE value) {
 			
 			//fix tree
 			//return true when it's all done
-			assert(isValid();
+			assert(isValid());
 			assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
 			       return true;
 		}
