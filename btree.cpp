@@ -210,6 +210,7 @@ bool Btree::remove(VALUETYPE value) {
 				//it's a root node?
 				if (leaf->getNumValues() == 0) {
 					delete leaf;
+				}
 				
 			}
 			
