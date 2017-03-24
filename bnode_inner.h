@@ -66,6 +66,15 @@ public:
 		return (num_values == BTREE_FANOUT - 1);
 	}
 
+	//CUSTOM PROTOTYPE.
+	//Inputs: None
+	//Output: true if node has at least the number of values to satisfy Btree invariant,
+	//false otherwise
+	bool at_least_half_full()
+	{
+		return (num_values >= (BTREE_FANOUT-1) / 2);
+	}
+
     //
     // ====================== Given implementations ========================
     //                           (do not change)

@@ -45,6 +45,8 @@ public:
     //          false if value was not found
     bool remove(VALUETYPE value);   // To implement
 
+	bool remove_chris(VALUETYPE value) //DELETE ME
+
     // Does a range-based search for data such that begin <= data <= end
     // Input:   begin and end values for range-based search
     // Output:  a vector containing Data* that satisfy begin <= values <= end

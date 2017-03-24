@@ -56,6 +56,15 @@ public:
 		return (num_values == BTREE_LEAF_SIZE);
 	}
 
+	//CUSTOM PROTOTYPE.
+	//Inputs: None
+	//Output: true if leaf has at least the number of values to satisfy Btree invariant,
+	//false otherwise
+	bool at_least_half_full()
+	{
+		return (num_values >= BTREE_LEAF_SIZE / 2);
+	}
+
 
     //
     // ====================== Given implementations ========================
