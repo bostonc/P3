@@ -172,12 +172,32 @@ bool Btree::remove(VALUETYPE value) {
 	//we found the value to remove
 	if (leaf->get(i) == value) {
 		//remove data entry
+		if (!remove(leaf->get(i))) {
+			//not removed successfully
+			return false; //?
+		}
 		
 		//check if the leaf node is less than half full
-		if (leaf->getNumValues() < BTREE_LEAF_SIZE) {
+		if (leaf->getNumValues() < BTREE_LEAF_SIZE / 2) {
 			//check if there's a node we can redistribute with
-			
+			if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE / 2) {
+				//redistribute with right node (next)
+				
+			}
+			else if (leaf->prev && leaf->getNumValues() > BTREE_LEAF_SIZE / 2) {
+				//redistribute with left node (prev)
+			}
 			//if not, merge with a node
+			else if (leaf->next) {
+				//merge with right node (next)
+				
+			}
+			else if (leaf->prev) {
+				//merge with left node (prev)
+			}
+			else {
+				//it's a root node?
+				return false; //?
 			
 			//fix tree
 			//return true when it's all done
