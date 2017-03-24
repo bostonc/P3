@@ -239,6 +239,10 @@ bool Btree::remove(VALUETYPE value) {
 						}
 					}
 				}
+				//I think we're done
+				assert(isValid());
+				assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+				return true;
 				
 			}
 			else if (leaf->prev && leaf->getNumValues() > BTREE_LEAF_SIZE / 2) {
@@ -265,6 +269,10 @@ bool Btree::remove(VALUETYPE value) {
 						}
 					}
 				}
+				//I think we're done
+				assert(isValid());
+				assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+				return true;
 				
 			}
 			//if not, merge with a node
@@ -273,7 +281,7 @@ bool Btree::remove(VALUETYPE value) {
 				VALUETYPE new_parent_val = leaf->merge(leaf->next);
 				if (leaf->parent == leaf->next->parent) {
 					
-					leaf->parent->insert(new_parent_val);
+					leaf->parent->insert(new_parent_val); //not sure about this for merge
 				}
 				else {
 					//find common ancestor
@@ -284,7 +292,7 @@ bool Btree::remove(VALUETYPE value) {
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == temp_leaf2->parent) {
-							temp_leaf1->parent->insert(new_parent_val);
+							temp_leaf1->parent->insert(new_parent_val); //not sure about this for merge
 							found = true;
 						}
 						else {
@@ -294,6 +302,61 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				//fix tree
+				if (leaf->parent->num_children > BTREE_FANOUT / 2) {
+					//we're done
+					assert(isValid());
+					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+					return true;
+				}
+				else {
+					//do another merge/fix something
+					//while loop to fix it
+					bool fixed = false;
+					Bnode_inner* temp1 = dynamic_cast<Bnode_inner*>(current);
+						Bnode_inner* temp2 = dynamic_cast<Bnode_inner*>(current);
+						Bnode_inner* temp3 = dynamic_cast<Bnode_inner*>(current);
+						temp1 = leaf->parent;
+						temp2 = leaf->parent->next;
+						temp3 = leaf->parent->prev;
+					while (!fixed) {
+						
+						if (temp2 && temp2->parent == temp1->parent) {
+							//they're siblings, merge
+							VALUETYPE parent_val = temp1->merge(temp2);
+							temp1->parent->insert(parent_val); //not sure about this for merge
+							if (temp1->parent->num_childen > BTREE_FANOUT / 2) {
+								fixed = true;
+							}
+							else {
+								temp1 = temp1->parent;
+								temp2 = temp1->parent->next;
+								temp3 = temp1->parent->prev;
+							}
+							
+						}
+						else if (temp3 && temp3->parent == temp1->parent) {
+							//they're siblings, merge
+							VALUETYPE parent_val = temp3->merge(temp1);
+							temp3->parent->insert(parent_val); //not sure about this for merge
+							if (temp3->parent->num_children > BTREE_FANOUT / 2) {
+								fixed = true;
+							}
+							else {
+								temp1 = temp3->parent;
+								temp2 = temp3->parent->next;
+								temp3 = temp3->parent->prev;
+							}
+							
+						}
+						else {
+							//no siblings, rotate
+						}
+					}
+					//assert stuff, then
+					assert(isValid());
+					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+					return true;
+				}
 				
 			}
 			else if (leaf->prev) {
@@ -311,7 +374,7 @@ bool Btree::remove(VALUETYPE value) {
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == temp_leaf2->parent) {
-							temp_leaf1->parent->insert(new_parent_val);
+							temp_leaf1->parent->insert(new_parent_val); //not sure about this for merge
 							found = true;
 						}
 						else {
@@ -321,6 +384,62 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				//fix tree
+				if (leaf->parent->num_children > BTREE_FANOUT / 2) {
+					//we're done
+					assert(isValid());
+					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+					return true;
+				}
+				else {
+					//do another merge/fix something
+					//while loop to fix it
+					bool fixed = false;
+					Bnode_inner* temp1 = dynamic_cast<Bnode_inner*>(current);
+						Bnode_inner* temp2 = dynamic_cast<Bnode_inner*>(current);
+						Bnode_inner* temp3 = dynamic_cast<Bnode_inner*>(current);
+						temp1 = leaf->parent;
+						temp2 = leaf->parent->next;
+						temp3 = leaf->parent->prev;
+					while (!fixed) {
+						
+						if (temp2 && temp2->parent == temp1->parent) {
+							//they're siblings, merge
+							VALUETYPE parent_val = temp1->merge(temp2);
+							temp1->parent->insert(parent_val); //not sure about this for merge
+							if (temp1->parent->num_childen > BTREE_FANOUT / 2) {
+								fixed = true;
+							}
+							else {
+								temp1 = temp1->parent;
+								temp2 = temp1->parent->next;
+								temp3 = temp1->parent->prev;
+							}
+							
+						}
+						else if (temp3 && temp3->parent == temp1->parent) {
+							//they're siblings, merge
+							VALUETYPE parent_val = temp3->merge(temp1);
+							temp3->parent->insert(parent_val); //not sure about this for merge
+							if (temp3->parent->num_children > BTREE_FANOUT / 2) {
+								fixed = true;
+							}
+							else {
+								temp1 = temp3->parent;
+								temp2 = temp3->parent->next;
+								temp3 = temp3->parent->prev;
+							}
+							
+						}
+						else {
+							//no siblings, rotate
+						}
+					}
+					//assert stuff, then
+					assert(isValid());
+					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
+					return true;
+				}
+				}
 			}
 			else {
 				//it's a root node?
@@ -332,9 +451,12 @@ bool Btree::remove(VALUETYPE value) {
 			
 			//fix tree
 			//return true when it's all done
+			assert(isValid();
 			assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
 		}
 		else {
+			assert(isValid());
+			assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
 			return true; //once the node has been removed we're done if the leaf node is full enough
 		}
 		
