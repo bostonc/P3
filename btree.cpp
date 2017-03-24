@@ -193,10 +193,14 @@ bool Btree::remove(VALUETYPE value) {
 			//if not, merge with a node
 			else if (leaf->next) {
 				//merge with right node (next)
+				VALUETYPE new_parent_val = leaf->merge(leaf->next);
+				//fix tree
 				
 			}
 			else if (leaf->prev) {
 				//merge with left node (prev)
+				VALUETYPE new_parent_val = leaf->prev->merge(leaf);
+				//fix tree
 			}
 			else {
 				//it's a root node?
