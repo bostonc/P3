@@ -188,13 +188,13 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
-					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
-					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
-					temp_leaf1 = leaf;
-					temp_leaf2 = leaf->next;
+					Bnode_inner* temp_leaf1 = dynamic_cast<Bnode_inner*>(current);
+					Bnode_inner* temp_leaf2 = dynamic_cast<Bnode_inner*>(current);
+					temp_leaf1 = leaf->parent;
+					temp_leaf2 = leaf->next->parent;
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
-						if (temp_leaf1->parent == templeaf2->parent) {
+						if (temp_leaf1->parent == temp_leaf2->parent) {
 							temp_leaf1->parent->insert(new_parent_val);
 							found = true;
 						}
@@ -214,10 +214,10 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
-					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
-					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
-					temp_leaf1 = leaf;
-					temp_leaf2 = leaf->prev;
+					Bnode_inner* temp_leaf1 = dynamic_cast<Bnode_inner*>(current);
+					Bnode_inner* temp_leaf2 = dynamic_cast<Bnode_inner*>(current);
+					temp_leaf1 = leaf->parent;
+					temp_leaf2 = leaf->prev_parent;
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == templeaf2->parent) {
@@ -242,10 +242,10 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
-					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
-					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
-					temp_leaf1 = leaf;
-					temp_leaf2 = leaf->next;
+					Bnode_inner* temp_leaf1 = dynamic_cast<Bnode_inner*>(current);
+					Bnode_inner* temp_leaf2 = dynamic_cast<Bnode_inner*>(current);
+					temp_leaf1 = leaf->parent;
+					temp_leaf2 = leaf->next->parent;
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == templeaf2->parent) {
@@ -269,10 +269,10 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
-					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
-					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
-					temp_leaf1 = leaf;
-					temp_leaf2 = leaf->prev;
+					Bnode_inner* temp_leaf1 = dynamic_cast<Bnode_inner*>(current);
+					Bnode_inner* temp_leaf2 = dynamic_cast<Bnode_inner*>(current);
+					temp_leaf1 = leaf->parent;
+					temp_leaf2 = leaf->prev->parent;
 					bool found = false;
 					while(!found || temp_leaf1 != root) {
 						if (temp_leaf1->parent == templeaf2->parent) {
