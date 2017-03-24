@@ -439,7 +439,6 @@ bool Btree::remove(VALUETYPE value) {
 					assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() < BTREE_LEAF_SIZE);
 					return true;
 				}
-				}
 			}
 			else {
 				//it's a root node?
