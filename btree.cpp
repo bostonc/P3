@@ -188,6 +188,21 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
+					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
+					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
+					temp_leaf1 = leaf;
+					temp_leaf2 = leaf->next;
+					bool found = false;
+					while(!found || temp_leaf1 != root) {
+						if (temp_leaf1->parent == templeaf2->parent) {
+							temp_leaf1->parent->insert(new_parent_val);
+							found = true;
+						}
+						else {
+							temp_leaf1 = temp_leaf1->parent;
+							temp_leaf2 = temp_leaf2->parent;
+						}
+					}
 				}
 				
 			}
@@ -199,6 +214,21 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
+					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
+					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
+					temp_leaf1 = leaf;
+					temp_leaf2 = leaf->prev;
+					bool found = false;
+					while(!found || temp_leaf1 != root) {
+						if (temp_leaf1->parent == templeaf2->parent) {
+							temp_leaf1->parent->insert(new_parent_val);
+							found = true;
+						}
+						else {
+							temp_leaf1 = temp_leaf1->parent;
+							temp_leaf2 = temp_leaf2->parent;
+						}
+					}
 				}
 				
 			}
@@ -212,6 +242,21 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
+					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
+					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
+					temp_leaf1 = leaf;
+					temp_leaf2 = leaf->next;
+					bool found = false;
+					while(!found || temp_leaf1 != root) {
+						if (temp_leaf1->parent == templeaf2->parent) {
+							temp_leaf1->parent->insert(new_parent_val);
+							found = true;
+						}
+						else {
+							temp_leaf1 = temp_leaf1->parent;
+							temp_leaf2 = temp_leaf2->parent;
+						}
+					}
 				}
 				//fix tree
 				
@@ -224,6 +269,21 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					//find common ancestor
+					Bnode_leaf* temp_leaf1 = dynamic_cast<Bnode_leaf*>(current);
+					Bnode_leaf* temp_leaf2 = dynamic_cast<Bnode_leaf*>(current);
+					temp_leaf1 = leaf;
+					temp_leaf2 = leaf->prev;
+					bool found = false;
+					while(!found || temp_leaf1 != root) {
+						if (temp_leaf1->parent == templeaf2->parent) {
+							temp_leaf1->parent->insert(new_parent_val);
+							found = true;
+						}
+						else {
+							temp_leaf1 = temp_leaf1->parent;
+							temp_leaf2 = temp_leaf2->parent;
+						}
+					}
 				}
 				//fix tree
 			}
@@ -245,6 +305,7 @@ bool Btree::remove(VALUETYPE value) {
 		
 	}
     }
+	assert(isValid());
     return false;
 }
 
