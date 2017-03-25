@@ -21,7 +21,7 @@ Bnode_inner* Bnode_inner::common_ancestor(Bnode* rhs)
 
 VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
     assert(rhs->parent == parent); // can only merge siblings (given)
-    assert(rhs->num_values > 0); //given
+    //assert(rhs->num_values > 0); //given
 	assert(num_values + rhs->getNumValues() < BTREE_FANOUT); //may not be correct
 	assert(num_children + rhs->getNumChildren() <= BTREE_FANOUT); //may not be correct
 	

@@ -501,30 +501,23 @@ bool Btree::remove_chris(VALUETYPE value)
 	assert(isValid());
 	if (root == leaf) return true;
 
-
-	//If the node is empty, can we delete it?
-
-
-
-
-
 	//from here, leaf is less than half full and not the root :(
 
 	//can we redistribute?
 	VALUETYPE out = -1;
-		//can we redistribute riht? check right node for extra values
-	if (leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
+		//can we redistribute right? check right node for extra values
+	if (leaf->next && leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
 	{
 		out = leaf->redistribute(leaf->next);
 		//reassign value of common ancestor
 		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
-		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
-		ancestor->replace_value(out, idx);
+		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1????????????????
+		ancestor->replace_value(out, idx); //need to check if necessary???????
 		assert(isValid());
 		return true;
 	}
 		//else can we redistribute left? if right didn't work, check left
-	else if (leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
+	if (leaf->prev && leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
 	{
 		out = leaf->prev->redistribute(leaf);
 		//reassign value of common ancestor
@@ -534,51 +527,59 @@ bool Btree::remove_chris(VALUETYPE value)
 		assert(isValid());
 		return true;
 	}
-	else
-	{	//we can't redistribute :(
-		
 
-		//LOOP
+	//we can't redistribute :(		
+
+	Bnode_inner* underfilled = nullptr;
+	//lets MERGE leaf nodes.
+	//can we merge with right?
+	if (leaf->next)
+	{
+		Bnode_inner* rightParent = leaf->next->parent;
+		int idx = rightParent->find_child(leaf->next);
+		out = leaf->merge(leaf->next);
+		//fix parent of right node, and commmon ancestor if different
+		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+		//if we merged siblings...
+		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
+		//if we merged non-siblings...
+		if (leaf->parent != rightParent)
+		{
+			rightParent->remove_value(0);
+			//fix value of common ancestor
+			idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
+			leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
+		}
+
+		//see if rightParent is underfilled now, return if we're good
+		if (rightParent->at_least_half_full()) return true;
+		underfilled == rightParent;
+	}
+	//else, we merge with the left
+	else if (leaf->prev)
+	{
 
 
 
-
-
-
-
-
-
-
-
-			//merge
-			//check done
-			//redist (inner can only be with siblings)
-			//
-
-
-
+		out = leaf->prev->merge(leaf);
 
 
 	}
 
-		
+	//damn, something higher up must be underfilled...
+
+	//LOOP
+
+	//root check (is parent underfilled? if yes && parent==root, reduce height)
+	//redist (only siblings now)
+	//merge (only siblings now)
 
 
 
 
-		//do REDISTRIBUTE
-		//fix tree values
 
-	//can't redistribute. Can we MERGE?
-		//do merge
-		//fix tree values
-		//if we're the only child, fix
 
-	
-
-	
-	//while loop to propogate fixes up the tree
-		//if we can't redistribute or merge, we must be at the root
+	//if we can't redistribute or merge, we must be at the root
 
 	assert(false);
 	return false;

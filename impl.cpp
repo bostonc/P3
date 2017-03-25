@@ -116,6 +116,8 @@ int Bnode_inner::find_value(VALUETYPE value) const {
         if (values[i] == value) return i;
     return -1;
 }
+
+//returns idx of given child node
 int Bnode_inner::find_child(Bnode* value) const {
     for (int i = 0; i < num_children; ++i)
         if (children[i] == value) return i;

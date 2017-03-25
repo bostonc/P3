@@ -31,7 +31,7 @@ Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
     assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
-    assert(rhs->num_values > 0);
+    //assert(rhs->num_values > 0);
     VALUETYPE retVal = rhs->get(0);
 
     Bnode_leaf* save = next;
