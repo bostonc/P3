@@ -500,7 +500,26 @@ bool Btree::remove_chris(VALUETYPE value)
 	//from here, leaf is less than half full and not the root :(
 
 	//can we redistribute?
+	VALUETYPE out = -1;
+		//check right node for extra values
+	if (leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
+	{
+		out = leaf->redistribute(leaf->next);
+		//fix parent value
 
+	}
+		//if right didn't work, check left
+	else if (leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
+	{
+		out = leaf->prev->redistribute(leaf); //MAKE SURE THIS WILL WORK.....................
+		//fix
+	}
+	else
+	{
+		//we can't redistribute :(
+	}
+
+		
 
 
 
