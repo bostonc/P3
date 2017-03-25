@@ -474,6 +474,8 @@ bool Btree::remove_chris(VALUETYPE value)
 	//Return false if value doesn't exist
 	if (!search(value)) return false;
 
+	size--;
+
 	//find leaf which holds value
 	Bnode* current = root;
 	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
@@ -492,10 +494,19 @@ bool Btree::remove_chris(VALUETYPE value)
 	leaf->remove(value);	
 
 	//if leaf is still half full, return
+	assert(isValid());
 	if (leaf->at_least_half_full()) return true;
 
 	//if this is the root, return
+	assert(isValid());
 	if (root == leaf) return true;
+
+
+	//If the node is empty, can we delete it?
+
+
+
+
 
 	//from here, leaf is less than half full and not the root :(
 
@@ -509,6 +520,8 @@ bool Btree::remove_chris(VALUETYPE value)
 		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
 		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
 		ancestor->replace_value(out, idx);
+		assert(isValid());
+		return true;
 	}
 		//else can we redistribute left? if right didn't work, check left
 	else if (leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
@@ -518,12 +531,29 @@ bool Btree::remove_chris(VALUETYPE value)
 		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
 		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
 		ancestor->replace_value(out, idx);
+		assert(isValid());
+		return true;
 	}
 	else
-	{
-		//we can't redistribute :(
+	{	//we can't redistribute :(
+		
 
-		//merge loop, wooooo0000OOOOOOO!
+		//LOOP
+
+
+
+
+
+
+
+
+
+
+
+			//merge
+			//check done
+			//redist (inner can only be with siblings)
+			//
 
 
 
