@@ -501,22 +501,34 @@ bool Btree::remove_chris(VALUETYPE value)
 
 	//can we redistribute?
 	VALUETYPE out = -1;
-		//check right node for extra values
+		//can we redistribute riht? check right node for extra values
 	if (leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
 	{
 		out = leaf->redistribute(leaf->next);
-		//fix parent value
-
+		//reassign value of common ancestor
+		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
+		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
+		ancestor->replace_value(out, idx);
 	}
-		//if right didn't work, check left
+		//else can we redistribute left? if right didn't work, check left
 	else if (leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
 	{
-		out = leaf->prev->redistribute(leaf); //MAKE SURE THIS WILL WORK.....................
-		//fix
+		out = leaf->prev->redistribute(leaf);
+		//reassign value of common ancestor
+		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
+		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
+		ancestor->replace_value(out, idx);
 	}
 	else
 	{
 		//we can't redistribute :(
+
+		//merge loop, wooooo0000OOOOOOO!
+
+
+
+
+
 	}
 
 		
@@ -538,8 +550,8 @@ bool Btree::remove_chris(VALUETYPE value)
 	//while loop to propogate fixes up the tree
 		//if we can't redistribute or merge, we must be at the root
 
-
-	return true;
+	assert(false);
+	return false;
 }
 
 vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end) 

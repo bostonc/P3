@@ -1,4 +1,5 @@
 #include "bnode_leaf.h"
+#include "bnode_inner.h" //needed for common ancestor to work as member function
 #include <vector>
 
 using namespace std;
@@ -10,6 +11,22 @@ Bnode_leaf::~Bnode_leaf() {
 		delete values[i];
 	}	
 	//delete[] values;
+}
+
+Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
+{
+	Bnode_inner* leftParent = parent;
+	Bnode_inner* rightParent = rhs->parent;
+
+	if (leftParent == nullptr || rightParent == nullptr) return nullptr;
+
+	while (leftParent != rightParent)
+	{
+		leftParent = leftParent->parent;
+		rightParent = rightParent->parent;
+	}
+	assert(leftParent == rightParent);
+	return leftParent;
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {

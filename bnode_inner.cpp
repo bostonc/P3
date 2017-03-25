@@ -3,6 +3,22 @@
 
 using namespace std;
 
+Bnode_inner* Bnode_inner::common_ancestor(Bnode* rhs)
+{
+	Bnode_inner* leftParent = parent;
+	Bnode_inner* rightParent = rhs->parent;
+
+	if (leftParent == nullptr || rightParent == nullptr) return nullptr;
+
+	while (leftParent != rightParent)
+	{
+		leftParent = leftParent->parent;
+		rightParent = rightParent->parent;
+	}
+	assert(leftParent == rightParent);
+	return leftParent;
+}
+
 VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
     assert(rhs->parent == parent); // can only merge siblings (given)
     assert(rhs->num_values > 0); //given

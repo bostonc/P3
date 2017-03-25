@@ -58,7 +58,7 @@ public:
     //          output_val should be the value that needs to be inserted in the parent node
     Bnode_inner* split(VALUETYPE& output_val, VALUETYPE insert_value, Bnode* insert_node);
 
-	//CUSTOM PROTOTYPE.
+	//CUSTOM
 	//Inputs: None
 	//Output: Bool, true if this leaf node is full, false otherwise
 	bool is_full()
@@ -66,13 +66,27 @@ public:
 		return (num_values == BTREE_FANOUT - 1);
 	}
 
-	//CUSTOM PROTOTYPE.
+	//CUSTOM
 	//Inputs: None
 	//Output: true if node has at least the number of values to satisfy Btree invariant,
 	//false otherwise
 	bool at_least_half_full()
 	{
 		return (num_values >= (BTREE_FANOUT-1) / 2);
+	}
+
+	//CUSTOM
+	//Inputs: Another node with which we would like to find a common ancestor.
+	//Output: The closest common ancestor of this and the given node. 
+	//nullptr if something crazy happens.
+	Bnode_inner* common_ancestor(Bnode* rhs);
+
+	//CUSTOM
+	//Inputs: 
+	//Output: 
+	bool is_sibling_of(Bnode* rhs)
+	{
+		return (parent == rhs->parent);
 	}
 
     //
