@@ -270,6 +270,7 @@ bool Btree::remove(VALUETYPE value) {
 						common_ansc->remove_value(i);
 						//fix pointers/children vector?
 					}
+				}
 			}
 			//else if left leaf node exists
 			else if (leaf->prev) {
