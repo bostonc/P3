@@ -184,6 +184,89 @@ bool Btree::insert(VALUETYPE value)
 }
 
 bool Btree::remove(VALUETYPE value) {
+	//traverse tree to find leaf node with value
+	//if you can't find value, return false
+	
+	//remove value and decrease size
+	
+	bool done = false;
+	//if that leaf is half of more full, done = true
+	
+	//else
+		//if right leaf node exists and is more than half full
+			//redistribute and set parent val to closest ancestor and set done = true
+	
+		//else if left leaf node exists and is more than half full
+			//redistribute and set parent val to closest ancestor and set done = true
+	
+		//else
+			//if right leaf node exits
+				//merge and set parent val to closest ancestor
+	
+			//else if left leaf node exists
+				//merge and set parent val to closest ancestor
+	
+			//else
+				//shouldn't happen, return false?
+	
+			//if parent inner node is less than half full
+				//bool fixed = false
+	
+			//while !fixed
+				//if right sibling inner node exists and is more than half full
+					//redistribute including parent and set new parent val to parent
+	
+				//else if left sibling inner node exists and is more than half full
+					//redistribute including parent val and set new parent val to parent
+	
+				//else
+					//if right sibling inner node exists
+						//merge including parent and (set parent val to parent?) and fix pointers
+	
+					//else if left sibling inner node exists
+						//merge including parent and (set parent val to parent?) and fix pointers
+	
+					//else 
+						//it's a root node, return true
+	
+					//if grandparent node doesn't exist or is half full or more
+						//fixed = true
+	
+			//if fixed, done = true
+	
+	//if done
+		//check asserts and return true
+	
+	return true;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     // TODO: Implement this
 	
 	//assert(root);
@@ -464,7 +547,7 @@ bool Btree::remove(VALUETYPE value) {
 	//}
  //   }
 	//assert(isValid());
-    return false;
+    //return false;
 }
 
 bool Btree::remove_chris(VALUETYPE value)
