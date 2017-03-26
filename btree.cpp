@@ -290,7 +290,7 @@ bool Btree::remove(VALUETYPE value) {
 				fixed = true;
 				
 			}
-			Bnode_inner* 
+			
 			//while !fixed
 			while (!fixed) {
 				//set temp variables
