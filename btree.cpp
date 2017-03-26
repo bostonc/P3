@@ -220,6 +220,8 @@ bool Btree::remove(VALUETYPE value) {
 		//if right leaf node exists and is more than half full
 		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE) {
 			//redistribute and set parent val to closest ancestor and set done = true
+			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
+			
 		}
 		//else if left leaf node exists and is more than half full
 		else if (leaf->prev && leaf->prev->getNumValues() > BTREE_LEAF_SIZE) {
@@ -243,7 +245,7 @@ bool Btree::remove(VALUETYPE value) {
 			}
 			bool fixed = false;
 			//if parent inner node is at least half full
-			if (leaf->parent->getNumChildren() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
+			if (leaf->parent->at_least_half_full()) { //make sure merge handles pointers right
 				//fixed = true
 				fixed = true;
 				
