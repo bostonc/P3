@@ -184,13 +184,36 @@ bool Btree::insert(VALUETYPE value)
 }
 
 bool Btree::remove(VALUETYPE value) {
-	//traverse tree to find leaf node with value
-	//if you can't find value, return false
+	assert(root);
+	
+	//if the value's not in the tree, return false
+	if (search(value) != nullptr) return false;
+	
+	//else find node with the value
+	Bnode* current = root;
+	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+	
+	//while current isn't a leaf
+	while (inner) {	
+		//which child should have this new value?
+		int child_idx = inner->find_value_gt(value);
+		current = inner->getChild(child_idx);
+		inner = dynamic_cast<Bnode_inner*>(current);
+
+	}
+	//found the leaf node in which the new value belongs
+	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
+	assert(leaf);
 	
 	//remove value and decrease size
+	leaf->remove(value);
+	size--;
 	
 	bool done = false;
 	//if that leaf is half of more full, done = true
+	if (leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues) {
+		done = true;
+	}
 	
 	//else
 		//if right leaf node exists and is more than half full
@@ -552,119 +575,119 @@ bool Btree::remove(VALUETYPE value) {
 
 bool Btree::remove_chris(VALUETYPE value)
 {
-	assert(root);
+// 	assert(root);
 
-	//Return false if value doesn't exist
-	if (!search(value)) return false;
+// 	//Return false if value doesn't exist
+// 	if (!search(value)) return false;
 
-	size--;
+// 	size--;
 
-	//find leaf which holds value
-	Bnode* current = root;
-	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
-	while (inner)		//while current isn't a leaf...
-	{
-		//which child has the value?
-		int child_idx = inner->find_value_gt(value);
-		current = inner->getChild(child_idx);
-		inner = dynamic_cast<Bnode_inner*>(current);
-	}
-	//found it :)
-	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
-	assert(leaf);
+// 	//find leaf which holds value
+// 	Bnode* current = root;
+// 	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
+// 	while (inner)		//while current isn't a leaf...
+// 	{
+// 		//which child has the value?
+// 		int child_idx = inner->find_value_gt(value);
+// 		current = inner->getChild(child_idx);
+// 		inner = dynamic_cast<Bnode_inner*>(current);
+// 	}
+// 	//found it :)
+// 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
+// 	assert(leaf);
 
-	//remove value
-	leaf->remove(value);	
+// 	//remove value
+// 	leaf->remove(value);	
 
-	//if leaf is still half full, return
-	assert(isValid());
-	if (leaf->at_least_half_full()) return true;
+// 	//if leaf is still half full, return
+// 	assert(isValid());
+// 	if (leaf->at_least_half_full()) return true;
 
-	//if this is the root, return
-	assert(isValid());
-	if (root == leaf) return true;
+// 	//if this is the root, return
+// 	assert(isValid());
+// 	if (root == leaf) return true;
 
-	//from here, leaf is less than half full and not the root :(
+// 	//from here, leaf is less than half full and not the root :(
 
-	//can we redistribute?
-	VALUETYPE out = -1;
-		//can we redistribute right? check right node for extra values
-	if (leaf->next && leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
-	{
-		out = leaf->redistribute(leaf->next);
-		//reassign value of common ancestor
-		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
-		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1????????????????
-		ancestor->replace_value(out, idx); //need to check if necessary???????
-		assert(isValid());
-		return true;
-	}
-		//else can we redistribute left? if right didn't work, check left
-	if (leaf->prev && leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
-	{
-		out = leaf->prev->redistribute(leaf);
-		//reassign value of common ancestor
-		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
-		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
-		ancestor->replace_value(out, idx);
-		assert(isValid());
-		return true;
-	}
+// 	//can we redistribute?
+// 	VALUETYPE out = -1;
+// 		//can we redistribute right? check right node for extra values
+// 	if (leaf->next && leaf->next->getNumValues() > (BTREE_LEAF_SIZE / 2))
+// 	{
+// 		out = leaf->redistribute(leaf->next);
+// 		//reassign value of common ancestor
+// 		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
+// 		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1????????????????
+// 		ancestor->replace_value(out, idx); //need to check if necessary???????
+// 		assert(isValid());
+// 		return true;
+// 	}
+// 		//else can we redistribute left? if right didn't work, check left
+// 	if (leaf->prev && leaf->prev->getNumValues() > (BTREE_LEAF_SIZE / 2))
+// 	{
+// 		out = leaf->prev->redistribute(leaf);
+// 		//reassign value of common ancestor
+// 		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
+// 		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
+// 		ancestor->replace_value(out, idx);
+// 		assert(isValid());
+// 		return true;
+// 	}
 
-	//we can't redistribute :(		
+// 	//we can't redistribute :(		
 
-	Bnode_inner* underfilled = nullptr;
-	//lets MERGE leaf nodes.
-	//can we merge with right?
-	if (leaf->next)
-	{
-		Bnode_inner* rightParent = leaf->next->parent;
-		int idx = rightParent->find_child(leaf->next);
-		out = leaf->merge(leaf->next);
-		//fix parent of right node, and commmon ancestor if different
-		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
-		//if we merged siblings...
-		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
-		//if we merged non-siblings...
-		if (leaf->parent != rightParent)
-		{
-			rightParent->remove_value(0);
-			//fix value of common ancestor
-			idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
-			leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
-		}
+// 	Bnode_inner* underfilled = nullptr;
+// 	//lets MERGE leaf nodes.
+// 	//can we merge with right?
+// 	if (leaf->next)
+// 	{
+// 		Bnode_inner* rightParent = leaf->next->parent;
+// 		int idx = rightParent->find_child(leaf->next);
+// 		out = leaf->merge(leaf->next);
+// 		//fix parent of right node, and commmon ancestor if different
+// 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+// 		//if we merged siblings...
+// 		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
+// 		//if we merged non-siblings...
+// 		if (leaf->parent != rightParent)
+// 		{
+// 			rightParent->remove_value(0);
+// 			//fix value of common ancestor
+// 			idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
+// 			leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
+// 		}
 
-		//see if rightParent is underfilled now, return if we're good
-		if (rightParent->at_least_half_full()) return true;
-		underfilled == rightParent;
-	}
-	//else, we merge with the left
-	else if (leaf->prev)
-	{
-
-
-
-		out = leaf->prev->merge(leaf);
+// 		//see if rightParent is underfilled now, return if we're good
+// 		if (rightParent->at_least_half_full()) return true;
+// 		underfilled == rightParent;
+// 	}
+// 	//else, we merge with the left
+// 	else if (leaf->prev)
+// 	{
 
 
-	}
 
-	//damn, something higher up must be underfilled...
-
-	//LOOP
-
-	//root check (is parent underfilled? if yes && parent==root, reduce height)
-	//redist (only siblings now)
-	//merge (only siblings now)
+// 		out = leaf->prev->merge(leaf);
 
 
+// 	}
+
+// 	//damn, something higher up must be underfilled...
+
+// 	//LOOP
+
+// 	//root check (is parent underfilled? if yes && parent==root, reduce height)
+// 	//redist (only siblings now)
+// 	//merge (only siblings now)
 
 
 
 
-	//if we can't redistribute or merge, we must be at the root
 
-	assert(false);
+
+// 	//if we can't redistribute or merge, we must be at the root
+
+// 	assert(false);
 	return false;
 }
 
