@@ -550,7 +550,6 @@ bool Btree::remove_chris(VALUETYPE value)
 			idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
 			leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
 		}
-
 		//see if rightParent is underfilled now, return if we're good
 		if (rightParent->at_least_half_full()) return true;
 		underfilled == rightParent;
@@ -558,12 +557,24 @@ bool Btree::remove_chris(VALUETYPE value)
 	//else, we merge with the left
 	else if (leaf->prev)
 	{
-
-
-
+		Bnode_inner* rightParent = leaf->parent;
+		int idx = rightParent->find_child(leaf);
 		out = leaf->prev->merge(leaf);
-
-
+		//fix parent of right node, and common ancestor if different
+		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+		//if we merged siblings...
+		if (leaf->prev->parent == rightParent) rightParent->remove_value(idx - 1);
+		//if we merged non-siblings...
+		if (leaf->prev->parent != rightParent)
+		{
+			rightParent->remove_value(0);
+			//fix value of common ancestor
+			idx = leaf->prev->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
+			leaf->prev->parent->common_ancestor(rightParent)->replace_value(out, idx);
+		}
+		//see if rightParent is underfilled now, return if we're good
+		if (rightParent->at_least_half_full()) return true;
+		underfilled == rightParent;
 	}
 
 	//damn, something higher up must be underfilled...

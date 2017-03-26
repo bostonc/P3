@@ -61,6 +61,15 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all_children(children, children + num_children);
+
+	//add value from parent through which redistribution occurs if necessary
+	//(makes rotations work correctly)
+	bool rotating = false;
+/*	if (parent->get(parent_idx) != rhs->get(0))
+	{
+		all_values.push_back(parent->get(parent_idx));
+		rotating = true;
+	}*/		
     
     //add the values and children of rhs to the vector
     int num_vals = rhs->getNumValues();
@@ -73,31 +82,68 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
-	assert(total_vals == num_values + rhs->getNumValues());
-	assert (total_vals < BTREE_FANOUT * 2 - 1);
+	if (rotating)
+	{
+		assert(total_vals == num_values + rhs->getNumValues() + 1);
+		assert(total_vals <= BTREE_FANOUT * 2 - 1);
+	}
+	else
+	{
+		assert(total_vals == num_values + rhs->getNumValues());
+		assert(total_vals < BTREE_FANOUT * 2 - 1);		
+	}
 	assert(total_children == num_children + rhs->getNumChildren());
-	assert(total_children <= BTREE_FANOUT * 2);
+	assert(total_children <= BTREE_FANOUT * 2);	
     
-    //populate this with first half of values
-    for (int i = 0; i < total_vals / 2; i++) {
-        insert(all_values[i]);
-    }
-    for (int i = 0, idx = 0; i < total_vals / 2 + 1; i++, idx++) {
-        insert(all_children[i], idx);
-        all_children[i]->parent = this;
-    }
+
+	VALUETYPE new_parent_val = -1;
+	if (rotating) //if rotating
+	{
+		//shift
+		int count = 0;
+		while (true)
+		{
+			rhs->insert(parent->get(parent_idx));
+			rhs->insert(children[num_children - 1], 0);
+			parent->replace_value(values[num_values - 1], parent_idx);
+			remove_value(num_values - 1);
+			remove_child(num_children - 1);
+
+
+		}
+
+	}
+	else //not rotating...
+	{
+
+		//populate this with first half of values
+		for (int i = 0; i < total_vals / 2; i++) {
+			insert(all_values[i]);
+		}
+		for (int i = 0, idx = 0; i < total_vals / 2 + 1; i++, idx++) {
+			insert(all_children[i], idx);
+			all_children[i]->parent = this;
+		}
+
+		//middle value should be returned as what's going to be the value of the parent
+		new_parent_val = all_values[total_vals / 2];
+
+		//populate rhs with second half of values
+		for (int i = total_vals / 2 + 1; i < total_vals + 1; i++) {
+			rhs->insert(all_values[i]);
+		}
+		for (int i = total_vals / 2 + 1, idx = 0; i < total_children; i++, idx++) {
+			rhs->insert(all_children[i], idx);
+			all_children[i]->parent = rhs;
+		}
+
+	}
+
+
+
+	
+
     
-    //middle value should be returned as what's going to be the value of the parent
-    VALUETYPE new_parent_val = all_values[total_vals / 2];
-    
-    //populate rhs with second half of values
-    for (int i = total_vals / 2 + 1; i < total_vals; i++) {
-        rhs->insert(all_values[i]);
-    }
-    for (int i = total_vals / 2 + 1, idx = 0; i < total_children; i++, idx++) {
-        rhs->insert(all_children[i], idx);
-        all_children[i]->parent = rhs;
-    }
     
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
