@@ -227,13 +227,13 @@ bool Btree::remove(VALUETYPE value) {
 			VALUETYPE leaf_next_low = leaf->next->get(0);
 			//get index of common ancsestor
 			int index = 0;
-			for (int i = 0; i < common_asc->getNumValues(); i++) {
+			for (int i = 0; i < common_ansc->getNumValues(); i++) {
 				if (common_ansc->get(i) > leaf_high && common_ansc->get(i) <= leaf_next_low) {
 					index = i;
 				}
 			}
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
-			common_ansc->replace(new_parent_val, index);
+			common_ansc->replace_value(new_parent_val, index);
 			done = true;
 			
 		}
@@ -247,13 +247,13 @@ bool Btree::remove(VALUETYPE value) {
 			VALUETYPE leaf_low = leaf->get(0);
 			//get index of common ancsestor
 			int index = 0;
-			for (int i = 0; i < common_asc->getNumValues(); i++) {
+			for (int i = 0; i < common_ansc->getNumValues(); i++) {
 				if (common_ansc->get(i) > leaf_prev_high && common_ansc->get(i) <= leaf_low) {
 					index = i;
 				}
 			}
 			VALUETYPE new_parent_val = leaf->prev->redistribute(leaf);
-			common_ansc->replace(new_parent_val, index);
+			common_ansc->replace_value(new_parent_val, index);
 			done = true;
 		}
 		//else
@@ -280,7 +280,7 @@ bool Btree::remove(VALUETYPE value) {
 				
 			}
 			//while !fixed
-			while (!fixed)
+			while (!fixed) {
 				//set temp variables
 				
 				//if right sibling inner node exists and is more than half full
@@ -302,13 +302,15 @@ bool Btree::remove(VALUETYPE value) {
 	
 					//if grandparent node doesn't exist or is half full or more
 						//fixed = true
-	
+			}
 			//if fixed, done = true
+		}
 	}
 	//if done
 		//check asserts and return true
 	
 	return true;
+}
 	
 	
 	
@@ -619,7 +621,7 @@ bool Btree::remove(VALUETYPE value) {
  //   }
 	//assert(isValid());
     //return false;
-}
+//}
 
 bool Btree::remove_chris(VALUETYPE value)
 {
