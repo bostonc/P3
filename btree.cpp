@@ -257,6 +257,7 @@ bool Btree::remove(VALUETYPE value) {
 			done = true;
 		}
 		//else
+		//KINDA CONFUSED ABOUT THE VALUE MERGE RETURNS
 		else {
 			//if right leaf node exits
 			if (leaf->next) {
