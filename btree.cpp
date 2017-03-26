@@ -267,6 +267,8 @@ bool Btree::remove(VALUETYPE value) {
 				Bnode_inner* common_ansc = leaf->common_anscestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) == to_remove) {
+						common_ansc->remove_value(i);
+						//fix pointers/children vector?
 					}
 			}
 			//else if left leaf node exists
