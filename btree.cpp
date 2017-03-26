@@ -262,6 +262,12 @@ bool Btree::remove(VALUETYPE value) {
 			//if right leaf node exits
 			if (leaf->next) {
 				//merge and set parent val to closest ancestor
+				VALUETYPE to_remove = leaf->merge(leaf->next);
+				//assuming that the value merge returns should be found in closest ancestor's node and removed
+				Bnode_inner* common_ansc = leaf->common_anscestor(leaf->next);
+				for (int i = 0; i < common_ansc->getNumValues(); i++) {
+					if (common_ansc->get(i) == to_remove) {
+					}
 			}
 			//else if left leaf node exists
 			else if (leaf->prev) {
