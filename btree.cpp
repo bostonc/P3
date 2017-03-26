@@ -266,7 +266,7 @@ bool Btree::remove(VALUETYPE value) {
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
 				Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
-					if (common_ansc->get(i) == to_remove) {
+					if (common_ansc->get(i) <= to_remove) {
 						common_ansc->remove_value(i);
 						//fix pointers/children vector?
 					}
@@ -284,11 +284,13 @@ bool Btree::remove(VALUETYPE value) {
 			}
 			bool fixed = false;
 			//if parent inner node is at least half full
+			//should this check common ancestor instead of parent?
 			if (leaf->parent->at_least_half_full()) { //make sure merge handles pointers right
 				//fixed = true
 				fixed = true;
 				
 			}
+			Bnode_inner* 
 			//while !fixed
 			while (!fixed) {
 				//set temp variables
@@ -314,12 +316,19 @@ bool Btree::remove(VALUETYPE value) {
 						//fixed = true
 			}
 			//if fixed, done = true
+			if (fixed) {
+				done = true;
 		}
 	}
 	//if done
+	if (done) {
 		//check asserts and return true
-	
-	return true;
+		assert(isValid());
+		assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() <= BTREE_LEAF_SIZE());
+		return true;
+	}
+	//shouldn't get here
+	return false;
 }
 	
 	
