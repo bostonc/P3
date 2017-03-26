@@ -318,6 +318,7 @@ bool Btree::remove(VALUETYPE value) {
 			//if fixed, done = true
 			if (fixed) {
 				done = true;
+			}
 		}
 	}
 	//if done
