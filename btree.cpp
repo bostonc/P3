@@ -222,20 +222,18 @@ bool Btree::remove(VALUETYPE value) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 			//get leaf's highest value
-			Data* leaf_high = leaf->get(leaf->getNumValues() - 1);
-			VALUETYPE leaf_high_val = leaf_high->value;
+			VALUETYPE leaf_high = leaf->get(leaf->getNumValues() - 1);
 			//get leaf->next's lowest value
-			Data* leaf_next_low = leaf->next->get(0);
-			VALUETYPE leaf_next_low_val = leaf_next_low->value;
+			VALUETYPE leaf_next_low = leaf->next->get(0);
 			//get index of common ancsestor
 			int index = 0;
 			for (int i = 0; i < common_asc->getNumValues(); i++) {
-				if (common_asc->get(i) > leaf_high_val && common_asc->get(i) <= leaf_next_low_val) {
+				if (common_ansc->get(i) > leaf_high && common_ansc->get(i) <= leaf_next_low) {
 					index = i;
 				}
 			}
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
-			common_ans->replace(new_parent_val, index);
+			common_ansc->replace(new_parent_val, index);
 			done = true;
 			
 		}
@@ -244,20 +242,18 @@ bool Btree::remove(VALUETYPE value) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->prev->common_ancestor(leaf);
 			//get leaf->prev's highest value
-			Data* leaf_prev_high = leaf->prev->get(leaf->prev->getNumValues() - 1);
-			VALUETYPE leaf_prev_high_val = leaf-prev_high->value;
+			VALUETYPE leaf_prev_high = leaf->prev->get(leaf->prev->getNumValues() - 1);
 			//get leaf's lowest value
-			Data* leaf_low = leaf->get(0);
-			VALUETYPE leaf_low_val = leaf_low->value;
+			VALUETYPE leaf_low = leaf->get(0);
 			//get index of common ancsestor
 			int index = 0;
 			for (int i = 0; i < common_asc->getNumValues(); i++) {
-				if (common_asc->get(i) > leaf_prev_high_val && common_asc->get(i) <= leaf_low_val) {
+				if (common_ansc->get(i) > leaf_prev_high && common_ansc->get(i) <= leaf_low) {
 					index = i;
 				}
 			}
 			VALUETYPE new_parent_val = leaf->prev->redistribute(leaf);
-			common_ans->replace(new_parent_val, index);
+			common_ansc->replace(new_parent_val, index);
 			done = true;
 		}
 		//else
