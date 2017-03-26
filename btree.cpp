@@ -211,32 +211,49 @@ bool Btree::remove(VALUETYPE value) {
 	
 	bool done = false;
 	//if that leaf is half of more full, done = true
-	if (leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues) {
+	if (leaf->at_least_half_full() && leaf->getNumValues() <= BTREE_LEAF_SIZE) {
 		done = true;
 	}
 	
 	//else
+	else {
 		//if right leaf node exists and is more than half full
+		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE) {
 			//redistribute and set parent val to closest ancestor and set done = true
-	
+		}
 		//else if left leaf node exists and is more than half full
+		else if (leaf->prev && leaf->prev->getNumValues() > BTREE_LEAF_SIZE) {
 			//redistribute and set parent val to closest ancestor and set done = true
-	
+		}
 		//else
+		else {
 			//if right leaf node exits
+			if (leaf->next) {
 				//merge and set parent val to closest ancestor
-	
+			}
 			//else if left leaf node exists
+			else if (leaf->prev) {
 				//merge and set parent val to closest ancestor
-	
+				
+				//set leaf = leaf->prev (I think?)
+			}
 			//else
-				//shouldn't happen, return false?
-	
-			//if parent inner node is less than half full
-				//bool fixed = false
-	
+			else {
+				return false; //shouldn't happen, return false?
+			}
+			bool fixed = false;
+			//if parent inner node is at least half full
+			if (leaf->parent->getNumChildren() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
+				//fixed = true
+				fixed = true;
+				
+			}
 			//while !fixed
+			while (!fixed)
+				//set temp variables
+				
 				//if right sibling inner node exists and is more than half full
+				
 					//redistribute including parent and set new parent val to parent
 	
 				//else if left sibling inner node exists and is more than half full
@@ -256,7 +273,7 @@ bool Btree::remove(VALUETYPE value) {
 						//fixed = true
 	
 			//if fixed, done = true
-	
+	}
 	//if done
 		//check asserts and return true
 	
