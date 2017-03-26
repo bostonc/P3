@@ -222,6 +222,11 @@ bool Btree::remove(VALUETYPE value) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
+			//get index of common ancsestor
+			//get leaf's highest value
+			
+				
+			
 			
 			
 			
