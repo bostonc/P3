@@ -221,6 +221,9 @@ bool Btree::remove(VALUETYPE value) {
 		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
+			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
+			
+			
 			
 		}
 		//else if left leaf node exists and is more than half full
