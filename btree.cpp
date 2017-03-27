@@ -322,6 +322,7 @@ bool Btree::remove(VALUETYPE value) {
 						common_ansc->remove_value(i);
 					}
 				}
+				cout << "done merging" << endl;
 			
 				
 				//cout << "removed value" << endl;
@@ -414,6 +415,7 @@ bool Btree::remove(VALUETYPE value) {
 							root = node->getChild(0);
 							//cout << "made new root" << endl;
 							fixed = true;
+							cout << "fixed" << endl;
 							break;
 						}
 					}
