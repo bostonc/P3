@@ -225,8 +225,13 @@ bool Btree::remove(VALUETYPE value) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 			//get leaf's highest value
-			cout << "first get: " << leaf->getNumValues() - 1 << endl;
-			VALUETYPE leaf_high = leaf->get(leaf->getNumValues() - 1);
+			VALUETYPE leaf_high;
+			if (leaf->getNumValues == 0) {
+				leaf_high = value;
+			}
+			else {
+				leaf_high = leaf->get(leaf->getNumValues() - 1);
+			}
 			//get leaf->next's lowest value
 			VALUETYPE leaf_next_low = leaf->next->get(0);
 			//get index of common ancsestor
@@ -249,7 +254,13 @@ bool Btree::remove(VALUETYPE value) {
 			//get leaf->prev's highest value
 			VALUETYPE leaf_prev_high = leaf->prev->get(leaf->prev->getNumValues() - 1);
 			//get leaf's lowest value
-			VALUETYPE leaf_low = leaf->get(0);
+			VALUETYPE leaf_low;
+			if (leaf->getNumValues == 0) {
+				leaf_low = value;
+			}
+			else {
+				leaf_low = leaf->get(0);
+			}
 			//get index of common ancsestor
 			int index = 0;
 			for (int i = 0; i < common_ansc->getNumValues(); i++) {
