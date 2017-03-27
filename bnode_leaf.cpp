@@ -62,7 +62,7 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	int num_vals = rhs->getNumValues();
 	for (int i = 0; i < num_vals; i++) {
 		//all_values.push_back(rhs->get(i));
-		Data* temp = new Data(rhs->get(i));
+		Data* temp = new Data(rhs->getData(i));
 		all_values.push_back(temp);
 		delete temp;
 	}
