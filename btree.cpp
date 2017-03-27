@@ -305,11 +305,13 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				cout << "before merge" << endl;
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
-				cout << "after merge" << endl;
+				cout << "after merge, index = " << index << endl;
 				leaf->next->parent->remove_child(index);
+				cout << "removed child" << endl;
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				
 				VALUETYPE to_remove_lower = value;
+				cout << "before for loop" << endl;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
 					if (leaf->get(i) == to_remove_upper) {
 						to_remove_lower = leaf->get(i - 1);
