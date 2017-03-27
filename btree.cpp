@@ -226,7 +226,7 @@ bool Btree::remove(VALUETYPE value) {
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 			//get leaf's highest value
 			VALUETYPE leaf_high;
-			if (leaf->getNumValues == 0) {
+			if (leaf->getNumValues() == 0) {
 				leaf_high = value;
 			}
 			else {
@@ -255,7 +255,7 @@ bool Btree::remove(VALUETYPE value) {
 			VALUETYPE leaf_prev_high = leaf->prev->get(leaf->prev->getNumValues() - 1);
 			//get leaf's lowest value
 			VALUETYPE leaf_low;
-			if (leaf->getNumValues == 0) {
+			if (leaf->getNumValues() == 0) {
 				leaf_low = value;
 			}
 			else {
