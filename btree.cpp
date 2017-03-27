@@ -225,6 +225,7 @@ bool Btree::remove(VALUETYPE value) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 			//get leaf's highest value
+			cout << "first get: " << leaf->getNumValues() - 1 << endl;
 			VALUETYPE leaf_high = leaf->get(leaf->getNumValues() - 1);
 			//get leaf->next's lowest value
 			VALUETYPE leaf_next_low = leaf->next->get(0);
@@ -238,6 +239,7 @@ bool Btree::remove(VALUETYPE value) {
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
 			common_ansc->replace_value(new_parent_val, index);
 			done = true;
+			cout << "done with redistribution\n";
 			
 		}
 		//else if left leaf node exists and is more than half full
