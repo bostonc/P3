@@ -221,7 +221,7 @@ bool Btree::remove(VALUETYPE value) {
 	//else
 	else {
 		//if right leaf node exists and is more than half full
-		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE) {
+		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE / 2) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 			//get leaf's highest value
@@ -241,7 +241,7 @@ bool Btree::remove(VALUETYPE value) {
 			
 		}
 		//else if left leaf node exists and is more than half full
-		else if (leaf->prev && leaf->prev->getNumValues() > BTREE_LEAF_SIZE) {
+		else if (leaf->prev && leaf->prev->getNumValues() > BTREE_LEAF_SIZE / 2) {
 			//redistribute and set parent val to closest ancestor and set done = true
 			Bnode_inner* common_ansc = leaf->prev->common_ancestor(leaf);
 			//get leaf->prev's highest value
