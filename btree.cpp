@@ -303,7 +303,7 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
-				leaf->parent->removeChild(index);
+				leaf->parent->remove_child(index);
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				VALUETYPE to_remove_lower = value;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
