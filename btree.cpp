@@ -364,8 +364,18 @@ bool Btree::remove(VALUETYPE value) {
 				Bnode_inner* node_parent = node->parent;
 				if (node_parent == nullptr) {
 					cout << "in if" << endl;
-					fixed = true;
-					break;
+					if (node->getnumValues() == 0) {
+						if (getNumChildren() == 0) {
+							fixed = true;
+							break;
+						}
+						else if (getNumChildren() == 0) {
+						}
+					}
+					else {
+						fixed = true;
+						break;
+					}
 				}
 				int node_idx = 0;
 				for (int i = 0; i < node_parent->getNumChildren(); i++) {
