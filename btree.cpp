@@ -287,39 +287,27 @@ bool Btree::remove(VALUETYPE value) {
 			Bnode_inner* common_ansc = nullptr;
 			//if right leaf node exits
 			if (leaf->next) {
-				cout << "in merge with leaf->next\n";
+				//cout << "in merge with leaf->next\n";
 				//merge and set parent val to closest ancestor
+				if (leaf->parent == leaf->next->parent) {
+					//cout << "same parent" << endl;
+					common_ansc = leaf->parent;
+				}
+				else {
+					common_ansc = leaf->common_ancestor(leaf->next);
+				}
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
-				cout << "to_remove_upper: " << to_remove_upper << endl;
+				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				VALUETYPE to_remove_lower = value;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
 					if (leaf->get(i) == to_remove_upper) {
 						to_remove_lower = leaf->get(i - 1);
 					}
 				}
-				cout << "to_remove_lower: " << to_remove_lower << endl;
-				cout << "what" << endl;
+				//cout << "to_remove_lower: " << to_remove_lower << endl;
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
-				cout << "still working" << endl;
-				if (!leaf) {
-					cout << "leaf is gone" << endl;
-				}
-				if (leaf) {
-					cout << "leaf still here" << endl;
-				}
-				if (!leaf->next) {
-					cout << "leaf->next is gone" << endl;
-				}
-				if (leaf->next) {
-					cout << "leaf->next still here" << endl;
-				}
-				if (leaf->parent == leaf->next->parent) {
-					cout << "same parent" << endl;
-					common_ansc = leaf->parent;
-				}
-				else {
-					common_ansc = leaf->common_ancestor(leaf->next);
-				}
+				
+				
 				cout << "found common ancestor" << endl;
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
