@@ -50,6 +50,10 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
     // TODO: Implement this
 	//cout << "in leaf redistribute\n";
 	
+	//for debugging
+	for (int i = 0; i < rhs->getNumValues(); i++) {
+		cout << "value: " rhs->get(i) << endl;
+	
 	//make vector of all values
 	vector<Data*> all_values(values, values + num_values);
 
@@ -64,6 +68,11 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	
 	int total_vals = all_values.size();
 	//cout << "total_vals: " << total_vals << endl;
+	
+	//debugging
+	for (int i = 0; i < total_vals; i++) {
+		cout << "value: " << all_values[i]->value << endl;
+	}
 	
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals <= BTREE_LEAF_SIZE * 2);
