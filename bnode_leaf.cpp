@@ -51,9 +51,9 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	//cout << "in leaf redistribute\n";
 	
 	//for debugging
-	for (int i = 0; i < rhs->getNumValues(); i++) {
-		cout << "value: " << rhs->get(i) << endl;
-	}
+// 	for (int i = 0; i < rhs->getNumValues(); i++) {
+// 		cout << "value: " << rhs->get(i) << endl;
+// 	}
 	
 	//make vector of all values
 	vector<Data*> all_values(values, values + num_values);
@@ -62,10 +62,10 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	int num_vals = rhs->getNumValues();
 	for (int i = 0; i < num_vals; i++) {
 		//all_values.push_back(rhs->get(i));
-		cout << "value before: " << rhs->get(i) << endl;
+		//cout << "value before: " << rhs->get(i) << endl;
 		Data* temp = new Data(rhs->get(i));
 		all_values.push_back(temp);
-		cout << "value after: " << all_values[i]->value << endl;
+		//cout << "value after: " << all_values[i]->value << endl;
 		//delete temp;
 	}
 	
@@ -73,9 +73,9 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	//cout << "total_vals: " << total_vals << endl;
 	
 	//debugging
-	for (int i = 0; i < total_vals; i++) {
-		cout << "value: " << all_values[i]->value << endl;
-	}
+// 	for (int i = 0; i < total_vals; i++) {
+// 		cout << "value: " << all_values[i]->value << endl;
+// 	}
 	
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals <= BTREE_LEAF_SIZE * 2);
@@ -85,19 +85,19 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 		
 	//populate this with first half of values
 	for (int i = 0; i < total_vals / 2; i++) {
-		cout << "inserting value: " << all_values[i]->value << endl;
+		//cout << "inserting value: " << all_values[i]->value << endl;
 		insert(all_values[i]);
 	}
 	
 	//populate rhs with second half of values
 	for (int i = total_vals / 2; i < total_vals; i++) {
-		cout << "inserting value: " << all_values[i]->value << endl;
+		//cout << "inserting value: " << all_values[i]->value << endl;
 		rhs->insert(all_values[i]);
 	}
 	
 	//smallest value in rhs should be returned as what's going to be the new value of the parent
 	Data* new_parent_val = all_values[total_vals / 2];
-	cout << "in redistribute new_parent_val->value: " << new_parent_val->value << endl;
+	//cout << "in redistribute new_parent_val->value: " << new_parent_val->value << endl;
 	
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
