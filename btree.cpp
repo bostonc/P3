@@ -299,6 +299,10 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				cout << "to_remove_lower: " << to_remove_lower << endl;
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
+				cout << "still working\n";
+				if (!leaf) {
+					cout << "leaf is gone\n";
+				}
 				if (leaf->parent == leaf->next->parent) {
 					cout << "same parent\n";
 					common_ansc = leaf->parent;
