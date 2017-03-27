@@ -640,17 +640,78 @@ bool Btree::remove_chris(VALUETYPE value)
 	//damn, something higher up must be underfilled...
 
 	//LOOP
+	//1) root check
+	//2) redist (only siblings now)
+	//3) merge (only siblings now)
+	while (true)
+	{
+		if (underfilled == root)
+		{
+			if (underfilled->getNumChildren >= 2 || underfilled->getNumChildren == 0) return true;
+			else //root has one child. needs to be removed and moved down
+			{
+				Bnode* target = root;
+				root = underfilled->getChild(0);
+				delete target;		
+				return true;
+			}			
+		}
+		assert(underfilled->getNumChildren > 1);
+		//underfilled isn't the root.
+		int underfilled_idx = underfilled->parent->find_child(underfilled);
+		Bnode_inner* rightSibling;
+		Bnode_inner* leftSibling;
 
-	//root check (is parent underfilled? if yes && parent==root, reduce height)
-	//redist (only siblings now)
-	//merge (only siblings now)
+		//can we REDISTRIBUTE?
+		//check right...
+			//does sibling exist?
+		if (underfilled->parent->getNumChildren > underfilled_idx + 1)
+		{
+			rightSibling = dynamic_cast<Bnode_inner*>(underfilled->parent->getChild(underfilled_idx + 1));
+			assert(underfilled->is_sibling_of(rightSibling));
+		}	
+			//does sibling have values to spare?
+		if (rightSibling && rightSibling->getNumValues > (BTREE_FANOUT - 1) / 2)
+		{	//REDISTRIBUTE with right
+			out = underfilled->redistribute(rightSibling, underfilled_idx);
+			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
+			underfilled->parent->replace_value(out, underfilled_idx);
+			assert(isValid());
+			return true;
+		}
+		//else, check left...
+			//does sibling exist?
+		if (underfilled_idx > 0)
+		{
+			leftSibling = dynamic_cast<Bnode_inner*>(underfilled->parent->getChild(underfilled_idx - 1));
+			assert(underfilled->is_sibling_of(leftSibling));
+		}
+			//does sibling have values to spare?
+		if (leftSibling && leftSibling->getNumValues > (BTREE_FANOUT - 1) / 2)
+		{	//REDISTRIBUTE left
 
 
 
 
 
 
-	//if we can't redistribute or merge, we must be at the root
+		}
+
+		//can we MERGE?
+		//check right
+
+
+
+		//check left
+
+
+
+
+		//prep and continue up tree
+
+	}
+
+
 
 	assert(false);
 	return false;
