@@ -1,6 +1,7 @@
 #include "bnode_leaf.h"
 #include "bnode_inner.h" //needed for common ancestor to work as member function
 #include <vector>
+#include <iostream> //for debugging
 
 using namespace std;
 
@@ -47,6 +48,7 @@ VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
 
 VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
     // TODO: Implement this
+	cout << "in leaf redistribute\n";
 	
 	//make vector of all values
 	vector<Data*> all_values(values, values + num_values);
@@ -61,17 +63,20 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	}
 	
 	int total_vals = all_values.size();
+	cout << "total_vals: " << total_vals << endl;
 	
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals <= BTREE_LEAF_SIZE * 2);
 	
 	//populate this with first half of values
 	for (int i = 0; i < total_vals / 2; i++) {
+		cout << "inserting value: " << all_values[i] << endl;
 		insert(all_values[i]);
 	}
 	
 	//populate rhs with second half of values
 	for (int i = total_vals / 2; i < total_vals; i++) {
+		cout << "inserting value: " << all_values[i] << endl;
 		rhs->insert(all_values[i]);
 	}
 	
