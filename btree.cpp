@@ -295,6 +295,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (leaf->parent == leaf->next->parent) {
 					//cout << "same parent" << endl;
 					common_ansc = leaf->parent;
+					cout << "common ansc set" << endl;
 				}
 				else {
 					common_ansc = leaf->common_ancestor(leaf->next);
@@ -444,6 +445,9 @@ bool Btree::remove(VALUETYPE value) {
 				
 				Bnode_inner* node_parent = nullptr;
 				cout << "how about now?" << endl;
+				if (!node) {
+					cout << "no node" << endl;
+				}
 				cout << "num node children: " << node->getNumChildren() << endl;
 				if (!node->parent) {
 					cout << "in if" << endl;
