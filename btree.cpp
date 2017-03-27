@@ -441,9 +441,10 @@ bool Btree::remove(VALUETYPE value) {
 				//set temp variables 
 				cout << "still working?" << endl;
 				
-				//cout << "how about now?" << endl;
+				
 				Bnode_inner* node_parent = nullptr;
-				if (node->parent == nullptr) {
+				cout << "how about now?" << endl;
+				if (!node->parent) {
 					cout << "in if" << endl;
 					//cout << "num node vals: " << node->getNumValues() << endl;
 					//cout << "num node children: " << node->getNumChildren() << endl;
