@@ -347,7 +347,7 @@ bool Btree::remove(VALUETYPE value) {
 			//if parent inner node is at least half full
 			//should this check common ancestor instead of parent?
 			cout << "still here" << endl;
-			if (common_ansc->getNumValues >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
+			if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
 				//fixed = true
 				fixed = true;
 				
