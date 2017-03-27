@@ -302,22 +302,22 @@ bool Btree::remove(VALUETYPE value) {
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
 				cout << "still working" << endl;
 				if (!leaf) {
-					cout << "leaf is gone\n";
+					cout << "leaf is gone" << endl;
 				}
 				if (leaf->parent == leaf->next->parent) {
-					cout << "same parent\n";
+					cout << "same parent" << endl;
 					common_ansc = leaf->parent;
 				}
 				else {
 					common_ansc = leaf->common_ancestor(leaf->next);
 				}
-				cout << "found common ancestor\n";
+				cout << "found common ancestor" << endl;
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
 					}
 				}
-				cout << "removed value\n";
+				cout << "removed value" << endl;
 			}
 			//else if left leaf node exists
 			else if (leaf->prev) {
