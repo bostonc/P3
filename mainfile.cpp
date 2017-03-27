@@ -53,7 +53,9 @@ void testForRedistribution() {
     cout << "REDISTRIBUTION TEST: " << endl;
     Btree btree;
     btree.insert(1); btree.insert(2); btree.insert(3); btree.insert(7); btree.insert(8);
+	cout << btree << endl;
     btree.insert(10); btree.insert(11); btree.insert(9); btree.insert(12); btree.insert(13);
+	cout << btree << endl;
     btree.insert(4);btree.insert(5);btree.insert(6);btree.insert(14);btree.insert(15);
     cout << btree << endl;
     
