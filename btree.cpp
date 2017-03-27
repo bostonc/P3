@@ -359,10 +359,13 @@ bool Btree::remove(VALUETYPE value) {
 				
 			//while !fixed
 			while (!fixed) {
+				cout << "in while loop" << endl;
 				//set temp variables 
 				Bnode_inner* node_parent = node->parent;
 				if (node_parent == nullptr) {
+					cout << "in if" << endl;
 					fixed = true;
+					break;
 				}
 				int node_idx = 0;
 				for (int i = 0; i < node_parent->getNumChildren(); i++) {
