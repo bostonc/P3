@@ -244,10 +244,10 @@ bool Btree::remove(VALUETYPE value) {
 			cout << "before redistribute\n";
 			//debugging
 			for (int i = 0; i < leaf->getNumValues(); i++) {
-				cout << "value: " << leaf->get(i);
+				cout << "value: " << leaf->get(i) << endl;
 			}
 			for (int i = 0; i < leaf->next->getNumValues(); i++) {
-				cout << "value: " << leaf->next->get(i);
+				cout << "value: " << leaf->next->get(i) << endl;
 			}
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
 			cout << "new_parent_val: " << new_parent_val << endl;
