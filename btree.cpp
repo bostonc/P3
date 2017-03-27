@@ -333,26 +333,26 @@ bool Btree::remove(VALUETYPE value) {
 				Bnode_inner* node_prev = nullptr;
 				Bnode_inner* node_next = nullptr;
 				if (node_idx > 0) {
-					node_prev = node_parent->getChild(node_idx - 1);
+					node_prev = dynamic_cast<Bnode_inner*>(node_parent->getChild(node_idx - 1));
 				}
-				if (node_idx < node_parent->getNumChildren - 1) {
-					node_next = node_parent->getChild(node_idx + 1);
+				if (node_idx < node_parent->getNumChildren() - 1) {
+					node_next = dynamic_cast<Bnode_inner*>(node_parent->getChild(node_idx + 1));
 				}
 				
 				//if right sibling inner node exists and is more than half full
-				if (node_next && node_next->getNumValues > (BTREE_FANOUT - 1) / 2) {
+				if (node_next && node_next->getNumValues() > (BTREE_FANOUT - 1) / 2) {
 					//redistribute including parent and set new parent val to parent
 					VALUETYPE parent_val = node->redistribute(node_next, node_idx);
-					node_parent->replace(parent_val, node_idx);
+					node_parent->replace_value(parent_val, node_idx);
 					fixed = true;
 					
 					
 				}
 				//else if left sibling inner node exists and is more than half full
-				else if (node_prev && node_prev->getNumValues > (BTREE_FANOUT - 1) / 2) {
+				else if (node_prev && node_prev->getNumValues() > (BTREE_FANOUT - 1) / 2) {
 					//redistribute including parent val and set new parent val to parent
 					VALUETYPE parent_val = node_prev->redistribute(node, node_idx - 1);
-					node_parent->replace(parent_val, node_idx - 1);
+					node_parent->replace_value(parent_val, node_idx - 1);
 					fixed = true;
 					
 				}
@@ -362,15 +362,15 @@ bool Btree::remove(VALUETYPE value) {
 					if (node_next) {
 						//merge including parent and remove parent_val from parent
 						VALUETYPE parent_val = node->merge(node_next, node_idx);
-						node_parent->remove(node_idx);
+						node_parent->remove_value(node_idx);
 						
 						
 					}
 					//else if left sibling inner node exists
 					else if (node_prev) {
 						//merge including parent and remove parent_val from parent
-						VALUETYPE parent_val node_prev->merge(node, node_idx - 1);
-						node_parent->remove(node_idx - 1);
+						VALUETYPE parent_val = node_prev->merge(node, node_idx - 1);
+						node_parent->remove_value(node_idx - 1);
 						
 					}
 					//else 
@@ -381,9 +381,10 @@ bool Btree::remove(VALUETYPE value) {
 					}
 					node = node_parent;
 					//if grandparent node doesn't exist or is half full or more
-					if (node->getNumValues >= (BTREE_FANOUT - 1) / 2) {
+					if (node->getNumValues() >= (BTREE_FANOUT - 1) / 2) {
 						//fixed = true
 						fixed = true;
+					}
 				}
 			}
 			//if fixed, done = true
