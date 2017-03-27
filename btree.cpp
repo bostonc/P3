@@ -365,11 +365,11 @@ bool Btree::remove(VALUETYPE value) {
 				if (node_parent == nullptr) {
 					cout << "in if" << endl;
 					if (node->getNumValues() == 0) {
-						if (getNumChildren() == 0) {
+						if (node->getNumChildren() == 0) {
 							fixed = true;
 							break;
 						}
-						else if (node->getNumChildren() == 0) {
+						else if (node->getNumChildren() == 1) {
 							Bnode_inner* root = dynamic_cast<Bnode_inner*>(node->getChild(0));
 							fixed = true;
 							break;
