@@ -185,7 +185,7 @@ bool Btree::insert(VALUETYPE value)
 }
 
 bool Btree::remove(VALUETYPE value) {
-	cout << "in remove, value = " << value << endl;
+	//cout << "in remove, value = " << value << endl;
 	assert(root);
 	
 	//if the value's not in the tree, return false
@@ -199,7 +199,7 @@ bool Btree::remove(VALUETYPE value) {
 	while (inner) {	
 		//which child should have this new value?
 		int child_idx = inner->find_value_gt(value);
-		cout << "child_idx = " << child_idx << endl;
+		//cout << "child_idx = " << child_idx << endl;
 		current = inner->getChild(child_idx);
 		inner = dynamic_cast<Bnode_inner*>(current);
 
@@ -241,19 +241,19 @@ bool Btree::remove(VALUETYPE value) {
 					index = i;
 				}
 			}
-			cout << "before redistribute\n";
+			//cout << "before redistribute\n";
 			//debugging
 			for (int i = 0; i < leaf->getNumValues(); i++) {
-				cout << "value: " << leaf->get(i) << endl;
+				//cout << "value: " << leaf->get(i) << endl;
 			}
 			for (int i = 0; i < leaf->next->getNumValues(); i++) {
-				cout << "value: " << leaf->next->get(i) << endl;
+				//cout << "value: " << leaf->next->get(i) << endl;
 			}
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
-			cout << "new_parent_val: " << new_parent_val << endl;
+			//cout << "new_parent_val: " << new_parent_val << endl;
 			common_ansc->replace_value(new_parent_val, index);
 			done = true;
-			cout << "done with redistribution\n";
+			//cout << "done with redistribution\n";
 			
 		}
 		//else if left leaf node exists and is more than half full
@@ -315,13 +315,13 @@ bool Btree::remove(VALUETYPE value) {
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
 				
 				
-				cout << "found common ancestor" << endl;
+				//cout << "found common ancestor" << endl;
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
 					}
 				}
-				cout << "removed value" << endl;
+				//cout << "removed value" << endl;
 			}
 			//else if left leaf node exists
 			else if (leaf->prev) {
@@ -353,35 +353,35 @@ bool Btree::remove(VALUETYPE value) {
 			bool fixed = false;
 			//if parent inner node is at least half full
 			//should this check common ancestor instead of parent?
-			cout << "still here" << endl;
+			//cout << "still here" << endl;
 			if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
 				//fixed = true
 				fixed = true;
 				
 			}
-			cout << "how about now?" << endl;
+			//cout << "how about now?" << endl;
 			//set temp variables
 			Bnode_inner* node = common_ansc;
-			cout << "and now?" << endl;
+			//cout << "and now?" << endl;
 				
 			//while !fixed
 			while (!fixed) {
-				cout << "in while loop" << endl;
+				//cout << "in while loop" << endl;
 				//set temp variables 
 				Bnode_inner* node_parent = node->parent;
 				if (node_parent == nullptr) {
-					cout << "in if" << endl;
-					cout << "num node vals: " << node->getNumValues() << endl;
-					cout << "num node children: " << node->getNumChildren() << endl;
+					//cout << "in if" << endl;
+					//cout << "num node vals: " << node->getNumValues() << endl;
+					//cout << "num node children: " << node->getNumChildren() << endl;
 					if (node->getNumValues() == 0) {
 						if (node->getNumChildren() == 0) {
 							fixed = true;
 							break;
 						}
 						else if (node->getNumChildren() == 1) {
-							cout << "in else if" << endl;
-							Bnode_inner* root = dynamic_cast<Bnode_inner*>(node->getChild(0));
-							cout << "made new root" << endl;
+							//cout << "in else if" << endl;
+							root = node->getChild(0));
+							//cout << "made new root" << endl;
 							fixed = true;
 							break;
 						}
@@ -463,11 +463,11 @@ bool Btree::remove(VALUETYPE value) {
 	}
 	//if done
 	if (done) {
-		cout << "in done" << endl;
+		//cout << "in done" << endl;
 		//check asserts and return true
 		assert(isValid());
 		assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() <= BTREE_LEAF_SIZE);
-		cout << "returning" << endl;
+		//cout << "returning" << endl;
 		return true;
 	}
 	//shouldn't get here
