@@ -189,7 +189,7 @@ bool Btree::remove(VALUETYPE value) {
 	assert(root);
 	
 	//if the value's not in the tree, return false
-	if (search(value) != nullptr) return false;
+	if (search(value) == nullptr) return false;
 	
 	//else find node with the value
 	Bnode* current = root;
