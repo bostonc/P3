@@ -315,7 +315,6 @@ bool Btree::remove(VALUETYPE value) {
 			//set temp variables
 			Bnode_inner* node = common_ansc;
 				
-			
 			//while !fixed
 			while (!fixed) {
 				//set temp variables 
@@ -360,12 +359,14 @@ bool Btree::remove(VALUETYPE value) {
 					if (node_next) {
 						//merge including parent and remove parent_val from parent
 						VALUETYPE parent_val = node->merge(node_next, node_idx);
+						node_parent->remove(node_idx);
 						
 					}
 					//else if left sibling inner node exists
 					else if (node_prev) {
 						//merge including parent and remove parent_val from parent
 						VALUETYPE parent_val node_prev->merge(node, node_idx - 1);
+						node_parent->remove(node_idx - 1);
 					}
 					//else 
 					else {
