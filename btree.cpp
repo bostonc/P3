@@ -283,6 +283,7 @@ bool Btree::remove(VALUETYPE value) {
 		}
 		//else
 		//KINDA CONFUSED ABOUT THE VALUE MERGE RETURNS
+		Bnode_inner* check_node = nullptr;
 		else {
 			cout << "in merge" << endl;
 			Bnode_inner* common_ansc = nullptr;
@@ -317,6 +318,9 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				if (leaf->next) {
 					leaf->next->parent->remove_child(index); //should be leaf->next->parent
+					if (leaf->next->parent->getNumChildren() < 2) {
+						check_node = leaf->next->parent;
+					}
 				}
 				else {
 					leaf->parent->remove_child(index); //don't think this is right
@@ -407,15 +411,22 @@ bool Btree::remove(VALUETYPE value) {
 			//should this check common ancestor instead of parent?
 			//cout << "still here" << endl;
 			cout << "fixed set to false" << endl;
-			if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
-				//fixed = true
-				fixed = true;
-				cout << "in if, fixed = true" << endl;
-				
+			Bnode_inner* node = nullptr;
+			if (check_node) {
+				node = check_node;
 			}
-			//cout << "how about now?" << endl;
-			//set temp variables
-			Bnode_inner* node = common_ansc;
+			else {
+				if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
+					//fixed = true
+					fixed = true;
+					cout << "in if, fixed = true" << endl;
+				
+				}
+				//cout << "how about now?" << endl;
+				//set temp variables
+				Bnode_inner* node = common_ansc;
+			}
+			
 			//cout << "and now?" << endl;
 				
 			//while !fixed
