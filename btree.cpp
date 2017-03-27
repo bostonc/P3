@@ -304,6 +304,9 @@ bool Btree::remove(VALUETYPE value) {
 				if (!leaf) {
 					cout << "leaf is gone" << endl;
 				}
+				if (leaf) {
+					cout << "leaf still here" << endl;
+				}
 				if (leaf->parent == leaf->next->parent) {
 					cout << "same parent" << endl;
 					common_ansc = leaf->parent;
