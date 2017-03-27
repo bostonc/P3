@@ -307,9 +307,15 @@ bool Btree::remove(VALUETYPE value) {
 			bool fixed = false;
 			//if parent inner node is at least half full
 			//should this check common ancestor instead of parent?
-			if (leaf->parent->at_least_half_full()) { //make sure merge handles pointers right
+			if (common_ansc->at_least_half_full()) { //make sure merge handles pointers right
 				//fixed = true
 				fixed = true;
+				
+			}
+			Bnode_inner* node = common_ansc;
+			Bnode_inner* node_parent = node->parent;
+			int node_idx = 0;
+			for (int i = 0; i < node_parent->getNumValues(); i++) {
 				
 			}
 			
