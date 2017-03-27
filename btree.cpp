@@ -315,7 +315,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (!leaf->next) {
 					cout << "no leaf->next" << endl;
 				}
-				leaf->next->parent->remove_child(index); //should be leaf->next->parent
+				//leaf->next->parent->remove_child(index); //should be leaf->next->parent
 				cout << "removed child" << endl;
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				
