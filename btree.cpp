@@ -329,7 +329,7 @@ bool Btree::remove(VALUETYPE value) {
 				//merge and set parent val to closest ancestor
 				if (leaf->prev->parent == leaf->parent) {
 					//cout << "same parent" << endl;
-					common_ansc = leaf->parent;
+					common_ansc = leaf->->prev->parent;
 				}
 				else {
 					common_ansc = leaf->prev->common_ancestor(leaf);
@@ -340,7 +340,9 @@ bool Btree::remove(VALUETYPE value) {
 						index = i;
 					}
 				}
+				cout << "before merge" << endl;
 				VALUETYPE to_remove_upper = leaf->prev->merge(leaf);
+				cout << "after merge" << endl;
 				leaf->prev->parent->remove_child(index);
 				VALUETYPE to_remove_lower = value;
 				for (int i = 1; i < leaf->prev->getNumValues(); i++) {
