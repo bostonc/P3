@@ -358,15 +358,19 @@ bool Btree::remove(VALUETYPE value) {
 				else {
 					//if right sibling inner node exists
 					if (node_next) {
-						//merge including parent and (set parent val to parent?) and fix pointers
+						//merge including parent and remove parent_val from parent
+						VALUETYPE parent_val = node->merge(node_next, node_idx);
+						
 					}
 					//else if left sibling inner node exists
 					else if (node_prev) {
-						//merge including parent and (set parent val to parent?) and fix pointers
+						//merge including parent and remove parent_val from parent
+						VALUETYPE parent_val node_prev->merge(node, node_idx - 1);
 					}
 					//else 
 					else {
 						//it's a root node, return true
+						return true;
 	
 					}
 					//if grandparent node doesn't exist or is half full or more
