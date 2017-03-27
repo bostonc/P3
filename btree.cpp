@@ -314,40 +314,45 @@ bool Btree::remove(VALUETYPE value) {
 			}
 			//set temp variables
 			Bnode_inner* node = common_ansc;
-			Bnode_inner* node_parent = node->parent;
-			if (node_parent == nullptr) {
-				fixed = true;
-			}
-			int node_idx = 0;
-			for (int i = 0; i < node_parent->getNumChildren(); i++) {
-				if (node_parent->getChild(i) == node) {
-					node_idx = i;
-				}
-				
-			}
-			Bnode_inner* node_prev = nullptr;
-			Bnode_inner* node_next = nullptr;
-			if (node_idx > 0) {
-				node_prev = node_parent->getChild(node_idx - 1);
-			}
-			if (node_idx < node_parent->getNumChildren - 1) {
-				node_next = node_parent->getChild(node_idx + 1);
-			}
 				
 			
 			//while !fixed
 			while (!fixed) {
+				//set temp variables 
+				Bnode_inner* node_parent = node->parent;
+				if (node_parent == nullptr) {
+					fixed = true;
+				}
+				int node_idx = 0;
+				for (int i = 0; i < node_parent->getNumChildren(); i++) {
+					if (node_parent->getChild(i) == node) {
+					node_idx = i;
+					}
+				
+				}
+				Bnode_inner* node_prev = nullptr;
+				Bnode_inner* node_next = nullptr;
+				if (node_idx > 0) {
+					node_prev = node_parent->getChild(node_idx - 1);
+				}
+				if (node_idx < node_parent->getNumChildren - 1) {
+					node_next = node_parent->getChild(node_idx + 1);
+				}
+				
 				//if right sibling inner node exists and is more than half full
 				if (node_next && node_next->getNumValues > (BTREE_FANOUT - 1) / 2) {
 					//redistribute including parent and set new parent val to parent
 					VALUETYPE parent_val = node->redistribute(node_next, node_idx);
 					node_parent->replace(parent_val, node_idx);
+					node = node_parent;
 					
 				}
 				//else if left sibling inner node exists and is more than half full
-				else if (node_left && node_left->getNumValues > (BTREE_FANOUT - 1) / 2) {
-					
+				else if (node_prev && node_prev->getNumValues > (BTREE_FANOUT - 1) / 2) {
 					//redistribute including parent val and set new parent val to parent
+					VALUETYPE parent_val = node_prev->redistribute(node, node_idx - 1);
+					node_parent->replace(parent_val, node_idx - 1);
+					node = node_parent;
 				}
 				//else
 				else {
