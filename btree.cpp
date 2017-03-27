@@ -370,6 +370,9 @@ bool Btree::remove(VALUETYPE value) {
 							break;
 						}
 						else if (getNumChildren() == 0) {
+							Bnode_inner* root = dynamic_cast<Bnode_inner*>(node->getChild(0));
+							fixed = true;
+							break;
 						}
 					}
 					else {
