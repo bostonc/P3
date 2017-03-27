@@ -340,6 +340,8 @@ bool Btree::remove(VALUETYPE value) {
 				//if right sibling inner node exists and is more than half full
 				if (node_next && node_next->getNumValues > (BTREE_FANOUT - 1) / 2) {
 					//redistribute including parent and set new parent val to parent
+					VALUETYPE parent_val = node->redistribute(node_next, node_idx);
+					node_parent->replace(parent_val, node_idx);
 					
 				}
 				//else if left sibling inner node exists and is more than half full
