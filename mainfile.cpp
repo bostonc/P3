@@ -261,7 +261,7 @@ int main() {
                                             //values in constants.h to create the corresponding output
     
     small_test();
-    //splitTestFromSpec();
+    splitTestFromSpec();
     //testForRedistribution();
     //large_test1();
     //large_test2();
