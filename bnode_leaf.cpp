@@ -68,6 +68,9 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert (total_vals <= BTREE_LEAF_SIZE * 2);
 	
+	clear();
+	rhs->clear();
+		
 	//populate this with first half of values
 	for (int i = 0; i < total_vals / 2; i++) {
 		cout << "inserting value: " << all_values[i] << endl;
