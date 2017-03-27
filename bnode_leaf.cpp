@@ -52,7 +52,8 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 	
 	//for debugging
 	for (int i = 0; i < rhs->getNumValues(); i++) {
-		cout << "value: " rhs->get(i) << endl;
+		cout << "value: " << rhs->get(i) << endl;
+	}
 	
 	//make vector of all values
 	vector<Data*> all_values(values, values + num_values);
