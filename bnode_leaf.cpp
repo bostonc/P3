@@ -16,8 +16,12 @@ Bnode_leaf::~Bnode_leaf() {
 
 Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
 {
+	cout << "in common ancestor\n";
+	
 	Bnode_inner* leftParent = parent;
 	Bnode_inner* rightParent = rhs->parent;
+	
+	cout << "assigned vars\n";
 	
 	//for debugging
 	if (leftParent == rightParent) {
