@@ -380,7 +380,7 @@ bool Btree::remove(VALUETYPE value) {
 						}
 						else if (node->getNumChildren() == 1) {
 							//cout << "in else if" << endl;
-							root = node->getChild(0));
+							root = node->getChild(0);
 							//cout << "made new root" << endl;
 							fixed = true;
 							break;
