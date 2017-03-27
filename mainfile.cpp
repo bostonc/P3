@@ -92,7 +92,9 @@ void large_test1() {
     cout << btree << endl;
     btree.insert(3); //test an insertion which causes root-split
     cout << btree << endl;
-    btree.remove(3); btree.remove(2);//test removals which makes the root leaf again
+    btree.remove(3); 
+	cout << btree << endl;
+	btree.remove(2);//test removals which makes the root leaf again
     cout << btree << endl;
     btree.insert(3); btree.insert(5); btree.insert(7); btree.insert(9); btree.insert(11); //insertions which cause splits
     cout << btree << endl;
