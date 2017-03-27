@@ -364,12 +364,12 @@ bool Btree::remove(VALUETYPE value) {
 				Bnode_inner* node_parent = node->parent;
 				if (node_parent == nullptr) {
 					cout << "in if" << endl;
-					if (node->getnumValues() == 0) {
+					if (node->getNumValues() == 0) {
 						if (getNumChildren() == 0) {
 							fixed = true;
 							break;
 						}
-						else if (getNumChildren() == 0) {
+						else if (node->getNumChildren() == 0) {
 							Bnode_inner* root = dynamic_cast<Bnode_inner*>(node->getChild(0));
 							fixed = true;
 							break;
