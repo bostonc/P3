@@ -343,7 +343,8 @@ bool Btree::remove(VALUETYPE value) {
 					//redistribute including parent and set new parent val to parent
 					VALUETYPE parent_val = node->redistribute(node_next, node_idx);
 					node_parent->replace(parent_val, node_idx);
-					node = node_parent;
+					fixed = true;
+					
 					
 				}
 				//else if left sibling inner node exists and is more than half full
@@ -351,7 +352,8 @@ bool Btree::remove(VALUETYPE value) {
 					//redistribute including parent val and set new parent val to parent
 					VALUETYPE parent_val = node_prev->redistribute(node, node_idx - 1);
 					node_parent->replace(parent_val, node_idx - 1);
-					node = node_parent;
+					fixed = true;
+					
 				}
 				//else
 				else {
@@ -361,12 +363,14 @@ bool Btree::remove(VALUETYPE value) {
 						VALUETYPE parent_val = node->merge(node_next, node_idx);
 						node_parent->remove(node_idx);
 						
+						
 					}
 					//else if left sibling inner node exists
 					else if (node_prev) {
 						//merge including parent and remove parent_val from parent
 						VALUETYPE parent_val node_prev->merge(node, node_idx - 1);
 						node_parent->remove(node_idx - 1);
+						
 					}
 					//else 
 					else {
@@ -374,8 +378,11 @@ bool Btree::remove(VALUETYPE value) {
 						return true;
 	
 					}
+					node = node_parent;
 					//if grandparent node doesn't exist or is half full or more
+					if (node->getNumValues >= (BTREE_FANOUT - 1) / 2) {
 						//fixed = true
+						fixed = true;
 				}
 			}
 			//if fixed, done = true
