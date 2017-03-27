@@ -184,6 +184,7 @@ bool Btree::insert(VALUETYPE value)
 }
 
 bool Btree::remove(VALUETYPE value) {
+	cout << "in remove, value = " << value << endl;
 	assert(root);
 	
 	//if the value's not in the tree, return false
