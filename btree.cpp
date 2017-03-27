@@ -362,12 +362,7 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				else {
 					leaf->prev->parent->remove_child(index);
-					VALUETYPE to_remove_lower = value;
-					for (int i = 1; i < leaf->prev->getNumValues(); i++) {
-						if (leaf->prev->get(i) == to_remove_upper) {
-							to_remove_lower = leaf->prev->get(i - 1);
-						}
-					}
+					VALUETYPE to_remove_lower = leaf->prev->get(leaf->prev->getNumValues() - 1);
 					for (int i = 0; i < common_ansc->getNumValues(); i++) {
 						if (common_ansc->get(i) > to_remove_lower) {
 							common_ansc->remove_value(i);
