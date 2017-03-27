@@ -370,7 +370,9 @@ bool Btree::remove(VALUETYPE value) {
 							break;
 						}
 						else if (node->getNumChildren() == 1) {
+							cout << "in else if" << endl;
 							Bnode_inner* root = dynamic_cast<Bnode_inner*>(node->getChild(0));
+							cout << "made new root" << endl;
 							fixed = true;
 							break;
 						}
