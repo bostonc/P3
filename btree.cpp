@@ -341,7 +341,9 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				cout << "before merge" << endl;
-				VALUETYPE to_remove_upper = leaf->prev->merge(leaf);
+				if (leaf->getNumValues > 0) {
+					VALUETYPE to_remove_upper = leaf->prev->merge(leaf);
+				}
 				cout << "after merge" << endl;
 				leaf->prev->parent->remove_child(index);
 				VALUETYPE to_remove_lower = value;
