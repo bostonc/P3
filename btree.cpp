@@ -319,7 +319,7 @@ bool Btree::remove(VALUETYPE value) {
 				}
 				if (leaf->next) {
 					leaf->next->parent->remove_child(index); //should be leaf->next->parent
-					if (leaf->next->parent->getNumChildren() < 2) {
+					if (leaf->next->parent->getNumChildren() < 2 && leaf->next->parent->parent) {
 						check_node = leaf->next->parent;
 					}
 				}
