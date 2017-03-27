@@ -304,6 +304,9 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				cout << "before merge" << endl;
+				if (leaf->next) {
+					cout << "yes leaf->next" << endl;
+				}
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
 				cout << "after merge, index = " << index << endl;
 				if (leaf->next) {
@@ -312,7 +315,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (!leaf->next) {
 					cout << "no leaf->next" << endl;
 				}
-				leaf->parent->remove_child(index); //should be leaf->next->parent
+				leaf->next->parent->remove_child(index); //should be leaf->next->parent
 				cout << "removed child" << endl;
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				
