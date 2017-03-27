@@ -259,6 +259,7 @@ bool Btree::remove(VALUETYPE value) {
 		//else
 		//KINDA CONFUSED ABOUT THE VALUE MERGE RETURNS
 		else {
+			Bnode_inner* common_ansc = nullptr;
 			//if right leaf node exits
 			if (leaf->next) {
 				//merge and set parent val to closest ancestor
@@ -270,7 +271,7 @@ bool Btree::remove(VALUETYPE value) {
 					}
 				}
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
-				Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
+				common_ansc = leaf->common_ancestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
@@ -290,7 +291,7 @@ bool Btree::remove(VALUETYPE value) {
 				}
 					    
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
-				Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
+				common_ansc = leaf->common_ancestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
