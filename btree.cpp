@@ -420,8 +420,9 @@ bool Btree::remove(VALUETYPE value) {
 	}
 	//if done
 	if (done) {
+		cout << "in done" << endl;
 		//check asserts and return true
-		//assert(isValid());
+		assert(isValid());
 		assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() <= BTREE_LEAF_SIZE);
 		return true;
 	}
