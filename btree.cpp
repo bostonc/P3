@@ -262,7 +262,7 @@ bool Btree::remove(VALUETYPE value) {
 			//if right leaf node exits
 			if (leaf->next) {
 				//merge and set parent val to closest ancestor
-				VALUETYPE to_remove = leaf->merge(leaf->next);
+				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
 				VALUETYPE to_remove_lower;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
 					if (leaf->get(i) == to_remove_upper) {
