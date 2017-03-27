@@ -73,19 +73,19 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 		
 	//populate this with first half of values
 	for (int i = 0; i < total_vals / 2; i++) {
-		//cout << "inserting value: " << all_values[i] << endl;
+		cout << "inserting value: " << all_values[i]->value << endl;
 		insert(all_values[i]);
 	}
 	
 	//populate rhs with second half of values
 	for (int i = total_vals / 2; i < total_vals; i++) {
-		//cout << "inserting value: " << all_values[i] << endl;
+		cout << "inserting value: " << all_values[i]->value << endl;
 		rhs->insert(all_values[i]);
 	}
 	
 	//smallest value in rhs should be returned as what's going to be the new value of the parent
 	Data* new_parent_val = all_values[total_vals / 2];
-	cout << " in redistribute new_parent_val->value: " << new_parent_val->value << endl;
+	cout << "in redistribute new_parent_val->value: " << new_parent_val->value << endl;
 	
 	assert(total_vals == num_values + rhs->getNumValues());
 	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
