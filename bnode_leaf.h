@@ -68,7 +68,7 @@ public:
 	//CUSTOM
 	//Inputs: Another node with which we would like to find a common ancestor.
 	//Output: The closest common ancestor of this and the given node.
-	Bnode_inner* common_ancestor(Bnode* rhs);
+	Bnode_inner* common_ancestor(Bnode_leaf* rhs);
 
 	//CUSTOM
 	//Inputs: 
