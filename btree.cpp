@@ -725,22 +725,55 @@ bool Btree::remove_chris(VALUETYPE value)
 			//does sibling have values to spare?
 		if (leftSibling && leftSibling->getNumValues > (BTREE_FANOUT - 1) / 2)
 		{	//REDISTRIBUTE left
-
-
-
-
-
-
+			out = leftSibling->redistribute(underfilled, underfilled_idx - 1);
+			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
+			underfilled->parent->replace_value(out, underfilled_idx - 1);
+			assert(isValid());
+			return true;
 		}
 
 		//can we MERGE?
-		//check right
+			//check right
+		if (rightSibling &&
+			underfilled->getNumValues + rightSibling->getNumValues < BTREE_FANOUT - 1)
+		{	//MERGE right
 
 
 
-		//check left
+			//did we break things?
 
 
+			//===================================================
+			Bnode_inner* rightParent = leaf->next->parent;
+			int idx = rightParent->find_child(leaf->next);
+			out = leaf->merge(leaf->next);
+			//fix parent of right node, and commmon ancestor if different
+			rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+											//if we merged siblings...
+			if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
+			//if we merged non-siblings...
+			if (leaf->parent != rightParent)
+			{
+				rightParent->remove_value(0);
+				//fix value of common ancestor
+				idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
+				leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
+			}
+			//see if rightParent is underfilled now, return if we're good
+			if (rightParent->at_least_half_full()) return true;
+			underfilled == rightParent;
+			//===================================================
+
+		}
+			//check left
+		else if (leftSibling &&
+			underfilled->getNumValues + leftSibling->getNumValues < BTREE_FANOUT - 1)
+		{	//MERGE left
+
+
+			//did we break things?
+
+		}		
 
 
 		//prep and continue up tree
