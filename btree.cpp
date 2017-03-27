@@ -329,7 +329,7 @@ bool Btree::remove(VALUETYPE value) {
 				//merge and set parent val to closest ancestor
 				if (leaf->prev->parent == leaf->parent) {
 					//cout << "same parent" << endl;
-					common_ansc = leaf->->prev->parent;
+					common_ansc = leaf->prev->parent;
 				}
 				else {
 					common_ansc = leaf->prev->common_ancestor(leaf);
