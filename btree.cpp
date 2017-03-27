@@ -241,6 +241,7 @@ bool Btree::remove(VALUETYPE value) {
 					index = i;
 				}
 			}
+			cout << "before redistribute\n";
 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
 			cout << "new_parent_val: " << new_parent_val << endl;
 			common_ansc->replace_value(new_parent_val, index);
