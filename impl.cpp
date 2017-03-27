@@ -75,6 +75,8 @@ void inorder_traverse(Bnode* current, vector<VALUETYPE>& values) {
     Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
     if (inner) {
         assert(inner->getNumChildren() != 0);
+        cout << "inner num vals: " << inner->getNumValues() << endl;
+        cout << "inner num children: " << inner->getNumChildren() - 1 << endl;
         assert(inner->getNumValues() == inner->getNumChildren()-1);
         inorder_traverse(inner->getChild(0), values);
         for (int i = 0; i < inner->getNumValues(); ++i) {
