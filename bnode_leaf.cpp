@@ -22,6 +22,7 @@ Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
 	//for debugging
 	if (leftParent == rightParent) {
 		cout << "same parents\n";
+	}
 
 	if (leftParent == nullptr || rightParent == nullptr) return nullptr;
 
