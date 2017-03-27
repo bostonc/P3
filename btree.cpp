@@ -201,7 +201,7 @@ bool Btree::remove(VALUETYPE value) {
 		inner = dynamic_cast<Bnode_inner*>(current);
 
 	}
-	//found the leaf node in which the new value belongs
+	//found the leaf node where the value is
 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
 	assert(leaf);
 	
@@ -263,20 +263,42 @@ bool Btree::remove(VALUETYPE value) {
 			if (leaf->next) {
 				//merge and set parent val to closest ancestor
 				VALUETYPE to_remove = leaf->merge(leaf->next);
+				VALUETYPE to_remove_lower;
+				for (int i = 1; i < leaf->getNumValues(); i++) {
+					if (leaf->get(i) == to_remove_upper) {
+						to_remove_lower = leaf->get(i - 1);
+					}
+				}
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
 				Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
-					if (common_ansc->get(i) <= to_remove) {
+					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
-						//fix pointers/children vector?
 					}
 				}
 			}
 			//else if left leaf node exists
 			else if (leaf->prev) {
 				//merge and set parent val to closest ancestor
+				//merge and set parent val to closest ancestor
+				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
+				VALUETYPE to_remove_lower;
+				for (int i = 1; i < leaf->getNumValues(); i++) {
+					if (leaf->get(i) == to_remove_upper) {
+						to_remove_lower = leaf->get(i - 1);
+					}
+				}
+					    
+				//assuming that the value merge returns should be found in closest ancestor's node and removed
+				Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
+				for (int i = 0; i < common_ansc->getNumValues(); i++) {
+					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
+						common_ansc->remove_value(i);
+					}
+				}
 				
 				//set leaf = leaf->prev (I think?)
+				leaf = leaf->prev;
 			}
 			//else
 			else {
