@@ -14,7 +14,7 @@ Bnode_leaf::~Bnode_leaf() {
 	//delete[] values;
 }
 
-Bnode_inner* Bnode_leaf::common_ancestor(Bnode_leaf* rhs)
+Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
 {
 	cout << "in common ancestor\n";
 	
