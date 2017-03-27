@@ -327,16 +327,30 @@ bool Btree::remove(VALUETYPE value) {
 			else if (leaf->prev) {
 				//merge and set parent val to closest ancestor
 				//merge and set parent val to closest ancestor
-				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
+				if (leaf->prev->parent == leaf->parent) {
+					//cout << "same parent" << endl;
+					common_ansc = leaf->parent;
+				}
+				else {
+					common_ansc = leaf->prev->common_ancestor(leaf);
+				}
+				int index = 0;
+				for (int i = 0; i < leaf->prev->parent->getNumChildren(); i++) {
+					if (leaf->prev->parent->getChild(i) == leaf) {
+						index = i;
+					}
+				}
+				VALUETYPE to_remove_upper = leaf->prev->merge(leaf);
+				leaf->prev->parent->remove_child(index);
 				VALUETYPE to_remove_lower = value;
-				for (int i = 1; i < leaf->getNumValues(); i++) {
-					if (leaf->get(i) == to_remove_upper) {
-						to_remove_lower = leaf->get(i - 1);
+				for (int i = 1; i < leaf->prev->getNumValues(); i++) {
+					if (leaf->prev->get(i) == to_remove_upper) {
+						to_remove_lower = leaf->prev->get(i - 1);
 					}
 				}
 					    
 				//assuming that the value merge returns should be found in closest ancestor's node and removed
-				common_ansc = leaf->common_ancestor(leaf->next);
+				//common_ansc = leaf->common_ancestor(leaf->next);
 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
 						common_ansc->remove_value(i);
