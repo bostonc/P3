@@ -426,6 +426,7 @@ bool Btree::remove(VALUETYPE value) {
 				//cout << "how about now?" << endl;
 				//set temp variables
 				Bnode_inner* node = common_ansc;
+				cout << "node set" << endl;
 			}
 			
 			//cout << "and now?" << endl;
