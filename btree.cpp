@@ -283,8 +283,9 @@ bool Btree::remove(VALUETYPE value) {
 		}
 		//else
 		//KINDA CONFUSED ABOUT THE VALUE MERGE RETURNS
-		Bnode_inner* check_node = nullptr;
+		
 		else {
+			Bnode_inner* check_node = nullptr;
 			cout << "in merge" << endl;
 			Bnode_inner* common_ansc = nullptr;
 			//if right leaf node exits
