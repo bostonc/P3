@@ -52,7 +52,15 @@ void splitTestFromSpec() {
 void testForRedistribution() {
     cout << "REDISTRIBUTION TEST: " << endl;
     Btree btree;
-    btree.insert(1); btree.insert(2); btree.insert(3); btree.insert(7); btree.insert(8);
+    btree.insert(1); 
+	cout << btree << endl;
+	btree.insert(2); 
+	cout << btree << endl;
+	btree.insert(3); 
+	cout << btree << endl;
+	btree.insert(7); 
+	cout << btree << endl;
+	btree.insert(8);
 	cout << btree << endl;
     btree.insert(10); btree.insert(11); btree.insert(9); btree.insert(12); btree.insert(13);
 	cout << btree << endl;
