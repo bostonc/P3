@@ -66,7 +66,7 @@ VALUETYPE Bnode_leaf::redistribute(Bnode_leaf* rhs) {
 		Data* temp = new Data(rhs->get(i));
 		all_values.push_back(temp);
 		cout << "value after: " << all_values[i]->value << endl;
-		delete temp;
+		//delete temp;
 	}
 	
 	int total_vals = all_values.size();
