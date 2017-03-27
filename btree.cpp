@@ -296,7 +296,14 @@ bool Btree::remove(VALUETYPE value) {
 				else {
 					common_ansc = leaf->common_ancestor(leaf->next);
 				}
+				int index = 0;
+				for (int i = 0; i < leaf->parent->getNumChildren(); i++) {
+					if (leaf->parent->getChild(i) == leaf->next) {
+						index = i;
+					}
+				}
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
+				leaf->parent->removeChild(index);
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				VALUETYPE to_remove_lower = value;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
