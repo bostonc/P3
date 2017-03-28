@@ -96,7 +96,9 @@ void inorder_traverse(Bnode* current, vector<VALUETYPE>& values) {
 
 bool Btree::isValid() {
     vector<VALUETYPE> values;
+    cout << "before traverse" << endl;
     inorder_traverse(root, values);
+    cout << "after traverse" << endl;
     if (values.empty()) return true;
     VALUETYPE prev_value = values[0];
     for (int i = 1; i < (int)values.size(); ++i) {
