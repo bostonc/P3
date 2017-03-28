@@ -73,7 +73,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 	//add value from parent through which redistribution occurs if necessary
 	//(makes rotations work correctly)
 	bool rotating = false;
-	if (parent->get(parent_idx) != rhs->get(0))
+	if (rhs->getNumValues() == 0 || parent->get(parent_idx) != rhs->get(0))
 	{
 		all_values.push_back(parent->get(parent_idx));
 		rotating = true;

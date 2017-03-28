@@ -664,7 +664,7 @@ bool Btree::remove(VALUETYPE value)
 		//see if rightParent is underfilled now, return if we're good
 		if (rightParent->at_least_half_full())
 		{
-			assert(isValid());
+			assert(isValid()); //BREAKS THINGS
 			return true;
 		}
 		underfilled = rightParent;

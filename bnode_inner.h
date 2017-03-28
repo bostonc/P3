@@ -120,11 +120,11 @@ public:
     // Retrieves internal child at a given index
     Bnode* getChild(int idx) const { assert(idx >= 0); assert(idx < num_children); return children[idx]; }
 
-    // Retrives a value at a given index //BREAKS THINGS
+    // Retrives a value at a given index
     VALUETYPE get(int idx) const 
 	{ 
 		assert(idx >= 0); 
-		assert(idx < num_values); 
+		assert(idx < num_values);
 		return values[idx]; 
 	} 
 
