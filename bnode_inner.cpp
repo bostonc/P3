@@ -107,11 +107,11 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 		cout << values[i] << " ";
 	}
 	cout << endl;
-	cout << "children: ";
-	for (int i = 0; i < total_children; i++) {
-		cout << children[i]->value << " ";
-	}
-	cout << endl;
+// 	cout << "children: ";
+// 	for (int i = 0; i < total_children; i++) {
+// 		cout << children[i]->value << " ";
+// 	}
+// 	cout << endl;
     
 
 	VALUETYPE new_parent_val = -1;
