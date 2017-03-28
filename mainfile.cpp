@@ -108,7 +108,8 @@ void large_test1() {
     cout << btree << endl;
     btree.remove(8); //Prefer merging with right node over left node.
     cout << btree << endl;
-    btree.remove(3); btree.remove(2);
+    btree.remove(3); 
+	btree.remove(2);
     cout << btree << endl;
     btree.remove(1);
     cout << btree << endl;
@@ -149,7 +150,7 @@ void large_test2() {
     cout << btree << endl;
     btree.insert(18);
     cout << btree << endl;
-    btree.insert(19);
+    btree.insert(19); //breaks things
     cout << btree << endl;
     btree.remove(17);
     cout << btree << endl;
@@ -170,7 +171,7 @@ void large_test2() {
     
     btree.remove(7);
     cout << btree << endl;
-    btree.remove(2);
+    btree.remove(2); //breaks things?
     cout << btree << endl;
     cout << "###########################" << endl;
     
@@ -286,12 +287,12 @@ int main() {
     small_test(); //passing!
     splitTestFromSpec(); //passing!
     testForRedistribution(); //passing!
-    large_test1();
-    //large_test2();
-    stress_insert(500);
+    large_test1(); //passing!
+    large_test2();
+    stress_insert(500); //passing!
     //stress_insert_delete(500);
 	
-	chris_testing();
+	chris_testing(); //ignore me
 
 
     

@@ -34,9 +34,10 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
 	insert(parent->get(parent_idx));
 
 	//move all children to lhs
+	int initialNumChildren = num_children;
 	for (int i = 0; i < rhs->getNumChildren(); ++i)
 	{
-		insert(rhs->getChild(i), num_children + i);
+		insert(rhs->getChild(i), initialNumChildren + i);
 	}
 	
 
@@ -63,7 +64,6 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all_children(children, children + num_children);
-	cout << "num children: " << all_children.size() << endl;
 
 	//add value from parent through which redistribution occurs if necessary
 	//(makes rotations work correctly)
@@ -76,17 +76,15 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     
     //add the values and children of rhs to the vector
     int num_vals = rhs->getNumValues();
-    int num_child = rhs->getNumChildren();
-    
-    for (int i = 0; i < num_vals; i++) {
+    int num_child = rhs->getNumChildren();    
+    for (int i = 0; i < num_vals; i++) 
+	{
         all_values.push_back(rhs->get(i));
-        
+		//all_children.push_back(rhs->getChild(i));  
     }
 	for (int i = 0; i < num_vals + 1; i++) {
 		all_children.push_back(rhs->getChild(i));
-	}
-		
-	cout << "num children: " << all_children.size() << endl;
+	}		
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
@@ -100,33 +98,44 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 		assert(total_vals == num_values + rhs->getNumValues());
 		assert(total_vals < BTREE_FANOUT * 2 - 1);		
 	}
-	cout << "total children: " << total_children << endl;
-	cout << "num children: " << num_children << endl;
-	cout << "rhs num children: " << rhs->getNumChildren() << endl;
 	assert(total_children == num_children + rhs->getNumChildren());
-	assert(total_children <= BTREE_FANOUT * 2);	
-    
+	assert(total_children <= BTREE_FANOUT * 2);	    
 
 	VALUETYPE new_parent_val = -1;
+	bool rightRotation = true;
 	if (rotating) //if rotating
 	{
-		//shift
-		int count = 0;
-		while (true)
+		//Is this a right or a left rotation?
+		if (!at_least_half_full()) rightRotation = false;
+
+		//rotate right
+		while (rightRotation) //ALWAYS TRUE
 		{
-			rhs->insert(parent->get(parent_idx));
-			rhs->insert(children[num_children - 1], 0);
-			parent->replace_value(values[num_values - 1], parent_idx);
+			rhs->insert(parent->get(parent_idx)); //bring parent val down
+			rhs->insert(children[num_children - 1], 0); //move last child over
+			parent->replace_value(values[num_values - 1], parent_idx); //move last val up
 			remove_value(num_values - 1);
 			remove_child(num_children - 1);
-
-
+			new_parent_val = parent->get(parent_idx);
+			//time to stop?
+			if (num_values <= rhs->getNumValues()) break;
 		}
 
+		//rotate left
+		while (!rightRotation) //ALWAYS TRUE
+		{
+			insert(parent->get(parent_idx)); //bring parent val down
+			insert(rhs->getChild(0), num_children); //move first child over
+			parent->replace_value(rhs->get(0), parent_idx); //move first value up
+			rhs->remove_value(0);
+			rhs->remove_child(0);
+			new_parent_val = parent->get(parent_idx);
+			//time to stop?
+			if (rhs->getNumValues() - num_values <= 1) break;
+		}
 	}
 	else //not rotating...
 	{
-
 		//populate this with first half of values
 		for (int i = 0; i < total_vals / 2; i++) {
 			insert(all_values[i]);
@@ -147,16 +156,17 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 			rhs->insert(all_children[i], idx);
 			all_children[i]->parent = rhs;
 		}
-
 	}
-
-
-
-	
-
     
-    
-	assert(total_vals == num_values + rhs->getNumValues());
+	if (rotating)
+	{
+		assert(total_vals == num_values + rhs->getNumValues() + 1);
+	}
+	else //not rotating
+	{
+		assert(total_vals == num_values + rhs->getNumValues());
+
+	}	
 	assert(num_values == rhs->getNumValues() || rhs->getNumValues() == num_values + 1);
 	assert(num_values < BTREE_FANOUT && num_values >= BTREE_FANOUT / 2);
 	assert(rhs->getNumValues() < BTREE_FANOUT && rhs->getNumValues() >= BTREE_FANOUT / 2);
@@ -165,9 +175,6 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 	assert(num_children <= BTREE_FANOUT && num_children >= BTREE_FANOUT / 2);
 	assert(rhs->getNumChildren() <= BTREE_FANOUT && rhs->getNumChildren() >= BTREE_FANOUT / 2);
 	
-    
-    
-
     return new_parent_val;
 }
 

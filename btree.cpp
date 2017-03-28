@@ -137,6 +137,7 @@ bool Btree::insert(VALUETYPE value)
 		//NEED TO CHECK FOR ROOT SPLIT BEFORE WE ACTUALLY SPLIT...
 		if (root == child_waiting->parent) rootSplit = true;
 
+
 		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);
 
 		//if we split the root, make a new root and return.
@@ -184,6 +185,7 @@ bool Btree::insert(VALUETYPE value)
 	return false;
 }
 
+/*
 // bool Btree::remove(VALUETYPE value) {
 // 	//cout << "in remove, value = " << value << endl;
 // 	assert(root);
@@ -570,12 +572,8 @@ bool Btree::insert(VALUETYPE value)
 // 	//shouldn't get here
 // 	return false;
 // }
+*/
 	
-	
-
-	
-   
-
 bool Btree::remove(VALUETYPE value)
 {
 	assert(root);
