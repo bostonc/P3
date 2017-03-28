@@ -75,17 +75,18 @@ void inorder_traverse(Bnode* current, vector<VALUETYPE>& values) {
     Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
     if (inner) {
         assert(inner->getNumChildren() != 0);
-        //cout << "inner num vals: " << inner->getNumValues() << endl;
-        //cout << "inner num children: " << inner->getNumChildren() - 1 << endl;
         assert(inner->getNumValues() == inner->getNumChildren()-1);
+        
         inorder_traverse(inner->getChild(0), values);
         for (int i = 0; i < inner->getNumValues(); ++i) {
             values.push_back(inner->get(i));
             inorder_traverse(inner->getChild(i+1), values);
         }
+        
     }
     else {
         // not a inner? must be a leaf
+        
         Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
         assert(leaf);
         for (int i = 0; i < leaf->getNumValues(); ++i) {
@@ -96,7 +97,9 @@ void inorder_traverse(Bnode* current, vector<VALUETYPE>& values) {
 
 bool Btree::isValid() {
     vector<VALUETYPE> values;
+    
     inorder_traverse(root, values);
+    
     if (values.empty()) return true;
     VALUETYPE prev_value = values[0];
     for (int i = 1; i < (int)values.size(); ++i) {

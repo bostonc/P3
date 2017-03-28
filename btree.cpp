@@ -732,8 +732,10 @@ bool Btree::remove(VALUETYPE value)
 		if (rightSibling && rightSibling->getNumValues() > (BTREE_FANOUT - 1) / 2)
 		{	//REDISTRIBUTE with right
 			out = underfilled->redistribute(rightSibling, underfilled_idx);
+			
 			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
 			underfilled->parent->replace_value(out, underfilled_idx);
+			
 			assert(isValid());
 			return true;
 		}
