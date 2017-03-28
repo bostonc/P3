@@ -101,6 +101,17 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 	
 	assert(total_children == num_children + rhs->getNumChildren());
 	assert(total_children <= BTREE_FANOUT * 2);	
+	
+	cout << "values: ";
+	for (int i = 0; i < total_vals; i++) {
+		cout << values[i] << " ";
+	}
+	cout << endl;
+	cout << "children: ";
+	for (int i = 0; i < total_children; i++) {
+		cout << children[i]->value << " ";
+	}
+	cout << endl;
     
 
 	VALUETYPE new_parent_val = -1;
