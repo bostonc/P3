@@ -115,7 +115,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 		for (int i = 0; i < ((total_vals - 1) / 2) + 1; i++) {
 			insert(children[i], i);
 		}
-		parent->replace_value(values[(total_vals - 1) / 2]);
+		parent->replace_value(values[(total_vals - 1) / 2], parent_idx);
 		for (int i = ((total_vals - 1) / 2) + 1; i < total_vals; i++) {
 			rhs->insert(values[i]);
 		}
