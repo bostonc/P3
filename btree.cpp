@@ -579,6 +579,7 @@ bool Btree::insert(VALUETYPE value)
 bool Btree::remove(VALUETYPE value)
 {
 	assert(root);
+	assert(isValid());
 
 	//Return false if value doesn't exist
 	if (!search(value)) return false;
@@ -660,7 +661,11 @@ bool Btree::remove(VALUETYPE value)
 			leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
 		}
 		//see if rightParent is underfilled now, return if we're good
-		if (rightParent->at_least_half_full()) return true;
+		if (rightParent->at_least_half_full())
+		{
+			assert(isValid());
+			return true;
+		}			
 		underfilled = rightParent;
 	}
 	//else, we merge with the left
@@ -682,7 +687,11 @@ bool Btree::remove(VALUETYPE value)
 			leaf->prev->parent->common_ancestor(rightParent)->replace_value(out, idx);
 		}
 		//see if rightParent is underfilled now, return if we're good
-		if (rightParent->at_least_half_full()) return true;
+		if (rightParent->at_least_half_full())
+		{
+			assert(isValid());
+			return true;
+		}			
 		underfilled = rightParent;
 	}
 
@@ -702,6 +711,7 @@ bool Btree::remove(VALUETYPE value)
 				Bnode* target = root;
 				root = underfilled->getChild(0);
 				delete target;
+				assert(isValid());
 				return true;
 			}
 		}
@@ -755,7 +765,11 @@ bool Btree::remove(VALUETYPE value)
 			underfilled->parent->remove_child(underfilled_idx + 1);
 			underfilled->parent->remove_value(underfilled_idx);
 			//did we underfill the parent?
-			if (underfilled->parent->at_least_half_full()) return true;
+			if (underfilled->parent->at_least_half_full()) 
+			{
+				assert(isValid());
+				return true;
+			}
 			underfilled = underfilled->parent;
 		}
 		//check left
@@ -767,7 +781,11 @@ bool Btree::remove(VALUETYPE value)
 			leftSibling->parent->remove_child(underfilled_idx);
 			leftSibling->parent->remove_value(underfilled_idx - 1);
 			//did we underfill the parent?
-			if (leftSibling->parent->at_least_half_full()) return true;
+			if (leftSibling->parent->at_least_half_full())
+			{
+				assert(isValid());
+				return true;
+			}
 			underfilled = leftSibling->parent;
 		}
 

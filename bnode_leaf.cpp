@@ -40,7 +40,7 @@ Bnode_inner* Bnode_leaf::common_ancestor(Bnode* rhs)
 }
 
 VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
-	cout << "in merge" << endl;
+	//cout << "in merge" << endl;
     assert(num_values + rhs->getNumValues() < BTREE_LEAF_SIZE);
     //assert(rhs->num_values > 0);
     VALUETYPE retVal = rhs->get(0);
@@ -54,13 +54,13 @@ VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
     }
 	
 	if (rhs) {
-		cout << "yes rhs" << endl;
+		//cout << "yes rhs" << endl;
 	}
     rhs->clear();
 	if (rhs) {
-		cout << "yes rhs" << endl;
+		//cout << "yes rhs" << endl;
 	}
-	cout << "return val: " << retVal << endl;
+	//cout << "return val: " << retVal << endl;
     return retVal;
 }
 
