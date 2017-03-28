@@ -95,7 +95,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 	}
 	cout << "total children: " << total_children << endl;
 	cout << "num children: " << num_children << endl;
-	cout << "rhs num children: " << rhs->getNumChildren()) << endl;
+	cout << "rhs num children: " << rhs->getNumChildren() << endl;
 	assert(total_children == num_children + rhs->getNumChildren());
 	assert(total_children <= BTREE_FANOUT * 2);	
     
