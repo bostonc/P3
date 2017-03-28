@@ -612,7 +612,7 @@ bool Btree::remove(VALUETYPE value)
 	if (root == leaf) return true;
 
 	//from here, leaf is less than half full and not the root :(
-
+	cout << "checkpoint 1" << endl;
 	//can we redistribute?
 	VALUETYPE out = -1;
 	//can we redistribute right? check right node for extra values
@@ -671,6 +671,7 @@ bool Btree::remove(VALUETYPE value)
 	//else, we merge with the left
 	else if (leaf->prev)
 	{
+		cout << "checkpoint 2" << endl;
 		Bnode_inner* rightParent = leaf->parent;
 		int idx = rightParent->find_child(leaf);
 		out = leaf->prev->merge(leaf);
@@ -693,6 +694,7 @@ bool Btree::remove(VALUETYPE value)
 			return true;
 		}			
 		underfilled = rightParent;
+		cout << "checkpoint 3" << endl;
 	}
 
 	//damn, something higher up must be underfilled...
@@ -708,6 +710,7 @@ bool Btree::remove(VALUETYPE value)
 			if (underfilled->getNumChildren() >= 2 || underfilled->getNumChildren() == 0) return true;
 			else //root has one child. needs to be removed and moved down
 			{
+				cout << "checkpoint 4" << endl;
 				Bnode* target = root;
 				root = underfilled->getChild(0);
 				delete target;
