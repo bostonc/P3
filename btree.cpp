@@ -632,7 +632,7 @@ bool Btree::remove(VALUETYPE value)
 		out = leaf->prev->redistribute(leaf);
 		//reassign value of common ancestor
 		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
-		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
+		int idx = ancestor->find_value_gt(out); //OFF BY 1?????????? //makes remove 11 work
 		ancestor->replace_value(out, idx);
 		assert(isValid());
 		return true;
