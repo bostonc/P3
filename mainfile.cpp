@@ -259,19 +259,19 @@ void chris_testing()
 	//cout << "----------------------------------------------" << endl;
 	*/
 
-	t.insert(4);
-	t.insert(7);
-	t.insert(8);
-	cout << "before remove: " << endl;
-	cout << t << endl;
-	t.remove_chris(4);
+// 	t.insert(4);
+// 	t.insert(7);
+// 	t.insert(8);
+// 	cout << "before remove: " << endl;
+// 	cout << t << endl;
+// 	t.remove_chris(4);
 
-	vector<Data*> v = t.search_range(-3, 16);
-	for (int i = 0; i < (int)v.size(); ++i)
-	{
-		cout << v[i]->value << ", ";
-	}
-	cout << endl;
+// 	vector<Data*> v = t.search_range(-3, 16);
+// 	for (int i = 0; i < (int)v.size(); ++i)
+// 	{
+// 		cout << v[i]->value << ", ";
+// 	}
+// 	cout << endl;
 
 }
 
