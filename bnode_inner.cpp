@@ -64,6 +64,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all_children(children, children + num_children);
 	
+	
 	//add value from parent through which redistribution occurs if necessary
 	//(makes rotations work correctly)
 	bool rotating = false;
@@ -121,18 +122,18 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 	{
 		
 		for (int i = 0; i < (total_vals - 1) / 2; i++) {
-			insert(values[i]);
+			insert(all_values[i]);
 		}
 		for (int i = 0; i < ((total_vals - 1) / 2) + 1; i++) {
-			insert(children[i], i);
+			insert(all_children[i], i);
 		}
-		parent->replace_value(values[(total_vals - 1) / 2], parent_idx);
-		new_parent_val = values[(total_vals - 1) / 2];
+		parent->replace_value(all_values[(total_vals - 1) / 2], parent_idx);
+		new_parent_val = all_values[(total_vals - 1) / 2];
 		for (int i = ((total_vals - 1) / 2) + 1; i < total_vals; i++) {
-			rhs->insert(values[i]);
+			rhs->insert(all_values[i]);
 		}
 		for (int i = ((total_vals - 1) / 2) + 1, index = 0; i < total_vals + 1; i++, index++) {
-			rhs->insert(children[i], index);
+			rhs->insert(all_children[i], index);
 		}
 		
 		
