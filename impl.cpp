@@ -76,17 +76,17 @@ void inorder_traverse(Bnode* current, vector<VALUETYPE>& values) {
     if (inner) {
         assert(inner->getNumChildren() != 0);
         assert(inner->getNumValues() == inner->getNumChildren()-1);
-        cout << "before recursive call" << endl;
+        
         inorder_traverse(inner->getChild(0), values);
         for (int i = 0; i < inner->getNumValues(); ++i) {
             values.push_back(inner->get(i));
             inorder_traverse(inner->getChild(i+1), values);
         }
-        cout << "after recursion" << endl;
+        
     }
     else {
         // not a inner? must be a leaf
-        cout << "leaf" << endl;
+        
         Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
         assert(leaf);
         for (int i = 0; i < leaf->getNumValues(); ++i) {
