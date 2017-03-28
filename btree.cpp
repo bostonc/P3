@@ -85,9 +85,8 @@ bool Btree::insert(VALUETYPE value)
 	if (!leaf->is_full())
 	{
 		leaf->insert(new_data);
-		cout << "value: " << value << endl;
 		assert(isValid());
-		assert(search(value));
+		//assert(search(value));
 		return true;
 	}	
 
