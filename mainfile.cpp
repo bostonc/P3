@@ -205,10 +205,11 @@ void stress_insert_delete(int itr) {
     
     for (int i = 0; i < itr; ++i) {
         int num = rand() % itr*20;
-        btree.remove(num);
-        assert(btree.isValid());
 	    cout << "i = " << i << endl;
 	    cout << "num = " << num << endl;
+        btree.remove(num);
+        assert(btree.isValid());
+	
 	    cout << btree << endl;
     }
 	cout << "done with stress delete" << endl;
