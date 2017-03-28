@@ -86,7 +86,7 @@ bool Btree::insert(VALUETYPE value)
 	{
 		leaf->insert(new_data);
 		assert(isValid());
-		//assert(search(value));
+		assert(search(value));
 		return true;
 	}	
 
