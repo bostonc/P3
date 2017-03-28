@@ -135,7 +135,7 @@ void large_test2() {
     cout << btree << endl;
     btree.remove(13);
     cout << btree << endl;
-    btree.remove(3);
+    btree.remove(3); //BREAKS PARENT POINTERS
     cout << btree << endl;
     
     btree.insert(10);

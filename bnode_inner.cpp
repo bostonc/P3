@@ -39,7 +39,12 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
 	{
 		insert(rhs->getChild(i), initialNumChildren + i);
 	}
-	
+
+	//fix parent pointers of all children
+	for (int i = 0; i < num_children; ++i)
+	{
+		children[i]->parent = this;
+	}	
 
 	//clear rhs, replace parent value
 	rhs->clear();
