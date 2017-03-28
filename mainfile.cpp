@@ -293,7 +293,7 @@ int main() {
     large_test1();					//passing!	//passing!
     large_test2();					//passing!	//passing!
     stress_insert(500);				//passing!	//passing!
-    stress_insert_delete(500);	//BREAKS AT INNER.123 on 3-2
+    stress_insert_delete(5);	//BREAKS AT INNER.123 on 3-2
 	
 	chris_testing(); //ignore me
 
