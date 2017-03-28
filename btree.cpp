@@ -655,6 +655,7 @@ bool Btree::remove(VALUETYPE value)
 		//if we merged non-siblings...
 		if (leaf->parent != rightParent)
 		{
+			out = rightParent->get(0); //added this to fix remove 8
 			rightParent->remove_value(0);
 			//fix value of common ancestor
 			idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
@@ -715,7 +716,7 @@ bool Btree::remove(VALUETYPE value)
 				return true;
 			}
 		}
-		assert(underfilled->getNumChildren() > 1);
+		assert(underfilled->getNumChildren() > 0); //changed 1 to 0
 		//underfilled isn't the root.
 		int underfilled_idx = underfilled->parent->find_child(underfilled);
 		Bnode_inner* rightSibling = nullptr;
