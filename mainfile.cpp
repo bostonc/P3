@@ -283,7 +283,7 @@ int main() {
     
     small_test(); 
     splitTestFromSpec(); 
-    //testForRedistribution();
+    testForRedistribution();
     //large_test1();
     //large_test2();
     //stress_insert(500);
