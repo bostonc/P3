@@ -286,7 +286,7 @@ bool Btree::remove(VALUETYPE value) {
 		
 		else {
 			Bnode_inner* check_node = nullptr;
-			cout << "in merge" << endl;
+			//cout << "in merge" << endl;
 			Bnode_inner* common_ansc = nullptr;
 			//if right leaf node exits
 			if (leaf->next) {
@@ -295,7 +295,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (leaf->parent == leaf->next->parent) {
 					//cout << "same parent" << endl;
 					common_ansc = leaf->parent;
-					cout << "common ansc set" << endl;
+					//cout << "common ansc set" << endl;
 				}
 				else {
 					common_ansc = leaf->common_ancestor(leaf->next);
@@ -306,38 +306,41 @@ bool Btree::remove(VALUETYPE value) {
 						index = i;
 					}
 				}
-				cout << "before merge" << endl;
-				if (leaf->next) {
-					cout << "yes leaf->next" << endl;
-				}
+// 				cout << "before merge" << endl;
+// 				if (leaf->next) {
+// 					cout << "yes leaf->next" << endl;
+// 				}
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
 				cout << "after merge, index = " << index << endl;
-				if (leaf->next) {
-					cout << "yes leaf->next" << endl;
-				}
-				if (!leaf->next) {
-					cout << "no leaf->next" << endl;
-				}
+// 				if (leaf->next) {
+// 					cout << "yes leaf->next" << endl;
+// 				}
+// 				if (!leaf->next) {
+// 					cout << "no leaf->next" << endl;
+// 				}
 				if (leaf->next) { //WHY ISN'T IT WORKING
 					leaf->next->parent->remove_child(index); //should be leaf->next->parent
 					if (leaf->next->parent->getNumChildren() < 2 && leaf->next->parent->parent) {
 						check_node = leaf->next->parent;
 					}
 				}
+				else {
+					cout << "leaf->next doesn't exist" << endl;
+				}
 // 				else {
 // 					leaf->parent->remove_child(index); //don't think this is right
 // 				}
-				cout << "removed child" << endl;
+				//cout << "removed child" << endl;
 				//cout << "to_remove_upper: " << to_remove_upper << endl;
 				
 				VALUETYPE to_remove_lower = value;
-				cout << "before for loop" << endl;
+				//cout << "before for loop" << endl;
 				for (int i = 1; i < leaf->getNumValues(); i++) {
 					if (leaf->get(i) == to_remove_upper) {
 						to_remove_lower = leaf->get(i - 1);
 					}
 				}
-				cout << "set remove upper and lower" << endl;
+				//cout << "set remove upper and lower" << endl;
 					//cout << "to_remove_lower: " << to_remove_lower << endl;
 					//assuming that the value merge returns should be found in closest ancestor's node and removed
 				
@@ -348,7 +351,7 @@ bool Btree::remove(VALUETYPE value) {
 						common_ansc->remove_value(i);
 					}
 				}
-				cout << "done merging" << endl;
+				//cout << "done merging" << endl;
 			
 				
 				//cout << "removed value" << endl;
@@ -412,7 +415,7 @@ bool Btree::remove(VALUETYPE value) {
 			//if parent inner node is at least half full
 			//should this check common ancestor instead of parent?
 			//cout << "still here" << endl;
-			cout << "fixed set to false" << endl;
+			//cout << "fixed set to false" << endl;
 			Bnode_inner* node = nullptr;
 			if (check_node) {
 				node = check_node;
@@ -421,34 +424,34 @@ bool Btree::remove(VALUETYPE value) {
 				if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
 					//fixed = true
 					fixed = true;
-					cout << "in if, fixed = true" << endl;
+					//cout << "in if, fixed = true" << endl;
 				
 				}
 				//cout << "how about now?" << endl;
 				//set temp variables
 				Bnode_inner* node = common_ansc;
-				cout << "node set" << endl;
+				//cout << "node set" << endl;
 			}
 			
 			//cout << "and now?" << endl;
 				
 			//while !fixed
 			while (!fixed) {
-				cout << "in while loop" << endl;
+				//cout << "in while loop" << endl;
 				if (check_node) {
-					cout << "check node is on" << endl;
+					//cout << "check node is on" << endl;
 				}
 				//cout << "in while loop" << endl;
 				//set temp variables 
-				cout << "still working?" << endl;
+				//cout << "still working?" << endl;
 				
 				
 				Bnode_inner* node_parent = nullptr;
-				cout << "how about now?" << endl;
+				//cout << "how about now?" << endl;
 				if (!node) {
-					cout << "no node" << endl;
+					//cout << "no node" << endl;
 				}
-				cout << "num node children: " << node->getNumChildren() << endl;
+				//cout << "num node children: " << node->getNumChildren() << endl;
 				if (!node->parent) {
 					cout << "in if" << endl;
 					//cout << "num node vals: " << node->getNumValues() << endl;
@@ -459,11 +462,11 @@ bool Btree::remove(VALUETYPE value) {
 							break;
 						}
 						else if (node->getNumChildren() == 1) {
-							cout << "in else if" << endl;
+							//cout << "in else if" << endl;
 							root = node->getChild(0);
-							cout << "made new root" << endl;
+							//cout << "made new root" << endl;
 							fixed = true;
-							cout << "fixed" << endl;
+							//cout << "fixed" << endl;
 							break;
 						}
 					}
