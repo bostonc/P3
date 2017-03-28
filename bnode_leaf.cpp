@@ -60,6 +60,7 @@ VALUETYPE Bnode_leaf::merge(Bnode_leaf* rhs) {
 	if (rhs) {
 		cout << "yes rhs" << endl;
 	}
+	cout << "return val: " << retVal << endl;
     return retVal;
 }
 
