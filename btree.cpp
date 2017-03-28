@@ -79,8 +79,7 @@ bool Btree::insert(VALUETYPE value)
 	}
 	//found the leaf node in which the new value belongs :)
 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
-	assert(leaf);
-	
+	assert(leaf);	
 
 	//if node is not full, insert and return
 	if (!leaf->is_full())
@@ -93,8 +92,7 @@ bool Btree::insert(VALUETYPE value)
 
 	//from here, node must be full. SPLIT.
 		//do split
-	Bnode_leaf* new_leaf = leaf->split(value); 
-	
+	Bnode_leaf* new_leaf = leaf->split(value); 	
 	
 		//Did we split the root?
 	if (root == leaf)
@@ -112,7 +110,6 @@ bool Btree::insert(VALUETYPE value)
 
 		root = new_root;
 		assert(isValid());
-		assert(search(value));
 		return true;
 	}		
 
@@ -127,7 +124,6 @@ bool Btree::insert(VALUETYPE value)
 		
 		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1? +1 maybe
 		assert(isValid());
-		assert(search(value));
 		return true;
 	}
 
@@ -141,14 +137,9 @@ bool Btree::insert(VALUETYPE value)
 	while (true)
 	{	
 		//NEED TO CHECK FOR ROOT SPLIT BEFORE WE ACTUALLY SPLIT...
-		if (root == child_waiting->parent) {
-			rootSplit = true;
-			
-		}
+		if (root == child_waiting->parent) rootSplit = true;
 
-
-		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);
-		
+		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);		
 
 		//if we split the root, make a new root and return.
 		if (rootSplit)
@@ -167,12 +158,10 @@ bool Btree::insert(VALUETYPE value)
 			root = new_root;
 			
 			assert(isValid());
-			assert(search(value));
 			return true;
 		}
 
-		//else, check next level up and see if they have room for new node ptr
-		
+		//else, check next level up and see if they have room for new node ptr		
 		if (!new_parent->parent->is_full())
 		{
 			//add and return
@@ -190,8 +179,6 @@ bool Btree::insert(VALUETYPE value)
 		//else, prep and continue upwards split
 		child_waiting = new_parent;
 		insert_value = out;
-		
-
 	}//end while
 
 	//If ever this code is reached, I will eat my cat
