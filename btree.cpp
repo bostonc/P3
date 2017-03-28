@@ -612,7 +612,7 @@ bool Btree::remove(VALUETYPE value)
 	if (root == leaf) return true;
 
 	//from here, leaf is less than half full and not the root :(
-	
+
 	//can we redistribute?
 	VALUETYPE out = -1;
 	//can we redistribute right? check right node for extra values
@@ -621,7 +621,7 @@ bool Btree::remove(VALUETYPE value)
 		out = leaf->redistribute(leaf->next);
 		//reassign value of common ancestor
 		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
-		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1???????????????? 
+		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1????????????????
 		ancestor->replace_value(out, idx); //need to check if necessary???????
 		assert(isValid());
 		return true;
@@ -632,7 +632,7 @@ bool Btree::remove(VALUETYPE value)
 		out = leaf->prev->redistribute(leaf);
 		//reassign value of common ancestor
 		Bnode_inner* ancestor = leaf->prev->common_ancestor(leaf);
-		int idx = ancestor->find_value_gt(out); //OFF BY 1?????????? //got rid of - 1
+		int idx = ancestor->find_value_gt(out) - 1; //OFF BY 1??????????
 		ancestor->replace_value(out, idx);
 		assert(isValid());
 		return true;
@@ -650,7 +650,7 @@ bool Btree::remove(VALUETYPE value)
 		out = leaf->merge(leaf->next);
 		//fix parent of right node, and commmon ancestor if different
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
-										//if we merged siblings...
+		//if we merged siblings...
 		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
 		if (leaf->parent != rightParent)
@@ -665,27 +665,18 @@ bool Btree::remove(VALUETYPE value)
 		{
 			assert(isValid());
 			return true;
-		}			
+		}
 		underfilled = rightParent;
 	}
 	//else, we merge with the left
 	else if (leaf->prev)
 	{
-		
 		Bnode_inner* rightParent = leaf->parent;
 		int idx = rightParent->find_child(leaf);
-		
-		if (leaf->getNumValues() > 0) {
-			out = leaf->prev->merge(leaf);
-		}
-		else {
-			out = value; // I think this should work
-		}
-		
+		out = leaf->prev->merge(leaf);
 		//fix parent of right node, and common ancestor if different
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
-		
-										//if we merged siblings...
+		//if we merged siblings...
 		if (leaf->prev->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
 		if (leaf->prev->parent != rightParent)
@@ -700,9 +691,8 @@ bool Btree::remove(VALUETYPE value)
 		{
 			assert(isValid());
 			return true;
-		}			
+		}
 		underfilled = rightParent;
-		
 	}
 
 	//damn, something higher up must be underfilled...
@@ -718,7 +708,6 @@ bool Btree::remove(VALUETYPE value)
 			if (underfilled->getNumChildren() >= 2 || underfilled->getNumChildren() == 0) return true;
 			else //root has one child. needs to be removed and moved down
 			{
-				
 				Bnode* target = root;
 				root = underfilled->getChild(0);
 				delete target;
@@ -776,7 +765,7 @@ bool Btree::remove(VALUETYPE value)
 			underfilled->parent->remove_child(underfilled_idx + 1);
 			underfilled->parent->remove_value(underfilled_idx);
 			//did we underfill the parent?
-			if (underfilled->parent->at_least_half_full()) 
+			if (underfilled->parent->at_least_half_full())
 			{
 				assert(isValid());
 				return true;
@@ -802,7 +791,7 @@ bool Btree::remove(VALUETYPE value)
 
 		//continue up tree
 	} //LOOP
-	//if we ever reach this code remind me to jump off a bridge after class
+	  //if we ever reach this code remind me to jump off a bridge after class
 	assert(false);
 	return false;
 }
