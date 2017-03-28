@@ -325,15 +325,15 @@ bool Btree::remove(VALUETYPE value) {
 					check_node = next->parent;
 				}
 				//}
-				else {
-					cout << "leaf->next doesn't exist" << endl;
-				}
-				if (!leaf) {
-					cout << "leaf doesn't exist" << endl;
-				}
-				if (!leaf->parent) {
-					cout << "leaf->parent doesn't exist" << endl;
-				}
+// 				else {
+// 					cout << "leaf->next doesn't exist" << endl;
+// 				}
+// 				if (!leaf) {
+// 					cout << "leaf doesn't exist" << endl;
+// 				}
+// 				if (!leaf->parent) {
+// 					cout << "leaf->parent doesn't exist" << endl;
+// 				}
 // 				else {
 // 					leaf->parent->remove_child(index); //don't think this is right
 // 				}
@@ -358,7 +358,7 @@ bool Btree::remove(VALUETYPE value) {
 						common_ansc->remove_value(i);
 					}
 				}
-				//cout << "done merging" << endl;
+				cout << "done merging" << endl;
 			
 				
 				//cout << "removed value" << endl;
@@ -444,7 +444,7 @@ bool Btree::remove(VALUETYPE value) {
 				
 			//while !fixed
 			while (!fixed) {
-				//cout << "in while loop" << endl;
+				cout << "in while loop" << endl;
 				if (check_node) {
 					//cout << "check node is on" << endl;
 				}
@@ -458,7 +458,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (!node) {
 					//cout << "no node" << endl;
 				}
-				//cout << "num node children: " << node->getNumChildren() << endl;
+				cout << "num node children: " << node->getNumChildren() << endl;
 				if (!node->parent) {
 					cout << "in if" << endl;
 					//cout << "num node vals: " << node->getNumValues() << endl;
