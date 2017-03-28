@@ -674,9 +674,12 @@ bool Btree::remove(VALUETYPE value)
 		cout << "checkpoint 2" << endl;
 		Bnode_inner* rightParent = leaf->parent;
 		int idx = rightParent->find_child(leaf);
+		cout << "before merge" << endl;
 		out = leaf->prev->merge(leaf);
+		cout << "after merge" << endl;
 		//fix parent of right node, and common ancestor if different
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+		cout << "after remove child" << endl;
 										//if we merged siblings...
 		if (leaf->prev->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
