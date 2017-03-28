@@ -38,6 +38,7 @@ VALUETYPE Bnode_inner::merge(Bnode_inner* rhs, int parent_idx) {
 	{
 		insert(rhs->getChild(i), num_children + i);
 	}
+	
 
 	//clear rhs, replace parent value
 	rhs->clear();
@@ -62,6 +63,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all_children(children, children + num_children);
+	cout << "num children: " << all_children.size() << endl;
 
 	//add value from parent through which redistribution occurs if necessary
 	//(makes rotations work correctly)
@@ -80,6 +82,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
         all_values.push_back(rhs->get(i));
         all_children.push_back(rhs->getChild(i));
     }
+	cout << "num children: " << all_children.size() << endl;
     
     int total_vals = all_values.size();
     int total_children = all_children.size();
