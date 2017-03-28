@@ -737,51 +737,30 @@ bool Btree::remove_chris(VALUETYPE value)
 		if (rightSibling &&
 			underfilled->getNumValues + rightSibling->getNumValues < BTREE_FANOUT - 1)
 		{	//MERGE right
-
-
-
-			//did we break things?
-
-
-			//===================================================
-			Bnode_inner* rightParent = leaf->next->parent;
-			int idx = rightParent->find_child(leaf->next);
-			out = leaf->merge(leaf->next);
-			//fix parent of right node, and commmon ancestor if different
-			rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
-											//if we merged siblings...
-			if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
-			//if we merged non-siblings...
-			if (leaf->parent != rightParent)
-			{
-				rightParent->remove_value(0);
-				//fix value of common ancestor
-				idx = leaf->parent->common_ancestor(rightParent)->find_value_gt(out) - 1;
-				leaf->parent->common_ancestor(rightParent)->replace_value(out, idx);
-			}
-			//see if rightParent is underfilled now, return if we're good
-			if (rightParent->at_least_half_full()) return true;
-			underfilled == rightParent;
-			//===================================================
-
+			out = underfilled->merge(rightSibling, underfilled_idx);
+			//fix parent
+			underfilled->parent->remove_child(underfilled_idx + 1);
+			underfilled->parent->remove_value(underfilled_idx);
+			//did we underfill the parent?
+			if (underfilled->parent->at_least_half_full()) return true;
+			underfilled = underfilled->parent;
 		}
 			//check left
 		else if (leftSibling &&
 			underfilled->getNumValues + leftSibling->getNumValues < BTREE_FANOUT - 1)
 		{	//MERGE left
-
-
-			//did we break things?
-
+			out = leftSibling->merge(underfilled, underfilled_idx - 1);
+			//fix parent
+			leftSibling->parent->remove_child(underfilled_idx);
+			leftSibling->parent->remove_value(underfilled_idx - 1);
+			//did we underfill the parent?
+			if (leftSibling->parent->at_least_half_full()) return true;
+			underfilled = leftSibling->parent;
 		}		
 
-
-		//prep and continue up tree
-
-	}
-
-
-
+		//continue up tree
+	} //LOOP
+	//if we ever reach this code remind me to jump off a bridge after class
 	assert(false);
 	return false;
 }
@@ -831,7 +810,6 @@ vector<Data*> Btree::search_range(VALUETYPE begin, VALUETYPE end)
 		if (focus == last_leaf) break;
 		focus = focus->next;
 	}
-
     return v;
 }
 
