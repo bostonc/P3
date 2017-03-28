@@ -259,22 +259,19 @@ void chris_testing()
 	//cout << "----------------------------------------------" << endl;
 	*/
 
-	t.insert(4);
-	t.insert(5);
-	t.insert(7);
-	t.insert(11);
-	cout << "before remove: " << endl;
-	cout << t << endl;
-	t.remove(4);
-	cout << "after remove: " << endl;
-	cout << t << endl;
+// 	t.insert(4);
+// 	t.insert(7);
+// 	t.insert(8);
+// 	cout << "before remove: " << endl;
+// 	cout << t << endl;
+// 	t.remove_chris(4);
 
-	vector<Data*> v = t.search_range(-3, 16);
-	for (int i = 0; i < (int)v.size(); ++i)
-	{
-		cout << v[i]->value << ", ";
-	}
-	cout << endl;
+// 	vector<Data*> v = t.search_range(-3, 16);
+// 	for (int i = 0; i < (int)v.size(); ++i)
+// 	{
+// 		cout << v[i]->value << ", ";
+// 	}
+// 	cout << endl;
 
 }
 
@@ -284,15 +281,15 @@ int main() {
     //freopen(filename.c_str(),"w",stdout); //Comment out if you want to write to a file. You should to set the
                                             //values in constants.h to create the corresponding output
     
-    small_test(); //was passing, tried to fixe remove(8) from large_test1 and now it's not working
-    splitTestFromSpec(); 
+    //small_test(); 
+    //splitTestFromSpec(); 
     //testForRedistribution();
-    //large_test1();
+    large_test1();
     //large_test2();
-    stress_insert(500);
+    //stress_insert(500);
     //stress_insert_delete(500);
 	
-	chris_testing();
+	//chris_testing();
 
 
     
