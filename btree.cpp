@@ -86,6 +86,7 @@ bool Btree::insert(VALUETYPE value)
 	{
 		leaf->insert(new_data);
 		assert(isValid());
+		assert(search(value));
 		return true;
 	}	
 
@@ -109,6 +110,7 @@ bool Btree::insert(VALUETYPE value)
 
 		root = new_root;
 		assert(isValid());
+		assert(search(value));
 		return true;
 	}		
 
@@ -123,6 +125,7 @@ bool Btree::insert(VALUETYPE value)
 		
 		leaf->parent->insert(new_leaf, reassignment_idx + 1); //off by 1? +1 maybe
 		assert(isValid());
+		assert(search(value));
 		return true;
 	}
 
@@ -156,6 +159,7 @@ bool Btree::insert(VALUETYPE value)
 				//move root up
 			root = new_root;
 			assert(isValid());
+			assert(search(value));
 			return true;
 		}
 
@@ -170,6 +174,7 @@ bool Btree::insert(VALUETYPE value)
 			reassignment_idx = new_parent->parent->find_value_gt(out);
 			new_parent->parent->insert(new_parent, reassignment_idx); //child
 			assert(isValid());
+			assert(search(value));
 			return true;
 		}
 
