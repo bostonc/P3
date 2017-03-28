@@ -310,6 +310,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (leaf->next) {
 					cout << "yes leaf->next" << endl;
 				}
+				Bnode_inner* next = leaf->next;
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
 				//cout << "after merge, index = " << index << endl;
 // 				if (leaf->next) {
@@ -318,12 +319,12 @@ bool Btree::remove(VALUETYPE value) {
 // 				if (!leaf->next) {
 // 					cout << "no leaf->next" << endl;
 // 				}
-				if (leaf->next) { //WHY ISN'T IT WORKING
-					leaf->next->parent->remove_child(index); //should be leaf->next->parent
-					if (leaf->next->parent->getNumChildren() < 2 && leaf->next->parent->parent) {
-						check_node = leaf->next->parent;
-					}
+				//if (leaf->next) { //WHY ISN'T IT WORKING
+				leaf->next->parent->remove_child(index); //should be leaf->next->parent
+				if (next->parent->getNumChildren() < 2 && next->parent->parent) {
+					check_node = next->parent;
 				}
+				//}
 				else {
 					cout << "leaf->next doesn't exist" << endl;
 				}
