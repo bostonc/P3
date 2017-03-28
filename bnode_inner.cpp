@@ -63,8 +63,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
     //make a vector or all values and a vector of all children in this node
     vector<VALUETYPE> all_values(values, values + num_values);
     vector<Bnode*> all_children(children, children + num_children);
-	cout << "num children: " << all_children.size() << endl;
-
+	
 	//add value from parent through which redistribution occurs if necessary
 	//(makes rotations work correctly)
 	bool rotating = false;
@@ -86,8 +85,7 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 		all_children.push_back(rhs->getChild(i));
 	}
 		
-	cout << "num children: " << all_children.size() << endl;
-    
+	
     int total_vals = all_values.size();
     int total_children = all_children.size();
 	if (rotating)
@@ -100,28 +98,45 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 		assert(total_vals == num_values + rhs->getNumValues());
 		assert(total_vals < BTREE_FANOUT * 2 - 1);		
 	}
-	cout << "total children: " << total_children << endl;
-	cout << "num children: " << num_children << endl;
-	cout << "rhs num children: " << rhs->getNumChildren() << endl;
+	
 	assert(total_children == num_children + rhs->getNumChildren());
 	assert(total_children <= BTREE_FANOUT * 2);	
     
 
 	VALUETYPE new_parent_val = -1;
+	clear();
+	rhs->clear();
 	if (rotating) //if rotating
 	{
-		//shift
-		int count = 0;
-		while (true)
-		{
-			rhs->insert(parent->get(parent_idx));
-			rhs->insert(children[num_children - 1], 0);
-			parent->replace_value(values[num_values - 1], parent_idx);
-			remove_value(num_values - 1);
-			remove_child(num_children - 1);
-
-
+		
+		for (int i = 0; i < (total_vals - 1) / 2; i++) {
+			insert(values[i]);
 		}
+		for (int i = 0; i < (total_vals - 1) / 2; i++) {
+		}
+		parent->replace_value(values[(total_vals - 1) / 2]);
+		for (int i = ((total_vals - 1) / 2) + 1; i < total_vals; i++) {
+			rhs->insert(values[i]);
+		
+		
+		
+		
+		
+		
+		//shift
+// 		int count = 0;
+// 		while (true)
+// 		{
+
+			
+// 			rhs->insert(parent->get(parent_idx));
+// 			rhs->insert(children[num_children - 1], 0);
+// 			parent->replace_value(values[num_values - 1], parent_idx);
+// 			remove_value(num_values - 1);
+// 			remove_child(num_children - 1);
+
+
+// 		}
 
 	}
 	else //not rotating...
