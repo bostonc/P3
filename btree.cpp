@@ -708,8 +708,8 @@ bool Btree::remove_chris(VALUETYPE value)
 		assert(underfilled->getNumChildren() > 1);
 		//underfilled isn't the root.
 		int underfilled_idx = underfilled->parent->find_child(underfilled);
-		Bnode_inner* rightSibling;
-		Bnode_inner* leftSibling;
+		Bnode_inner* rightSibling = nullptr;
+		Bnode_inner* leftSibling = nullptr;
 
 		//can we REDISTRIBUTE?
 		//check right...
