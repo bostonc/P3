@@ -427,6 +427,7 @@ bool Btree::remove(VALUETYPE value) {
 			Bnode_inner* node = nullptr;
 			if (check_node) {
 				node = check_node;
+				cout << "in check node" << endl;
 			}
 			else {
 				if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
@@ -435,10 +436,10 @@ bool Btree::remove(VALUETYPE value) {
 					//cout << "in if, fixed = true" << endl;
 				
 				}
-				//cout << "how about now?" << endl;
+				cout << "how about now?" << endl;
 				//set temp variables
 				Bnode_inner* node = common_ansc;
-				//cout << "node set" << endl;
+				cout << "node set" << endl;
 			}
 			
 			//cout << "and now?" << endl;
