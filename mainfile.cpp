@@ -281,9 +281,9 @@ int main() {
     //freopen(filename.c_str(),"w",stdout); //Comment out if you want to write to a file. You should to set the
                                             //values in constants.h to create the corresponding output
     
-    //small_test(); 
-    //splitTestFromSpec(); 
-    //testForRedistribution();
+    small_test(); 
+    splitTestFromSpec(); 
+    testForRedistribution();
     large_test1();
     //large_test2();
     //stress_insert(500);
