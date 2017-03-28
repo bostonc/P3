@@ -310,7 +310,7 @@ bool Btree::remove(VALUETYPE value) {
 				if (leaf->next) {
 					cout << "yes leaf->next" << endl;
 				}
-				Bnode_inner* next = leaf->next;
+				Bnode_leaf* next = leaf->next;
 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
 				//cout << "after merge, index = " << index << endl;
 // 				if (leaf->next) {
