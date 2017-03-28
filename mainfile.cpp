@@ -187,7 +187,7 @@ void stress_insert(int itr) {
         btree.insert(num);
         assert(btree.isValid());
     }
-	cout << "done with stress insert" << endl;
+	
 }
 
 //Random deletes to check the tree stays valid
@@ -200,6 +200,7 @@ void stress_insert_delete(int itr) {
         btree.insert(num);
         assert(btree.isValid());
     }
+	cout << "done with stress insert " << endl;
     
     
     for (int i = 0; i < itr; ++i) {
@@ -207,7 +208,7 @@ void stress_insert_delete(int itr) {
         btree.remove(num);
         assert(btree.isValid());
     }
-	cout << "done with stress insert delete" << endl;
+	cout << "done with stress delete" << endl;
 }
 
 void chris_testing()
