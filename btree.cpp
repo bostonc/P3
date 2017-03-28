@@ -172,6 +172,11 @@ bool Btree::insert(VALUETYPE value)
 		}
 
 		//else, check next level up and see if they have room for new node ptr
+		cout << "new_parent->parent values: ";
+		for (int i = 0; i < new_parent->parent->getNumValues(); i++) {
+			cout << new_parent->parent->get(i) << " ";
+		}
+		cout << endl;
 		if (!new_parent->parent->is_full())
 		{
 			//add and return
