@@ -675,7 +675,7 @@ bool Btree::remove(VALUETYPE value)
 		Bnode_inner* rightParent = leaf->parent;
 		int idx = rightParent->find_child(leaf);
 		cout << "before merge" << endl;
-		if (leaf->getNumValues > 0) {
+		if (leaf->getNumValues() > 0) {
 			out = leaf->prev->merge(leaf);
 		}
 		else {
