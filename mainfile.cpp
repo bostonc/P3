@@ -102,7 +102,9 @@ void large_test1() {
     cout << btree << endl;
     btree.remove(11); //Prefer redistribution over merging for removals
     cout << btree << endl;
-    btree.remove(5); btree.remove(6); //Prefer redistribution with right node over left node
+    btree.remove(5); 
+	cout << btree << endl;
+	btree.remove(6); //Prefer redistribution with right node over left node
     cout << btree << endl;
     btree.remove(8); //Prefer merging with right node over left node.
     cout << btree << endl;
