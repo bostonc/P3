@@ -23,7 +23,7 @@ Btree::~Btree()
 	vector<Bnode*> ptrs;
 	dtor_traverse(root, vals, ptrs);
 
-	for (int i = 0; i < ptrs.size(); ++i)
+	for (int i = 0; i < (int)ptrs.size(); ++i)
 	{
 		delete ptrs[i];
 		ptrs[i] = nullptr;
@@ -659,7 +659,7 @@ bool Btree::remove_chris(VALUETYPE value)
 		}
 		//see if rightParent is underfilled now, return if we're good
 		if (rightParent->at_least_half_full()) return true;
-		underfilled == rightParent;
+		underfilled = rightParent;
 	}
 	//else, we merge with the left
 	else if (leaf->prev)
@@ -681,7 +681,7 @@ bool Btree::remove_chris(VALUETYPE value)
 		}
 		//see if rightParent is underfilled now, return if we're good
 		if (rightParent->at_least_half_full()) return true;
-		underfilled == rightParent;
+		underfilled = rightParent;
 	}
 
 	//damn, something higher up must be underfilled...
@@ -694,7 +694,7 @@ bool Btree::remove_chris(VALUETYPE value)
 	{
 		if (underfilled == root)
 		{
-			if (underfilled->getNumChildren >= 2 || underfilled->getNumChildren == 0) return true;
+			if (underfilled->getNumChildren() >= 2 || underfilled->getNumChildren() == 0) return true;
 			else //root has one child. needs to be removed and moved down
 			{
 				Bnode* target = root;
@@ -703,7 +703,7 @@ bool Btree::remove_chris(VALUETYPE value)
 				return true;
 			}			
 		}
-		assert(underfilled->getNumChildren > 1);
+		assert(underfilled->getNumChildren() > 1);
 		//underfilled isn't the root.
 		int underfilled_idx = underfilled->parent->find_child(underfilled);
 		Bnode_inner* rightSibling;
@@ -712,13 +712,13 @@ bool Btree::remove_chris(VALUETYPE value)
 		//can we REDISTRIBUTE?
 		//check right...
 			//does sibling exist?
-		if (underfilled->parent->getNumChildren > underfilled_idx + 1)
+		if (underfilled->parent->getNumChildren() > underfilled_idx + 1)
 		{
 			rightSibling = dynamic_cast<Bnode_inner*>(underfilled->parent->getChild(underfilled_idx + 1));
 			assert(underfilled->is_sibling_of(rightSibling));
 		}	
 			//does sibling have values to spare?
-		if (rightSibling && rightSibling->getNumValues > (BTREE_FANOUT - 1) / 2)
+		if (rightSibling && rightSibling->getNumValues() > (BTREE_FANOUT - 1) / 2)
 		{	//REDISTRIBUTE with right
 			out = underfilled->redistribute(rightSibling, underfilled_idx);
 			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
@@ -734,7 +734,7 @@ bool Btree::remove_chris(VALUETYPE value)
 			assert(underfilled->is_sibling_of(leftSibling));
 		}
 			//does sibling have values to spare?
-		if (leftSibling && leftSibling->getNumValues > (BTREE_FANOUT - 1) / 2)
+		if (leftSibling && leftSibling->getNumValues() > (BTREE_FANOUT - 1) / 2)
 		{	//REDISTRIBUTE left
 			out = leftSibling->redistribute(underfilled, underfilled_idx - 1);
 			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
@@ -746,7 +746,7 @@ bool Btree::remove_chris(VALUETYPE value)
 		//can we MERGE?
 			//check right
 		if (rightSibling &&
-			underfilled->getNumValues + rightSibling->getNumValues < BTREE_FANOUT - 1)
+			underfilled->getNumValues() + rightSibling->getNumValues() < BTREE_FANOUT - 1)
 		{	//MERGE right
 			out = underfilled->merge(rightSibling, underfilled_idx);
 			//fix parent
@@ -758,7 +758,7 @@ bool Btree::remove_chris(VALUETYPE value)
 		}
 			//check left
 		else if (leftSibling &&
-			underfilled->getNumValues + leftSibling->getNumValues < BTREE_FANOUT - 1)
+			underfilled->getNumValues() + leftSibling->getNumValues() < BTREE_FANOUT - 1)
 		{	//MERGE left
 			out = leftSibling->merge(underfilled, underfilled_idx - 1);
 			//fix parent

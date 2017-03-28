@@ -208,57 +208,66 @@ void stress_insert_delete(int itr) {
 void chris_testing()
 {
 	Btree t;
-	t.insert(6);
-	//cout << "after inserting 6" << endl;
-	//cout << t << endl << endl;
+	/*
+	//t.insert(6);
+	////cout << "after inserting 6" << endl;
+	////cout << t << endl << endl;
 
-	t.insert(5);
-	//cout << "after inserting 5" << endl;
-	//cout << t << endl << endl;
+	//t.insert(5);
+	////cout << "after inserting 5" << endl;
+	////cout << t << endl << endl;
 
-	t.insert(3);
-	//cout << "after inserting 3" << endl;
-	//cout << t << endl << endl;
+	//t.insert(3);
+	////cout << "after inserting 3" << endl;
+	////cout << t << endl << endl;
 
-	t.insert(7);
-	//cout << "after inserting 7" << endl;
-	//cout << t << endl << endl;
+	//t.insert(7);
+	////cout << "after inserting 7" << endl;
+	////cout << t << endl << endl;
 
-	t.insert(8);
-	//cout << "after inserting 8" << endl;
-	//cout << t << endl << endl;
+	//t.insert(8);
+	////cout << "after inserting 8" << endl;
+	////cout << t << endl << endl;
 
-	t.insert(2);
-	//cout << "after inserting 2" << endl;
-	//cout << t << endl << endl;
+	//t.insert(2);
+	////cout << "after inserting 2" << endl;
+	////cout << t << endl << endl;
 
+	////cout << "----------------------------------------------" << endl;
+
+	//t.insert(4);
+	////cout << "after inserting 4" << endl;
+	////cout << t << endl << endl;
+
+	//t.insert(1);
+	////cout << "after inserting 1" << endl;
+	////cout << t << endl << endl;
+
+	//t.insert(11);
+	////cout << "after inserting 11" << endl;
+	////cout << t << endl << endl;
+
+	//t.insert(0);
+	////cout << "after inserting 0" << endl;
+	////cout << t << endl << endl;
+
+	////cout << "----------------------------------------------" << endl;
+
+	//t.insert(13);
+	//cout << "after inserting 13" << endl;
+	//cout << t << endl << endl;
 	//cout << "----------------------------------------------" << endl;
+	*/
 
 	t.insert(4);
-	//cout << "after inserting 4" << endl;
-	//cout << t << endl << endl;
-
-	t.insert(1);
-	//cout << "after inserting 1" << endl;
-	//cout << t << endl << endl;
-
-	t.insert(11);
-	//cout << "after inserting 11" << endl;
-	//cout << t << endl << endl;
-
-	t.insert(0);
-	//cout << "after inserting 0" << endl;
-	//cout << t << endl << endl;
-
-	//cout << "----------------------------------------------" << endl;
-
-	t.insert(13);
-	cout << "after inserting 13" << endl;
-	cout << t << endl << endl;
-	cout << "----------------------------------------------" << endl;
+	t.insert(7);
+	t.insert(8);
+	cout << "before remove: " << endl;
+	cout << t << endl;
+	t.remove_chris(4);
 
 	vector<Data*> v = t.search_range(-3, 16);
-	for (int i = 0; i < v.size(); ++i)
+	for (int i = 0; i < (int)v.size(); ++i)
 	{
 		cout << v[i]->value << ", ";
 	}
@@ -272,15 +281,15 @@ int main() {
     //freopen(filename.c_str(),"w",stdout); //Comment out if you want to write to a file. You should to set the
                                             //values in constants.h to create the corresponding output
     
-    small_test(); //was passing, tried to fixe remove(8) from large_test1 and now it's not working
-    splitTestFromSpec(); 
+    //small_test(); //was passing, tried to fixe remove(8) from large_test1 and now it's not working
+    //splitTestFromSpec(); 
     //testForRedistribution();
-    large_test1();
+    //large_test1();
     //large_test2();
     //stress_insert(500);
     //stress_insert_delete(500);
 	
-	//chris_testing();
+	chris_testing();
 
 
     
