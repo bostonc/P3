@@ -207,7 +207,8 @@ void stress_insert_delete(int itr) {
         int num = rand() % itr*20;
         btree.remove(num);
         assert(btree.isValid());
-	    cout << "num: " << num << endl;
+	    cout << "i = " << i << endl;
+	    cout << "num = " << num << endl;
 	    cout << btree << endl;
     }
 	cout << "done with stress delete" << endl;
@@ -295,7 +296,7 @@ int main() {
     large_test1();					//passing!	//passing!
     large_test2();					//passing!	//passing!
     stress_insert(500);				//passing!	//passing!
-    stress_insert_delete(25);	//BREAKS AT INNER.123 on 3-2
+    stress_insert_delete(30);	//BREAKS AT INNER.123 on 3-2
 	
 	chris_testing(); //ignore me
 
