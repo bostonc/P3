@@ -622,6 +622,8 @@ bool Btree::remove(VALUETYPE value)
 		//reassign value of common ancestor
 		Bnode_inner* ancestor = leaf->common_ancestor(leaf->next);
 		int idx = ancestor->find_value_gt(out); //OFF BY 1???????????????? //got rid of - 1
+		cout << "out: " << out << endl;
+		cout << "idx: " << idx << endl;
 		ancestor->replace_value(out, idx); //need to check if necessary???????
 		assert(isValid());
 		return true;
