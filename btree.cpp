@@ -738,7 +738,7 @@ bool Btree::remove(VALUETYPE value)
 			//reassign parent value - THIS COULD BREAK ROTATION FUNCTIONALITY if out is wrong.
 			underfilled->parent->replace_value(out, underfilled_idx);
 			
-			//assert(isValid());
+			assert(isValid());
 			return true;
 		}
 		//else, check left...
