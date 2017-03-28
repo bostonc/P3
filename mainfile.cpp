@@ -283,14 +283,14 @@ int main() {
     + ".out";
     //freopen(filename.c_str(),"w",stdout); //Comment out if you want to write to a file. You should to set the
                                             //values in constants.h to create the corresponding output
-    
-    small_test(); //passing!
-    splitTestFromSpec(); //passing!
-    testForRedistribution(); //passing!
-    large_test1(); //passing!
-    large_test2();
-    stress_insert(500); //passing!
-    //stress_insert_delete(500);
+    //---------------------------------3-2---------3-6
+    small_test();					//passing!	//passing!
+    splitTestFromSpec();			//passing!	//passing!
+    testForRedistribution();		//passing!	//passing!
+    large_test1();					//passing!	//passing!
+    large_test2();					//passing!	//passing!
+    stress_insert(500);				//passing!	//passing!
+    stress_insert_delete(500);	//BREAKS AT INNER.123 on 3-2
 	
 	chris_testing(); //ignore me
 
