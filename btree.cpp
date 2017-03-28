@@ -80,7 +80,7 @@ bool Btree::insert(VALUETYPE value)
 	//found the leaf node in which the new value belongs :)
 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
 	assert(leaf);
-	cout << "checkpoint 1" << endl;
+	
 
 	//if node is not full, insert and return
 	if (!leaf->is_full())
@@ -94,7 +94,7 @@ bool Btree::insert(VALUETYPE value)
 	//from here, node must be full. SPLIT.
 		//do split
 	Bnode_leaf* new_leaf = leaf->split(value); 
-	cout << "checkpoint 2" << endl;
+	
 	
 		//Did we split the root?
 	if (root == leaf)
@@ -137,18 +137,18 @@ bool Btree::insert(VALUETYPE value)
 	VALUETYPE out = -1;
 	Bnode_inner* new_parent = nullptr;
 	bool rootSplit = false;
-	cout << "checkpoint 3" << endl;
+	
 	while (true)
 	{	
 		//NEED TO CHECK FOR ROOT SPLIT BEFORE WE ACTUALLY SPLIT...
 		if (root == child_waiting->parent) {
 			rootSplit = true;
-			cout << "checkpoint 6" << endl;
+			
 		}
 
 
 		new_parent = child_waiting->parent->split(out, insert_value, child_waiting);
-		cout << "checkpoint 4/7" << endl;
+		
 
 		//if we split the root, make a new root and return.
 		if (rootSplit)
@@ -165,26 +165,14 @@ bool Btree::insert(VALUETYPE value)
 			new_parent->parent = new_root;
 				//move root up
 			root = new_root;
-			cout << "checkpoint 8" << endl;
+			
 			assert(isValid());
 			assert(search(value));
 			return true;
 		}
 
 		//else, check next level up and see if they have room for new node ptr
-		if (new_parent->parent == leaf->parent->parent) {
-			cout << "siblings" << endl;
-			cout << "leaf->parent->parent values: ";
-			for (int i = 0; i < leaf->parent->parent->getNumValues(); i++) {
-				cout << leaf->parent->parent->get(i) << " ";
-			}
-			cout << endl;
-		}
-		cout << "new_parent->parent values: ";
-		for (int i = 0; i < new_parent->parent->getNumValues(); i++) {
-			cout << new_parent->parent->get(i) << " ";
-		}
-		cout << endl;
+		
 		if (!new_parent->parent->is_full())
 		{
 			//add and return
@@ -202,7 +190,7 @@ bool Btree::insert(VALUETYPE value)
 		//else, prep and continue upwards split
 		child_waiting = new_parent;
 		insert_value = out;
-		cout << "checkpoint 5" << endl;
+		
 
 	}//end while
 
