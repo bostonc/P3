@@ -264,6 +264,8 @@ bool Btree::remove(VALUETYPE value)
 		for (int i = 0; i < leaf->next->getNumValues(); i++) {
 			cout << leaf->next->get(i) << " ";
 		}
+		cout << "rightParent num children: " << rightParent->getNumChildren() << endl;
+		cout << "leaf parent num children: " << leaf->parent->getNumChildren() << endl;
 		cout << endl;
 		out = leaf->merge(leaf->next);
 		//fix parent of right node, and commmon ancestor if different
