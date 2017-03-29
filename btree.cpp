@@ -263,6 +263,7 @@ bool Btree::remove(VALUETYPE value)
 		out = leaf->merge(leaf->next);
 		//fix parent of right node, and commmon ancestor if different
 		cout << "before remove child line 266" << endl;
+		cout << "idx = " << idx << endl;
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
 		cout << "after remove child line 266" << endl;
 		//if we merged siblings...
