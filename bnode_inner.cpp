@@ -120,7 +120,9 @@ VALUETYPE Bnode_inner::redistribute(Bnode_inner* rhs, int parent_idx) {
 			rhs->insert(children[num_children - 1], 0); //move last child over
 			parent->replace_value(values[num_values - 1], parent_idx); //move last val up
 			remove_value(num_values - 1);
+			cout << "before remove child" << endl;
 			remove_child(num_children - 1);
+			cout << "after remove child" << endl;
 			new_parent_val = parent->get(parent_idx);
 			//time to stop?
 			if (num_values <= rhs->getNumValues()) break;
