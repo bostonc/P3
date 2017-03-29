@@ -187,394 +187,7 @@ bool Btree::insert(VALUETYPE value)
 	return false;
 }
 
-/*
-// bool Btree::remove(VALUETYPE value) {
-// 	//cout << "in remove, value = " << value << endl;
-// 	assert(root);
-	
-// 	//if the value's not in the tree, return false
-// 	if (search(value) == nullptr) return false;
-	
-// 	//else find node with the value
-// 	Bnode* current = root;
-// 	Bnode_inner* inner = dynamic_cast<Bnode_inner*>(current);
-	
-// 	//while current isn't a leaf
-// 	while (inner) {	
-// 		//which child should have this new value?
-// 		int child_idx = inner->find_value_gt(value);
-// 		//cout << "child_idx = " << child_idx << endl;
-// 		current = inner->getChild(child_idx);
-// 		inner = dynamic_cast<Bnode_inner*>(current);
 
-// 	}
-// 	//found the leaf node where the value is
-// 	Bnode_leaf* leaf = dynamic_cast<Bnode_leaf*>(current);
-// 	assert(leaf);
-	
-// 	//remove value and decrease size
-// 	leaf->remove(value);
-// 	size--;
-	
-// 	bool done = false;
-// 	//if that leaf is half of more full, done = true
-// 	if (leaf->at_least_half_full() && leaf->getNumValues() <= BTREE_LEAF_SIZE) {
-// 		done = true;
-// 	}
-	
-// 	//else
-// 	else {
-// 		//if right leaf node exists and is more than half full
-// 		if (leaf->next && leaf->next->getNumValues() > BTREE_LEAF_SIZE / 2) {
-// 			//redistribute and set parent val to closest ancestor and set done = true
-// 			Bnode_inner* common_ansc = leaf->common_ancestor(leaf->next);
-// 			//get leaf's highest value
-// 			VALUETYPE leaf_high;
-// 			if (leaf->getNumValues() == 0) {
-// 				leaf_high = value;
-// 			}
-// 			else {
-// 				leaf_high = leaf->get(leaf->getNumValues() - 1);
-// 			}
-// 			//get leaf->next's lowest value
-// 			VALUETYPE leaf_next_low = leaf->next->get(0);
-// 			//get index of common ancsestor
-// 			int index = 0;
-// 			for (int i = 0; i < common_ansc->getNumValues(); i++) {
-// 				if (common_ansc->get(i) > leaf_high && common_ansc->get(i) <= leaf_next_low) {
-// 					index = i;
-// 				}
-// 			}
-// 			//cout << "before redistribute\n";
-// 			//debugging
-// 			for (int i = 0; i < leaf->getNumValues(); i++) {
-// 				//cout << "value: " << leaf->get(i) << endl;
-// 			}
-// 			for (int i = 0; i < leaf->next->getNumValues(); i++) {
-// 				//cout << "value: " << leaf->next->get(i) << endl;
-// 			}
-// 			VALUETYPE new_parent_val = leaf->redistribute(leaf->next);
-// 			//cout << "new_parent_val: " << new_parent_val << endl;
-// 			common_ansc->replace_value(new_parent_val, index);
-// 			done = true;
-// 			//cout << "done with redistribution\n";
-			
-// 		}
-// 		//else if left leaf node exists and is more than half full
-// 		else if (leaf->prev && leaf->prev->getNumValues() > BTREE_LEAF_SIZE / 2) {
-// 			//redistribute and set parent val to closest ancestor and set done = true
-// 			Bnode_inner* common_ansc = leaf->prev->common_ancestor(leaf);
-// 			//get leaf->prev's highest value
-// 			VALUETYPE leaf_prev_high = leaf->prev->get(leaf->prev->getNumValues() - 1);
-// 			//get leaf's lowest value
-// 			VALUETYPE leaf_low;
-// 			if (leaf->getNumValues() == 0) {
-// 				leaf_low = value;
-// 			}
-// 			else {
-// 				leaf_low = leaf->get(0);
-// 			}
-// 			//get index of common ancsestor
-// 			int index = 0;
-// 			for (int i = 0; i < common_ansc->getNumValues(); i++) {
-// 				if (common_ansc->get(i) > leaf_prev_high && common_ansc->get(i) <= leaf_low) {
-// 					index = i;
-// 				}
-// 			}
-// 			VALUETYPE new_parent_val = leaf->prev->redistribute(leaf);
-// 			common_ansc->replace_value(new_parent_val, index);
-// 			done = true;
-// 		}
-// 		//else
-// 		//KINDA CONFUSED ABOUT THE VALUE MERGE RETURNS
-		
-// 		else {
-// 			Bnode_inner* check_node = nullptr;
-// 			//cout << "in merge" << endl;
-// 			Bnode_inner* common_ansc = nullptr;
-// 			//if right leaf node exits
-// 			if (leaf->next) {
-// 				//cout << "in merge with leaf->next\n";
-// 				//merge and set parent val to closest ancestor
-// 				if (leaf->parent == leaf->next->parent) {
-// 					//cout << "same parent" << endl;
-// 					common_ansc = leaf->parent;
-// 					//cout << "common ansc set" << endl;
-// 				}
-// 				else {
-// 					common_ansc = leaf->common_ancestor(leaf->next);
-// 				}
-// 				int index = 0;
-// 				for (int i = 0; i < leaf->next->parent->getNumChildren(); i++) {
-// 					if (leaf->next->parent->getChild(i) == leaf->next) {
-// 						index = i;
-// 					}
-// 				}
-// // 				cout << "before merge" << endl;
-// 				if (leaf->next) {
-// 					cout << "yes leaf->next" << endl;
-// 				}
-// 				Bnode_leaf* next = leaf->next;
-// 				VALUETYPE to_remove_upper = leaf->merge(leaf->next);
-// 				cout << "after merge, index = " << index << endl;
-// // 				if (leaf->next) {
-// // 					cout << "yes leaf->next" << endl;
-// // 				}
-// // 				if (!leaf->next) {
-// // 					cout << "no leaf->next" << endl;
-// // 				}
-// 				//if (leaf->next) { //WHY ISN'T IT WORKING
-				
-// 				next->parent->remove_child(index); //should be leaf->next->parent
-// 				if (next->parent->getNumChildren() < 2 && next->parent->parent) {
-// 					check_node = next->parent;
-// 				}
-// 				//}
-// // 				else {
-// // 					cout << "leaf->next doesn't exist" << endl;
-// // 				}
-// // 				if (!leaf) {
-// // 					cout << "leaf doesn't exist" << endl;
-// // 				}
-// // 				if (!leaf->parent) {
-// // 					cout << "leaf->parent doesn't exist" << endl;
-// // 				}
-// // 				else {
-// // 					leaf->parent->remove_child(index); //don't think this is right
-// // 				}
-// 				//cout << "removed child" << endl;
-// 				//cout << "to_remove_upper: " << to_remove_upper << endl;
-				
-// 				VALUETYPE to_remove_lower = value;
-// 				//cout << "before for loop" << endl;
-// 				for (int i = 1; i < leaf->getNumValues(); i++) {
-// 					if (leaf->get(i) == to_remove_upper) {
-// 						to_remove_lower = leaf->get(i - 1);
-// 					}
-// 				}
-// 				//cout << "set remove upper and lower" << endl;
-// 					//cout << "to_remove_lower: " << to_remove_lower << endl;
-// 					//assuming that the value merge returns should be found in closest ancestor's node and removed
-				
-				
-// 					//cout << "found common ancestor" << endl;
-// 				for (int i = 0; i < common_ansc->getNumValues(); i++) {
-// 					if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
-// 						common_ansc->remove_value(i);
-// 					}
-// 				}
-// 				cout << "done merging" << endl;
-			
-				
-// 				//cout << "removed value" << endl;
-// 			}
-// 			//else if left leaf node exists
-// 			else if (leaf->prev) {
-// 				//merge and set parent val to closest ancestor
-// 				//merge and set parent val to closest ancestor
-// 				if (leaf->prev->parent == leaf->parent) {
-// 					//cout << "same parent" << endl;
-// 					common_ansc = leaf->prev->parent;
-// 				}
-// 				else {
-// 					common_ansc = leaf->prev->common_ancestor(leaf);
-// 				}
-// 				int index = 0;
-// 				for (int i = 0; i < leaf->prev->parent->getNumChildren(); i++) {
-// 					if (leaf->prev->parent->getChild(i) == leaf) {
-// 						index = i;
-// 					}
-// 				}
-				
-// 				if (leaf->getNumValues() > 0) {
-// 					VALUETYPE to_remove_upper = leaf->prev->merge(leaf);
-// 					leaf->prev->parent->remove_child(index);
-// 					VALUETYPE to_remove_lower = value;
-// 					for (int i = 1; i < leaf->prev->getNumValues(); i++) {
-// 						if (leaf->prev->get(i) == to_remove_upper) {
-// 							to_remove_lower = leaf->prev->get(i - 1);
-// 						}
-// 					}
-				
-					    
-// 					//assuming that the value merge returns should be found in closest ancestor's node and removed
-// 					//common_ansc = leaf->common_ancestor(leaf->next);
-// 					for (int i = 0; i < common_ansc->getNumValues(); i++) {
-// 						if (common_ansc->get(i) <= to_remove_upper && common_ansc->get(i) > to_remove_lower) {
-// 							common_ansc->remove_value(i);
-// 						}
-// 					}
-// 				}
-// 				else {
-// 					leaf->prev->parent->remove_child(index);
-// 					VALUETYPE to_remove_lower = leaf->prev->get(leaf->prev->getNumValues() - 1);
-// 					for (int i = 0; i < common_ansc->getNumValues(); i++) {
-// 						if (common_ansc->get(i) > to_remove_lower) {
-// 							common_ansc->remove_value(i);
-// 						}
-// 					}
-// 				}
-					
-				
-// 				//set leaf = leaf->prev (I think?)
-// 				leaf = leaf->prev;
-// 			}
-// 			//else
-// 			else {
-// 				return false; //shouldn't happen, return false?
-// 			}
-// 			bool fixed = false;
-// 			//if parent inner node is at least half full
-// 			//should this check common ancestor instead of parent?
-// 			//cout << "still here" << endl;
-// 			//cout << "fixed set to false" << endl;
-// 			Bnode_inner* node = nullptr;
-// 			if (check_node) {
-// 				node = check_node;
-// 				cout << "in check node" << endl;
-// 			}
-// 			else {
-// 				if (common_ansc->getNumValues() >= (BTREE_FANOUT - 1) / 2) { //make sure merge handles pointers right
-// 					//fixed = true
-// 					fixed = true;
-// 					//cout << "in if, fixed = true" << endl;
-				
-// 				}
-// 				cout << "how about now?" << endl;
-// 				//set temp variables
-// 				Bnode_inner* node = common_ansc;
-// 				cout << "node set" << endl;
-// 			}
-			
-// 			//cout << "and now?" << endl;
-				
-// 			//while !fixed
-// 			while (!fixed) {
-// 				cout << "in while loop" << endl;
-// // 				if (check_node) {
-// // 					//cout << "check node is on" << endl;
-// // 				}
-// 				//cout << "in while loop" << endl;
-// 				//set temp variables 
-				
-				
-// 				cout << "still working" << endl;
-// 				Bnode_inner* node_parent = nullptr;
-// 				cout << "how about now?" << endl;
-				
-// 				if (!node) {
-// 					cout << "no node" << endl;
-// 				}
-// 				cout << "num node children: " << node->getNumChildren() << endl;
-// 				if (!node->parent) {
-// 					cout << "in if" << endl;
-// 					//cout << "num node vals: " << node->getNumValues() << endl;
-// 					//cout << "num node children: " << node->getNumChildren() << endl;
-// 					if (node->getNumValues() == 0) {
-// 						if (node->getNumChildren() == 0) {
-// 							fixed = true;
-// 							break;
-// 						}
-// 						else if (node->getNumChildren() == 1) {
-// 							//cout << "in else if" << endl;
-// 							root = node->getChild(0);
-// 							//cout << "made new root" << endl;
-// 							fixed = true;
-// 							//cout << "fixed" << endl;
-// 							break;
-// 						}
-// 					}
-// 					else {
-// 						fixed = true;
-// 						break;
-// 					}
-// 				}
-// 				else {
-// 					node_parent = node->parent;
-// 				}
-// 				int node_idx = 0;
-// 				for (int i = 0; i < node_parent->getNumChildren(); i++) {
-// 					if (node_parent->getChild(i) == node) {
-// 					node_idx = i;
-// 					}
-				
-// 				}
-// 				Bnode_inner* node_prev = nullptr;
-// 				Bnode_inner* node_next = nullptr;
-// 				if (node_idx > 0) {
-// 					node_prev = dynamic_cast<Bnode_inner*>(node_parent->getChild(node_idx - 1));
-// 				}
-// 				if (node_idx < node_parent->getNumChildren() - 1) {
-// 					node_next = dynamic_cast<Bnode_inner*>(node_parent->getChild(node_idx + 1));
-// 				}
-				
-// 				//if right sibling inner node exists and is more than half full
-// 				if (node_next && node_next->getNumValues() > (BTREE_FANOUT - 1) / 2) {
-// 					//redistribute including parent and set new parent val to parent
-// 					VALUETYPE parent_val = node->redistribute(node_next, node_idx);
-// 					node_parent->replace_value(parent_val, node_idx);
-// 					fixed = true;
-					
-					
-// 				}
-// 				//else if left sibling inner node exists and is more than half full
-// 				else if (node_prev && node_prev->getNumValues() > (BTREE_FANOUT - 1) / 2) {
-// 					//redistribute including parent val and set new parent val to parent
-// 					VALUETYPE parent_val = node_prev->redistribute(node, node_idx - 1);
-// 					node_parent->replace_value(parent_val, node_idx - 1);
-// 					fixed = true;
-					
-// 				}
-// 				//else
-// 				else {
-// 					//if right sibling inner node exists
-// 					if (node_next) {
-// 						//merge including parent and remove parent_val from parent
-// 						VALUETYPE parent_val = node->merge(node_next, node_idx);
-// 						node_parent->remove_value(node_idx);
-						
-						
-// 					}
-// 					//else if left sibling inner node exists
-// 					else if (node_prev) {
-// 						//merge including parent and remove parent_val from parent
-// 						VALUETYPE parent_val = node_prev->merge(node, node_idx - 1);
-// 						node_parent->remove_value(node_idx - 1);
-						
-// 					}
-// 					//else 
-// 					else {
-// 						//it's a root node, return true
-// 						return true;
-	
-// 					}
-// 					node = node_parent;
-// 					//if grandparent node doesn't exist or is half full or more
-// 					if (node->getNumValues() >= (BTREE_FANOUT - 1) / 2) {
-// 						//fixed = true
-// 						fixed = true;
-// 					}
-// 				}
-// 			}
-// 			//if fixed, done = true
-// 			if (fixed) {
-// 				done = true;
-// 			}
-// 		}
-// 	}
-// 	//if done
-// 	if (done) {
-// 		//cout << "in done" << endl;
-// 		//check asserts and return true
-// 		assert(isValid());
-// 		assert(leaf->getNumValues() >= BTREE_LEAF_SIZE / 2 && leaf->getNumValues() <= BTREE_LEAF_SIZE);
-// 		//cout << "returning" << endl;
-// 		return true;
-// 	}
-// 	//shouldn't get here
-// 	return false;
-// }
-*/
 	
 bool Btree::remove(VALUETYPE value)
 {
@@ -649,7 +262,9 @@ bool Btree::remove(VALUETYPE value)
 		int idx = rightParent->find_child(leaf->next);
 		out = leaf->merge(leaf->next);
 		//fix parent of right node, and commmon ancestor if different
+		cout << "before remove child line 266" << endl;
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+		cout << "after remove child line 266" << endl;
 		//if we merged siblings...
 		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
@@ -676,7 +291,9 @@ bool Btree::remove(VALUETYPE value)
 		int idx = rightParent->find_child(leaf);
 		out = leaf->prev->merge(leaf);
 		//fix parent of right node, and common ancestor if different
+		cout << "before remove child line 295" << endl;
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
+		cout << "after remove child line 295" << endl;
 		//if we merged siblings...
 		if (leaf->prev->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
@@ -765,7 +382,9 @@ bool Btree::remove(VALUETYPE value)
 		{	//MERGE right
 			out = underfilled->merge(rightSibling, underfilled_idx);
 			//fix parent
+			cout << "before remove child line 386" << endl;
 			underfilled->parent->remove_child(underfilled_idx + 1);
+			cout << "after remove child line 386" << endl;
 			underfilled->parent->remove_value(underfilled_idx);
 			//did we underfill the parent?
 			if (underfilled->parent->at_least_half_full())
@@ -781,7 +400,9 @@ bool Btree::remove(VALUETYPE value)
 		{	//MERGE left
 			out = leftSibling->merge(underfilled, underfilled_idx - 1);
 			//fix parent
+			cout << "before remove child line 404" << endl;
 			leftSibling->parent->remove_child(underfilled_idx);
+			cout << "after remove child line 404" << endl;
 			leftSibling->parent->remove_value(underfilled_idx - 1);
 			//did we underfill the parent?
 			if (leftSibling->parent->at_least_half_full())
