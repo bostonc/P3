@@ -269,6 +269,11 @@ bool Btree::remove(VALUETYPE value)
 			cout << rightParent->get(i) << " ";
 		}
 		cout << endl;
+		cout << "leaf->next values: ";
+		for (int i = 0; i < leaf->next->getNumValues(); i++) {
+			cout << leaf->next->get(i) << " ";
+		}
+		cout << endl;
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
 		cout << "after remove child line 266" << endl;
 		//if we merged siblings...
