@@ -260,25 +260,9 @@ bool Btree::remove(VALUETYPE value)
 	{
 		Bnode_inner* rightParent = leaf->next->parent;
 		int idx = rightParent->find_child(leaf->next);
-		cout << "leaf->next values: ";
-		for (int i = 0; i < leaf->next->getNumValues(); i++) {
-			cout << leaf->next->get(i) << " ";
-		}
-		cout << "rightParent num children: " << rightParent->getNumChildren() << endl;
-		cout << "leaf parent num children: " << leaf->parent->getNumChildren() << endl;
-		cout << endl;
 		out = leaf->merge(leaf->next);
 		//fix parent of right node, and commmon ancestor if different
-		cout << "before remove child line 266" << endl;
-		cout << "idx = " << idx << endl;
-		cout << "rightParent values: ";
-		for (int i = 0; i < rightParent->getNumValues(); i++) {
-			cout << rightParent->get(i) << " ";
-		}
-		cout << endl;
-		
 		rightParent->remove_child(idx); //MAKE SURE NOT TO DO THIS IN MERGE. MEMORY LEAK?????
-		cout << "after remove child line 266" << endl;
 		//if we merged siblings...
 		if (leaf->parent == rightParent) rightParent->remove_value(idx - 1);
 		//if we merged non-siblings...
